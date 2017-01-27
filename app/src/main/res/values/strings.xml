@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ElcaAPP</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">Agregar Pedido</string>
+    <string name="plus">"+"</string>
+    <string name="adduser">"Agregar Pedido"</string>
+    <string name="user">"Datos del pedido"</string>
+    <string name="descrip">"Introduzca descripcion del pedido"</string>
+    <string name="client">"Introduzca el cliente"</string>
+    <string name="calle">"Domicilio"</string>
+    <string name="numero">"Numero domicilio"</string>
+    <string name="ciudad">"Ciudad"</string>
+    <string name="Provincia">"Provincia"</string>
+    <string name="save">"Grabar"</string>
+    <string name="cancel">"Cancelar"</string>
+    <string name="adduseractivitylabel">"Add User Activity"</string>
+    <string name="scan">Scan</string>
+    <string name="titled">Agregar Dispositivos</string>
+    <string name="pedidopen">Pedidos Pendientes</string>
+    <string name="terminar">Terminar</string>
+    <string name="disp">Dispositivos Instalados</string>
+    <string name="Dispositivos">Agregar Dispositivo</string>
+    <string name="codigo">Introduzca Codigo</string>
+    <string name="nomb">Descripcion</string>
+    <string name="descrip_disp">Item</string>
+    <string name="Moddip">Modificar Dispositivos</string>
+</resources>
