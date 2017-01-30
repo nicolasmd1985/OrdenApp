@@ -284,7 +284,7 @@ public class Pedidos extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "No Tiene Pedidos Para Sincronizar",
                         Toast.LENGTH_LONG).show();
                // reloadActivity();
-                prgDialog.hide();
+               // prgDialog.hide();
                 send_remito();
             }
         } catch (JSONException e) {
@@ -315,8 +315,8 @@ public class Pedidos extends AppCompatActivity {
 
                    //
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-                    reloadActivity();
-                    prgDialog.hide();
+                    //reloadActivity();
+                    //prgDialog.hide();
                     send_remito();
 
                 }
@@ -327,8 +327,8 @@ public class Pedidos extends AppCompatActivity {
 
                 //
                     Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-                    prgDialog.hide();
-                    reloadActivity();
+                    //prgDialog.hide();
+                    //reloadActivity();
                     send_remito();
                 }
             });
@@ -337,8 +337,8 @@ public class Pedidos extends AppCompatActivity {
 
          //
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
-            prgDialog.hide();
-            reloadActivity();
+            //prgDialog.hide();
+            //reloadActivity();
             send_remito();
         }
 
@@ -348,7 +348,7 @@ public class Pedidos extends AppCompatActivity {
     public void send_remito()
     {
 
-        prgDialog = new ProgressDialog(this);
+        //prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Enviando y Recibiendo Pedidos Pendientes, espere un momento............");
         prgDialog.setCancelable(false);
         Gson gson = new GsonBuilder().create();
@@ -372,7 +372,10 @@ public class Pedidos extends AppCompatActivity {
                 pendientes(nn,hashMap.get("fkidauxpedido"));
             }
 
-        }else{prgDialog.hide();}
+        }else{
+            prgDialog.hide();
+            reloadActivity();
+        }
 
 
     }

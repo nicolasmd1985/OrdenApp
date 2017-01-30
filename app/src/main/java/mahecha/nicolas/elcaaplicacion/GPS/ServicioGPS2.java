@@ -91,8 +91,8 @@ public class ServicioGPS2 extends Service implements LocationListener {
        try {
            lat= ""+loc.getLatitude();
            lon= ""+loc.getLongitude();
-           System.out.println(loc.getLatitude());
-           System.out.println(loc.getLongitude());
+         //  System.out.println(loc.getLatitude());
+         //  System.out.println(loc.getLongitude());
            queryValues = new HashMap<String, String>();
            queryValues.put("latitud",lat);
            queryValues.put("longitud",lon);
