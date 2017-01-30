@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -161,7 +162,7 @@ public class Pedidos extends AppCompatActivity {
 
         params.put("estado", json);
 
-        client.post("http://elca.sytes.net:5537/testELCA_APP/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -223,7 +224,7 @@ public class Pedidos extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("idusuar", idusuar);
-        client.post("http://elca.sytes.net:5537/testELCA_APP/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
@@ -307,15 +308,15 @@ public class Pedidos extends AppCompatActivity {
 
 
             params.put("estado", json);
-            client.post("http://elca.sytes.net:5537/testELCA_APP/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 
 
                    //
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-                    //reloadActivity();
-                   // prgDialog.hide();
+                    reloadActivity();
+                    prgDialog.hide();
                     send_remito();
 
                 }
@@ -326,8 +327,8 @@ public class Pedidos extends AppCompatActivity {
 
                 //
                     Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-                    //prgDialog.hide();
-                    //reloadActivity();
+                    prgDialog.hide();
+                    reloadActivity();
                     send_remito();
                 }
             });
@@ -336,8 +337,8 @@ public class Pedidos extends AppCompatActivity {
 
          //
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
-            //prgDialog.hide();
-            //reloadActivity();
+            prgDialog.hide();
+            reloadActivity();
             send_remito();
         }
 
@@ -382,7 +383,7 @@ public class Pedidos extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("aux_ped", json);
-        client.post("http://elca.sytes.net:5537/testELCA_APP/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
         }
@@ -402,17 +403,12 @@ public class Pedidos extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
        params.put("remito", json);
-       client.post("http://elca.sytes.net:5537/testELCA_APP/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
+       client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response)
             {
-                if(response.contains("recibido"))
-                {
-                    controller.elim_aux(pedido);
-                }else{
-                    Toast.makeText(getApplicationContext(), "No se logro Enviar Pedido",
-                            Toast.LENGTH_LONG).show();
-                }
+                System.out.println(response);
+                controller.elim_aux(pedido);
                 ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
                 contador.setText(String.valueOf(pendiente.size()));
                 if(pendiente.size()==0)
@@ -432,4 +428,18 @@ public class Pedidos extends AppCompatActivity {
             }
         });
     }
+
+
+    //****************ESTO ES PARA DEVOLVERSE*****************
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Pedidos.this, Login.class);
+            startActivity(i);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

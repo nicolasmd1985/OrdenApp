@@ -56,7 +56,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,
+        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,
                 1000*60,
                 0,
                 this);
@@ -132,11 +132,14 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
         params.add("lat", lat);
         params.add("lon", lon);
-        client.get("http://elca.sytes.net:5537/gpstracker/"+dato+".php", params, new AsyncHttpResponseHandler() {
+        params.add("tecnico", dato);
+
+        client.get("http://elca.sytes.net:2122/app_elca/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(String response) {
 
+                //System.out.println(response);
             }
 
 
@@ -153,6 +156,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
                 } else {
                     //Toast.makeText(getApplicationContext(), "Dispositivo Sin Conexión a Internet",
                       //      Toast.LENGTH_LONG).show();
+                   // System.out.println("nada");
                 }
             }
 
