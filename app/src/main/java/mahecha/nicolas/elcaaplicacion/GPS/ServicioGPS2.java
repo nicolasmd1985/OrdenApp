@@ -42,19 +42,9 @@ public class ServicioGPS2 extends Service implements LocationListener {
     public void onCreate() {
         super.onCreate();
      //   Toast.makeText(this, "Servicio creado!", Toast.LENGTH_SHORT).show();
-
-
-
-        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+       locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+          return;
         }
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,
                 1000*60,
@@ -97,16 +87,16 @@ public class ServicioGPS2 extends Service implements LocationListener {
            queryValues.put("latitud",lat);
            queryValues.put("longitud",lon);
            ArrayList<HashMap<String,String>> listgps = controller.getgps();
+
            if(listgps.size()==0){
                controller.upgps(queryValues);
            }else{controller.updGPS(queryValues);}
+           envioGPS();
 
 
-       }catch (Exception e){System.out.println(e);}
-
-
-        envioGPS();
-
+       }catch (Exception e){
+           //System.out.println(e);
+       }
     }
 
     @Override
@@ -146,28 +136,8 @@ public class ServicioGPS2 extends Service implements LocationListener {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                // TODO Auto-generated method stub
-                // Hide ProgressBar
-                //prgDialog.hide();
-                if (statusCode == 404) {
-                  //  Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 500) {
-                    //Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                } else {
-                    //Toast.makeText(getApplicationContext(), "Dispositivo Sin Conexión a Internet",
-                      //      Toast.LENGTH_LONG).show();
-                   // System.out.println("nada");
-                }
+
             }
-
-
-
-        });
-
-
-
-    }
-
-
-
+      });
+   }
 }
