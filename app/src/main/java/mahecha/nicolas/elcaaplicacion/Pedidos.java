@@ -386,7 +386,7 @@ public class Pedidos extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("remito", json);
         params.put("cont", i);
-        client.setTimeout(30000);
+        client.setTimeout(40000);
         try {
             client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
                 @Override
