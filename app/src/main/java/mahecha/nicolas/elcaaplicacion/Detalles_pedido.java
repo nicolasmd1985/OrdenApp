@@ -63,4 +63,20 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
         i.putExtra("idusuario",idusuar );
         startActivity(i);
     }
+
+
+    //****************ESTO ES PARA DEVOLVERSE*****************
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Detalles_pedido.this, Pedidos.class);
+            i.putExtra("idusuario",idusuar );
+            startActivity(i);
+            //return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

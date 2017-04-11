@@ -37,13 +37,13 @@ public class Agregar_dispositivos extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
 
 
                 ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(idped);
                 int cont = 0;
                 for (HashMap<String, String> hashMap : dipslist) {
-                    System.out.println(cont);
+                  //  System.out.println(cont);
                     if(i==cont)
                     {
                         String code = hashMap.get("codigoscan");
@@ -62,7 +62,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
         lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "presiono hola" + i, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "presiono hola" + i, Toast.LENGTH_SHORT).show();
                 ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(idped);
                 int cont = 0;
                 for (HashMap<String, String> hashMap : dipslist) {
@@ -147,4 +147,21 @@ public class Agregar_dispositivos extends AppCompatActivity {
         objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
+
+
+    //****************ESTO ES PARA DEVOLVERSE*****************
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Agregar_dispositivos.this, Detalles_pedido.class);
+            i.putExtra("idpedido", idped );
+            i.putExtra("idusuario",idusuar );
+            startActivity(i);
+            //return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

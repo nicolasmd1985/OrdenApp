@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -122,7 +123,20 @@ public class Scaner_dispositivo extends AppCompatActivity implements View.OnClic
         this.callHomeActivity(view);
     }
 
+    /////////////////****************ESTO ES PARA DEVOLVERSE*****************/////////////////////
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Scaner_dispositivo.this, Agregar_dispositivos.class);
+            i.putExtra("idpedido", idped );
+            i.putExtra("idusuario",idusuar );
+            startActivity(i);
+            //return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 
 }

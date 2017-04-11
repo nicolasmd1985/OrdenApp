@@ -51,10 +51,13 @@ public class Pedidos extends AppCompatActivity {
         idusuar = getIntent().getStringExtra("idusuario");
         Intent GPS = new Intent(Pedidos.this, ServicioGPS2.class);
         cargabdl(idusuar);
-        GPS.putExtra("Tecnico",idusuar);
+        //GPS.putExtra("Tecnico",idusuar);
         startService(GPS);
         contador=(TextView)findViewById(R.id.contador);
         contadores();
+
+
+
 
 
     }
@@ -329,7 +332,10 @@ public class Pedidos extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("aux_ped", json);
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+
+        try {
+            client.setTimeout(40000);
+            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 enviaremito();
@@ -337,10 +343,10 @@ public class Pedidos extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                Toast.makeText(getApplicationContext(), "ups! ocurrio un error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ups! ocurrio un error en pedidos Nuevos", Toast.LENGTH_LONG).show();
                 prgDialog.hide();
             }
-        });
+        });}catch (Exception e){}
     }
 
 
@@ -386,8 +392,10 @@ public class Pedidos extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("remito", json);
         params.put("cont", i);
-        client.setTimeout(40000);
+
+
         try {
+            client.setTimeout(40000);
             client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
@@ -408,7 +416,7 @@ public class Pedidos extends AppCompatActivity {
                 public void onFailure(int statusCode, Throwable error,
                                       String content) {
                     prgDialog.hide();
-                    Toast.makeText(getApplicationContext(), "ups! ocurrio un error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "ups! ocurrio un error en remitos enviados", Toast.LENGTH_LONG).show();
                     reloadActivity();
                 }
             });
@@ -423,6 +431,24 @@ public class Pedidos extends AppCompatActivity {
         ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
         contador.setText(String.valueOf(pendiente.size()));
     }
+
+
+
+    /////////****************ESTO ES PARA DEVOLVERSE*****************///////////////
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Pedidos.this, Login.class);
+            i.putExtra("idusuario",idusuar );
+            startActivity(i);
+            //return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 
 
 }

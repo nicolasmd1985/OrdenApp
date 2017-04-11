@@ -107,4 +107,25 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         }
 
     }
+
+
+
+    /////////////////****************ESTO ES PARA DEVOLVERSE*****************/////////////////////
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Mod_dispositivo.this, Agregar_dispositivos.class);
+            i.putExtra("idpedido", idped );
+            i.putExtra("idusuario",idusuar );
+            startActivity(i);
+            //return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+
+
 }

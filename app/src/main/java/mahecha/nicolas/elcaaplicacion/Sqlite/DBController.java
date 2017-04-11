@@ -108,6 +108,23 @@ public class DBController extends SQLiteOpenHelper {
         database.close();
     }
 
+
+
+
+//////////////////************OBTENER IDTECNICO***************///////////
+
+    public String idtecnico()
+    {
+        String query = "SELECT idusuario FROM usuarios";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
+        String tecnico = cursor.getString(0);
+
+        return tecnico;
+    }
+
+
 ////////////////////*************OBTENER LISTA DE USUARIOS***********///////////ok
 
 

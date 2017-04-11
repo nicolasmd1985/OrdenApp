@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -57,7 +58,9 @@ public class ServicioGPS2 extends Service implements LocationListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        dato= (String) intent.getExtras().get("Tecnico");
+
+        ////////////PROBLEMA!!!!////
+       // dato= (String) intent.getExtras().get("Tecnico");
         return super.onStartCommand(intent, flags, startId);
 
     }
@@ -79,6 +82,9 @@ public class ServicioGPS2 extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location loc) {
        try {
+
+
+
            lat= ""+loc.getLatitude();
            lon= ""+loc.getLongitude();
          //  System.out.println(loc.getLatitude());
@@ -97,6 +103,8 @@ public class ServicioGPS2 extends Service implements LocationListener {
        }catch (Exception e){
            //System.out.println(e);
        }
+
+
     }
 
     @Override
@@ -120,10 +128,17 @@ public class ServicioGPS2 extends Service implements LocationListener {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
+
+        dato= controller.idtecnico();
+        //System.out.println(dato);
         params.add("lat", lat);
         params.add("lon", lon);
         params.add("tecnico", dato);
 
+
+
+
+        try{
         client.get("http://elca.sytes.net:2122/app_elca/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
 
             @Override
@@ -138,6 +153,6 @@ public class ServicioGPS2 extends Service implements LocationListener {
                                   String content) {
 
             }
-      });
+      });}catch (Exception e){}
    }
 }
