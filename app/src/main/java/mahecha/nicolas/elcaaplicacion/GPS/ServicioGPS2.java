@@ -48,7 +48,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
           return;
         }
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,
-                1000*60,
+                1000*60*5,
                 0,
                 this);
 
@@ -96,12 +96,17 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
            if(listgps.size()==0){
                controller.upgps(queryValues);
-           }else{controller.updGPS(queryValues);}
-           envioGPS();
+              // Toast.makeText(this, "nuevo", Toast.LENGTH_SHORT).show();
+           }else{
+               controller.updGPS(queryValues);
+             //  Toast.makeText(this, "viejo", Toast.LENGTH_SHORT).show();
 
+           }
+           envioGPS();
+          // Toast.makeText(this, lat+""+lon, Toast.LENGTH_SHORT).show();
 
        }catch (Exception e){
-           //System.out.println(e);
+           Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
        }
 
 
@@ -144,7 +149,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
             @Override
             public void onSuccess(String response) {
 
-                //System.out.println(response);
+                System.out.println(response);
             }
 
 
@@ -155,4 +160,9 @@ public class ServicioGPS2 extends Service implements LocationListener {
             }
       });}catch (Exception e){}
    }
+
+
+
+
+
 }

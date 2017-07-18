@@ -588,7 +588,7 @@ public class DBController extends SQLiteOpenHelper {
         ArrayList<HashMap<String, String>> wordList;
         wordList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT longitud, latitud, id_gps FROM GPSlogs";
+        String selectQuery = "SELECT longitud, latitud FROM GPSlogs";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -598,7 +598,7 @@ public class DBController extends SQLiteOpenHelper {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("longitud", cursor.getString(0));
                 map.put("latitud", cursor.getString(1));
-                map.put("id_gps", cursor.getString(2));
+                //map.put("id_gps", cursor.getString(2));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -614,16 +614,17 @@ public class DBController extends SQLiteOpenHelper {
      * @param queryValues
      */
     public void updGPS(HashMap<String, String> queryValues) {
+
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         //values.put("idauxpedido", queryValues.get("idauxpedido"));
         values.put("latitud", queryValues.get("latitud"));
         values.put("longitud", queryValues.get("longitud"));
-
-
-
         database.update("GPSlogs", values ,"id_gps"+"="+1, null);
         database.close();
+
+
+
     }
 
 

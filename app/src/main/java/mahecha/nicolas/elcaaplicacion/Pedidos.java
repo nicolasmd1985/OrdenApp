@@ -1,8 +1,12 @@
 package mahecha.nicolas.elcaaplicacion;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +41,8 @@ import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 public class Pedidos extends AppCompatActivity {
 
     DBController controller = new DBController(this);
+    EnvioDatos envioDatos = new EnvioDatos(this);
+
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
     String idusuar;
@@ -449,6 +455,40 @@ public class Pedidos extends AppCompatActivity {
     }
 
 
+    ///////////////////////*************UBICACION MANUAL*************////////////
+    public void ubicacion (View view)
+    {
+        //Toast.makeText(this,"hola",Toast.LENGTH_LONG).show();
+        try {
+            final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                buildAlertMessageNoGps();
+            }else
+                {
+                    envioDatos.enviar();
+                }
+
+        }catch(Exception e){Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();}
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("El GPS esta desactivado, desea activarlo?")
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
 }

@@ -59,7 +59,9 @@ public class Nuevo_pedido extends AppCompatActivity {
                     controller.inser_auxped(queryValues);
                     this.callHomeActivity(view);
 
-                }
+                }else {
+                    Toast.makeText(getApplicationContext(), "Instroduzaca Domicilio",
+                            Toast.LENGTH_LONG).show();}
 
             }else {
                 Toast.makeText(getApplicationContext(), "Instroduzaca descripcion",

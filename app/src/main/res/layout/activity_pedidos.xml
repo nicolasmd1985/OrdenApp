@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:background="#cc3d00"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:id="@+id/relativeLayout2">
 
         <Button
             android:id="@+id/button1"
@@ -40,68 +41,75 @@
     </RelativeLayout>
 
 
-
-
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeLayout1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
+
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayout2"
+        android:orientation="vertical">
 
-        android:orientation="vertical"
-        android:layout_marginTop="40dp"
-        android:layout_above="@+id/relativeLayout">
-
-
-        <ListView
-            android:layout_below="@+id/textpedido"
-            android:id="@android:id/list"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentLeft="true">
-        </ListView>
 
         <TextView
             android:id="@+id/textpedido"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="27dp"
+
             android:text="Pedidos Pendientes"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/background_dark"
-            android:layout_alignParentTop="true"
+            android:textColor="@android:color/background_dark" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-    </RelativeLayout>
+            android:layout_below="@+id/textpedido"
+            android:layout_weight="15"></ListView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout">
-
-        <TextView
+        <Button
+            android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Remitos Por Enviar:"
-            android:id="@+id/textView10"
-            android:textColor="#cc3d00"
-            android:layout_alignTop="@+id/contador"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginLeft="250dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:onClick="ubicacion"
+            android:text="Ubicación" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="0"
-            android:id="@+id/contador"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/textView10"
-            android:layout_toEndOf="@+id/textView10" />
-    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/contador"
+                android:layout_marginLeft="15dp"
+                android:text="Remitos Por Enviar:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#cc3d00" />
+
+            <TextView
+                android:id="@+id/contador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView10"
+                android:layout_toRightOf="@+id/textView10"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </LinearLayout>
+        >
+
+
+    </LinearLayout>
 
 </RelativeLayout>

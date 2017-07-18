@@ -1,13 +1,18 @@
 package mahecha.nicolas.elcaaplicacion;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,10 +63,28 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
-        i.putExtra("idpedido", idpedido );
-        i.putExtra("idusuario",idusuar );
-        startActivity(i);
+
+        //Toast.makeText(this,"hola",Toast.LENGTH_LONG).show();
+        try {
+            final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                buildAlertMessageNoGps();
+            }else
+            {
+                Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
+                i.putExtra("idpedido", idpedido );
+                i.putExtra("idusuario",idusuar );
+                startActivity(i);
+              //  envioDatos.enviar();
+            }
+
+        }catch(Exception e){
+            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();}
+
+
+
+
     }
 
 
@@ -77,6 +100,25 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
             //return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /////////////********GPS*********//////////////
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("El GPS esta desactivado, desea activarlo?")
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }
