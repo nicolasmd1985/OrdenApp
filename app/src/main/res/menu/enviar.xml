@@ -1,14 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="seguridad.elca.pedidoselca" >
 
     <item
-        android:id="@+id/refresh"
-        android:icon="@drawable/ic_action_refresh"
+        android:id="@+id/enviar"
+        android:icon="@drawable/send"
         android:orderInCategory="100"
-        android:title="nn"
+        android:title="envio"
         app:showAsAction="always" />
-
 
 </menu>

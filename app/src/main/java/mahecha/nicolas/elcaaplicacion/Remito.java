@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -38,7 +40,7 @@ public class Remito extends AppCompatActivity {
         idped = getIntent().getStringExtra("idpedido");
         idusuar = getIntent().getStringExtra("idusuario");
 
-        cargadisp(idped);
+       // cargadisp(idped);
 
         drawView = (DrawingView)findViewById(R.id.drawing);
         observaciones = (EditText)findViewById(R.id.observaciones);
@@ -46,20 +48,20 @@ public class Remito extends AppCompatActivity {
         email=(EditText)findViewById(R.id.email);
     }
 
-    ////////////////*****************CARGA BASE DE DATOS SQLITE************************
-    public void cargadisp(String idped)
-    {
-        ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(idped);
-        if(dipslist.size()!=0){
-            ListAdapter adapter = new SimpleAdapter( Remito.this,dipslist, R.layout.view_remito, new String[] { "nombre", "descripcion"}, new int[] {R.id.nomdipo, R.id.descdisp});
-            ListView myList=(ListView)findViewById(android.R.id.list);
-            myList.setAdapter(adapter);
-        }else{
-            Toast.makeText(getApplicationContext(), "ATENCION!!! No tiene ningun Item", Toast.LENGTH_LONG).show();}
-    }
+//    ////////////////*****************CARGA BASE DE DATOS SQLITE************************
+//    public void cargadisp(String idped)
+//    {
+//        ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(idped);
+//        if(dipslist.size()!=0){
+//            ListAdapter adapter = new SimpleAdapter( Remito.this,dipslist, R.layout.view_remito, new String[] { "nombre", "descripcion"}, new int[] {R.id.nomdipo, R.id.descdisp});
+//            ListView myList=(ListView)findViewById(android.R.id.list);
+//            myList.setAdapter(adapter);
+//        }else{
+//            Toast.makeText(getApplicationContext(), "ATENCION!!! No tiene ningun Item", Toast.LENGTH_LONG).show();}
+//    }
+//
 
-
-    public void savere(View view)
+    public void savere()
     {
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
         saveDialog.setTitle("Guardar Remito");
@@ -134,6 +136,28 @@ public class Remito extends AppCompatActivity {
             //return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    ////////////////////**************MENU ENVIAR**********************
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.enviar, menu);
+        return true;
+    }
+
+
+    ////////////////////////////////*************BOTON DE SINCRONIZACION DE BD*******************////////////////////
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.enviar) {
+            //Toast.makeText(getApplicationContext(), "ATENCION!!! No tiene ningun Item", Toast.LENGTH_LONG).show();
+            savere();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
