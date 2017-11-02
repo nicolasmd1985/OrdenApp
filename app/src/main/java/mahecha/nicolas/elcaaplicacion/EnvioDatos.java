@@ -63,8 +63,8 @@ public class EnvioDatos {
          client.get("http://elca.sytes.net:2122/app_elca/ElcaGPS/getgpsauto.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
-                    Toast.makeText(context, "Ubicacion Enviada",
-                            Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "Ubicacion Enviada",
+                     //       Toast.LENGTH_LONG).show();
                     //System.out.println(jrep);
                     //System.out.println(response);
 
