@@ -18,6 +18,7 @@ import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 
 /**
  * Created by nicolas on 27/04/2017.
+ * ENVIO Y RECEPCION DE DATOS DE LA UBICACON GPS DEL TECNICO
  */
 
 public class EnvioDatos {

@@ -29,6 +29,7 @@ import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 
 /**
  * Created by nicolas on 23/01/2017.
+ * ENVIO DE PARAMENTROS DE UBICACION DE LOS TECNICOS AL SERVIDOR
  */
 
 public class ServicioGPS2 extends Service implements LocationListener {
@@ -47,6 +48,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
           return;
         }
+        //ENVIO CADA 10MIN
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,
                 1000*60*5,
                 0,

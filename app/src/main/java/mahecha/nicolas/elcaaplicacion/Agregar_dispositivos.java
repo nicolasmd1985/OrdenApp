@@ -39,7 +39,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View view, int i, long l) {
                // Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
 
-
+//**************************MUESTRA LA LISTA DE DISPOSITIVOS ********************
                 ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(idped);
                 int cont = 0;
                 for (HashMap<String, String> hashMap : dipslist) {

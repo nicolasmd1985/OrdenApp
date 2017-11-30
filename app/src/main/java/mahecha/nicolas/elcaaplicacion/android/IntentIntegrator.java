@@ -1,5 +1,8 @@
 package mahecha.nicolas.elcaaplicacion.android;
 
+//RUTINA PARA ACTIVAR EL SCANER QR Y GUARDAR EL DATO
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;

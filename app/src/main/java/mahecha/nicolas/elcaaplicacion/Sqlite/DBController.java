@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 /**
  * Created by nicolas on 27/07/2016.
+ * MANEJO DE BASE DE DATOS SQLITE
  */
 public class DBController extends SQLiteOpenHelper {
 

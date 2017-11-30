@@ -1,5 +1,10 @@
 package mahecha.nicolas.elcaaplicacion;
 
+/**
+ * Created by nicolas on 27/04/2017.
+ * ENVIO Y RECEPCION DE DATOS DE LA UBICACON GPS DEL TECNICO
+ */
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -63,7 +68,7 @@ public class Login extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-
+    //////***************FORZAR AL SERVICIO DE GPS ENVIAR UBICACION********///////////////
         try {
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 

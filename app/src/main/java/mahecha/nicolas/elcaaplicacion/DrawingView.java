@@ -15,6 +15,7 @@ import android.view.View;
 
 /**
  * Created by nicolas on 19/07/2016.
+ * VENTANA EMERGENTE
  */
 public class DrawingView extends View {
 

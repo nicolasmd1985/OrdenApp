@@ -1,5 +1,8 @@
 package mahecha.nicolas.elcaaplicacion;
 
+//***********************MUESTRA PANATALLA CON LOS DATOS BASICOS DEL PEDIDO*******************/////////
+
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,6 +68,7 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
     public void onClick(View view) {
 
         //Toast.makeText(this,"hola",Toast.LENGTH_LONG).show();
+        //**************FUERZA LA INICIALIZACION DEL LOCALIZADOR GPS**********/////////
         try {
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
