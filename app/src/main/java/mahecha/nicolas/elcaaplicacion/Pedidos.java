@@ -285,7 +285,7 @@ public class Pedidos extends AppCompatActivity {
     //////////////***********actualiza status del estado*************************//////////////
 
     public void updateMySQLSyncSts(String json) {
-        System.out.println(json);
+        //System.out.println(json);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         ArrayList<HashMap<String, String>> userList = controller.get_auxped(idusuar);

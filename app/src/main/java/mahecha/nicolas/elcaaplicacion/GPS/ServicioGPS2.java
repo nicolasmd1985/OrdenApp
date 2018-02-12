@@ -43,18 +43,16 @@ public class ServicioGPS2 extends Service implements LocationListener {
     @Override
     public void onCreate() {
         super.onCreate();
-     //   Toast.makeText(this, "Servicio creado!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Servicio creado!", Toast.LENGTH_SHORT).show();
        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
           return;
         }
         //ENVIO CADA 10MIN
-        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                 1000*60*5,
                 0,
                 this);
-
-
     }
 
     @Override
@@ -89,8 +87,8 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
            lat= ""+loc.getLatitude();
            lon= ""+loc.getLongitude();
-         //  System.out.println(loc.getLatitude());
-         //  System.out.println(loc.getLongitude());
+           //System.out.println(loc.getLatitude());
+           //System.out.println(loc.getLongitude());
            queryValues = new HashMap<String, String>();
            queryValues.put("latitud",lat);
            queryValues.put("longitud",lon);
@@ -101,14 +99,14 @@ public class ServicioGPS2 extends Service implements LocationListener {
               // Toast.makeText(this, "nuevo", Toast.LENGTH_SHORT).show();
            }else{
                controller.updGPS(queryValues);
-             //  Toast.makeText(this, "viejo", Toast.LENGTH_SHORT).show();
+             // Toast.makeText(this, "viejo", Toast.LENGTH_SHORT).show();
 
            }
            envioGPS();
-          // Toast.makeText(this, lat+""+lon, Toast.LENGTH_SHORT).show();
+           //Toast.makeText(this, lat+""+lon, Toast.LENGTH_SHORT).show();
 
        }catch (Exception e){
-           Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+           //Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
        }
 
 
@@ -151,7 +149,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
             @Override
             public void onSuccess(String response) {
 
-                System.out.println(response);
+                //System.out.println(response);
             }
 
 

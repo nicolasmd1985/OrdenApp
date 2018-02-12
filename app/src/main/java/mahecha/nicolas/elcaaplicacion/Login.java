@@ -205,7 +205,7 @@ public class Login extends Activity implements View.OnClickListener{
 
                 if (username.equals(hashMap.get("usuario"))&&password.equals(hashMap.get("pass"))) {
 
-                    envioDatos.enviar();
+                    //envioDatos.enviar();
                     Intent x = new Intent(Login.this, Pedidos.class);
                     Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_LONG).show();
                     x.putExtra("idusuario",hashMap.get("idusuario")  );

@@ -48,6 +48,8 @@ public class EnvioDatos {
 
         //Toast.makeText(context,lon+" "+lat,Toast.LENGTH_LONG).show();
 
+        System.out.println("lon:"+lon+"lat:"+lat);
+
         dato = dbController.idtecnico();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -64,10 +66,10 @@ public class EnvioDatos {
          client.get("http://elca.sytes.net:2122/app_elca/ElcaGPS/getgpsauto.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
-                    //Toast.makeText(context, "Ubicacion Enviada",
-                     //       Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Ubicacion Enviada",
+                            Toast.LENGTH_LONG).show();
                     //System.out.println(jrep);
-                    //System.out.println(response);
+                    System.out.println(response);
 
                 }
                 @Override
