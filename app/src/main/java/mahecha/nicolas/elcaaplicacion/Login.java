@@ -101,10 +101,11 @@ public class Login extends Activity implements View.OnClickListener{
         prgDialog.show();
         params.add("username", username);
         params.add("password", password);
-        client.post("http://elca.sytes.net:2122/app_elca/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://blueboxcol.com/dipzotecnico/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(String response) {
+                System.out.println(response);
                 prgDialog.hide();
                 try {
                     int success;

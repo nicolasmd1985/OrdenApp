@@ -157,7 +157,7 @@ public class Pedidos extends AppCompatActivity {
         usersynclist.add(map);
         String json = gson.toJson(usersynclist);
         params.put("estado", json);
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -214,7 +214,7 @@ public class Pedidos extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("idusuar", idusuar);
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
@@ -292,7 +292,7 @@ public class Pedidos extends AppCompatActivity {
 
         if (userList.size() != 0) {
             params.put("estado", json);
-            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -341,7 +341,7 @@ public class Pedidos extends AppCompatActivity {
 
         try {
             client.setTimeout(40000);
-            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 enviaremito();
@@ -402,7 +402,7 @@ public class Pedidos extends AppCompatActivity {
 
         try {
             client.setTimeout(40000);
-            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     //System.out.println(response);

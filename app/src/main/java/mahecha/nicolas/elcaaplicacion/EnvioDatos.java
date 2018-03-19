@@ -63,7 +63,7 @@ public class EnvioDatos {
         params.add("tecnico", dato);
 
 
-         client.get("http://elca.sytes.net:2122/app_elca/ElcaGPS/getgpsauto.php", params, new AsyncHttpResponseHandler() {
+         client.get("http://blueboxcol.com/dipzotecnico/ElcaGPS/getgpsauto.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(context, "Ubicacion Enviada",

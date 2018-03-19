@@ -4,25 +4,18 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
@@ -144,7 +137,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
 
         try{
-        client.get("http://elca.sytes.net:2122/app_elca/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
+        client.get("http://blueboxcol.com/dipzotecnico/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(String response) {
