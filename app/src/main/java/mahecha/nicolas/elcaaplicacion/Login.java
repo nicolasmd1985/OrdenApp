@@ -5,12 +5,16 @@ package mahecha.nicolas.elcaaplicacion;
  * ENVIO Y RECEPCION DE DATOS DE LA UBICACON GPS DEL TECNICO
  */
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,7 +38,7 @@ import java.util.HashMap;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 
-public class Login extends Activity implements View.OnClickListener{
+public class Login extends AppCompatActivity  implements View.OnClickListener{
 
 
     private EditText user, pass;
@@ -44,6 +48,10 @@ public class Login extends Activity implements View.OnClickListener{
 
     DBController controller = new DBController(this);
     EnvioDatos envioDatos = new EnvioDatos(this);
+
+    private static final int PERMISSION_REQUEST_CODE = 1;
+    private boolean LocationAvailable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,12 @@ public class Login extends Activity implements View.OnClickListener{
         prgDialog.setCancelable(false);
 
 
+        LocationAvailable = false;
+
+        if (checkPermission()) {
+        } else {
+            requestPermission();
+        }
 
     }
 
@@ -242,6 +256,23 @@ public class Login extends Activity implements View.OnClickListener{
     }
 
 
+    private boolean checkPermission(){
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            LocationAvailable = true;
+            return true;
+        } else {
+            LocationAvailable = false;
+            return false;
+        }
+    }
+    private void requestPermission(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+            Toast.makeText(this, "This app relies on location data for it's main functionality. Please enable GPS data to access all features.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
+        }
+    }
 
 
 }
