@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Numero:"
+                android:text="Número:"
                 android:id="@+id/textView4"
                 android:layout_below="@+id/textView3"
                 android:layout_alignParentLeft="true"
@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Provincia:"
+                android:text="Departamento:"
                 android:id="@+id/textView6"
                 android:layout_below="@+id/textView5"
                 android:layout_alignParentLeft="true"
@@ -195,8 +195,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
-
-
 
 
 </RelativeLayout>
