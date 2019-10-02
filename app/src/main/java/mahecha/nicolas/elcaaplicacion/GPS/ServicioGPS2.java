@@ -28,7 +28,7 @@ import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 public class ServicioGPS2 extends Service implements LocationListener {
 
     LocationManager locationManager;
-    String lat, lon, dato;
+    String lat, lon;
     HashMap<String, String> queryValues;
     DBController controller = new DBController(this);
 
@@ -75,13 +75,8 @@ public class ServicioGPS2 extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location loc) {
        try {
-
-
-
            lat= ""+loc.getLatitude();
            lon= ""+loc.getLongitude();
-           //System.out.println(loc.getLatitude());
-           //System.out.println(loc.getLongitude());
            queryValues = new HashMap<String, String>();
            queryValues.put("latitud",lat);
            queryValues.put("longitud",lon);
@@ -101,7 +96,6 @@ public class ServicioGPS2 extends Service implements LocationListener {
        }catch (Exception e){
            //Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
        }
-
 
     }
 
@@ -123,35 +117,30 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
     public void envioGPS ()
     {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
+        ArrayList token = controller.tokenExp();
 
+        if (token != null){
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.addHeader("Content-type", "application/json;charset=utf-8");
+            client.addHeader("Authorization", token.get(1).toString());
+            RequestParams params = new RequestParams();
+            params.add("lat", lat);
+            params.add("lon", lon);
+            try{
+                client.get("http://blueboxcol.com/dipzotecnico/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
 
-        dato= controller.idtecnico();
-        //System.out.println(dato);
-        params.add("lat", lat);
-        params.add("lon", lon);
-        params.add("tecnico", dato);
+                    @Override
+                    public void onSuccess(String response) {
+                        System.out.println(response);
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Throwable error,
+                                          String content) {
+                        System.out.println(statusCode);
+                    }
+                });}catch (Exception e){}
+        }
 
-
-
-
-        try{
-        client.get("http://blueboxcol.com/dipzotecnico/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(String response) {
-
-                //System.out.println(response);
-            }
-
-
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
-
-            }
-      });}catch (Exception e){}
    }
 
 

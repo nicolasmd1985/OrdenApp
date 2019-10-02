@@ -34,19 +34,14 @@ public class EnvioDatos {
 
     public void enviar()
     {
-
-
-
         DBController dbController = new DBController(context);
         String lon=null,lat=null,dato=null;
         ArrayList<HashMap<String,String>> listgps = dbController.getgps();
         for (HashMap<String, String> hashMap : listgps) {
             lon = hashMap.get("longitud");
             lat = hashMap.get("latitud");
-
         }
 
-        //Toast.makeText(context,lon+" "+lat,Toast.LENGTH_LONG).show();
 
         System.out.println("lon:"+lon+"lat:"+lat);
 
@@ -68,9 +63,7 @@ public class EnvioDatos {
                 public void onSuccess(String response) {
                     Toast.makeText(context, "Ubicacion Enviada",
                             Toast.LENGTH_LONG).show();
-                    //System.out.println(jrep);
                     System.out.println(response);
-
                 }
                 @Override
                 public void onFailure(int statusCode, Throwable error,

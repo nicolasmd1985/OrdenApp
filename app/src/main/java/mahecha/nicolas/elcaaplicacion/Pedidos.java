@@ -458,17 +458,14 @@ public class Pedidos extends AppCompatActivity {
     ///////////////////////*************UBICACION MANUAL*************////////////
     public void ubicacion (View view)
     {
-        //Toast.makeText(this,"hola",Toast.LENGTH_LONG).show();
         try {
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-
             if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                 buildAlertMessageNoGps();
-            }else
-                {
-                    envioDatos.enviar();
-                }
-
+            }
+            else{
+                envioDatos.enviar();
+            }
         }catch(Exception e){Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();}
     }
 

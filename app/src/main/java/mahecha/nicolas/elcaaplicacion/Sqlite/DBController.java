@@ -644,9 +644,6 @@ public class DBController extends SQLiteOpenHelper {
         values.put("longitud", queryValues.get("longitud"));
         database.update("GPSlogs", values ,"id_gps"+"="+1, null);
         database.close();
-
-
-
     }
 
 
