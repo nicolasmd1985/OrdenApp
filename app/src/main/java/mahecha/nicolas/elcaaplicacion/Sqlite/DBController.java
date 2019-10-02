@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,7 +51,9 @@ public class DBController extends SQLiteOpenHelper {
         /////////////////UBICACION GPS//////////////////////////
         query = "CREATE TABLE GPSlogs (id_gps INTEGER PRIMARY KEY, longitud TEXT, latitud TEXT )";
         sqLiteDatabase.execSQL(query);
-
+        ///////////////BASE DE TOKEN//////////////////
+        query = "CREATE TABLE tokens ( id_token INTEGER PRIMARY KEY, token TEXT, exp TEXT, email TEXT)";
+        sqLiteDatabase.execSQL(query);
 
 
     }
@@ -78,6 +81,10 @@ public class DBController extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
 
+        query = "DROP TABLE IF EXISTS tokens";
+        sqLiteDatabase.execSQL(query);
+        onCreate(sqLiteDatabase);
+
 
     }
 
@@ -89,28 +96,42 @@ public class DBController extends SQLiteOpenHelper {
     }
 
 
-///////////////////*****************VALORES DE USUARIO***************/////////////ok
+///////////////////*****************TOKEN***************/////////////ok
 
     /**
      * Inserts User into SQLite DB   * @param queryValues
      */
-    public void insertUsers(HashMap<String, String> queryValues) {
+    public boolean insertToken(HashMap<String, String> queryValues) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        //values.put("idauxpedido", queryValues.get("idauxpedido"));
-        values.put("nombre", queryValues.get("nombre"));
-        values.put("apellido", queryValues.get("apellido"));
-        values.put("usuario", queryValues.get("usuario"));
-        values.put("pass", queryValues.get("pass"));
-        values.put("idusuario", queryValues.get("tecnico"));
-
-        //values.put("udpateStatus", "no");
-        database.insert("usuarios", null, values);
+        values.put("token", queryValues.get("token"));
+        values.put("exp", queryValues.get("exp"));
+        values.put("email", queryValues.get("email"));
+        long check = database.insert("tokens", null, values);
         database.close();
+        if(check > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 
+//////////////////************OBTENER TOKEN NO EXPIRADO***************///////////
 
+    public ArrayList tokenExp()
+    {
+        ArrayList<String> data = new ArrayList<String>();
+        String query = "SELECT * FROM tokens ORDER BY token DESC LIMIT 1";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToLast();
+        data.add(cursor.getString(1));
+        data.add(cursor.getString(2));
+
+        return data;
+    }
 
 //////////////////************OBTENER IDTECNICO***************///////////
 

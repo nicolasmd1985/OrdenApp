@@ -80,8 +80,6 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
     }
 
 
-
-
     @Override
     public void onClick(View view) {
     //////***************FORZAR AL SERVICIO DE GPS ENVIAR UBICACION********///////////////
@@ -117,124 +115,71 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         prgDialog.show();
         params.add("email", username);
         params.add("password", password);
-        client.post("http://192.168.1.106:3000/authenticate", params, new AsyncHttpResponseHandler() {
+        client.post("http://186.155.202.23:3000/api/v1/auth/login", params, new AsyncHttpResponseHandler() {
 
-            @Override
-            public void onSuccess(String response) {
-                System.out.println(response);
-                prgDialog.hide();
-                try {
-                    int success;
-                    JSONArray arr = new JSONArray(response);
-                    int z=0;
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject obj = (JSONObject) arr.get(i);
-                        success = Integer.parseInt(obj.get("success").toString());
-
-
-                        if (success==1)
-                        {
-
-                            ArrayList<HashMap<String, String>> userList =  controller.getUsers();
-
-                            if(userList.size()!=0) {
-
-                                for (HashMap<String, String> hashMap : userList) {
-
-                                    if ((obj.get("Nombre").toString().equals(hashMap.get("nombre"))) && (obj.get("Apellido").toString().equals(hashMap.get("apellido")))) {
-
-                                        bdregistro();
-                                        z = z + 1;
-                                    }
-
-                                }
-
-                            }
-
-                            if(z!=1)
-                            {
-
-                                queryValues = new HashMap<String, String>();
-                                queryValues.put("nombre", obj.get("Nombre").toString());
-                                queryValues.put("apellido", obj.get("Apellido").toString());
-                                queryValues.put("usuario", obj.get("Usuario").toString());
-                                queryValues.put("pass", obj.get("pass").toString());
-                                queryValues.put("tecnico", obj.get("tecnico").toString());
-                                controller.insertUsers(queryValues);
-
-                                Intent x = new Intent(Login.this, Pedidos.class);
-                                Toast.makeText(Login.this, obj.get("message").toString(), Toast.LENGTH_LONG).show();
-                                x.putExtra("idusuario", obj.get("tecnico").toString() );
-                                prgDialog.dismiss();
-                                startActivity(x);
-                            }
-
-
-
-
-                        } else {
-
-                            Toast.makeText(Login.this, obj.get("message").toString(), Toast.LENGTH_LONG).show();
-                        }
+        @Override
+        public void onSuccess(String response) {
+            prgDialog.hide();
+            try {
+                JSONObject obj = new JSONObject(response);
+                if (obj.getString("token") != null){
+                    if(insertToken(obj)){
+                        startprogram();
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+        }
 
 
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
+        @Override
+        public void onFailure(int statusCode, Throwable error,
+                              String content) {
 
-                if (statusCode == 404) {
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 500) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Dispositivo Sin Conexión a Internet",
-                            Toast.LENGTH_LONG).show();
-                }
-                prgDialog.hide();
-
-                bdregistro();
-
+            if (statusCode == 401) {
+                Toast.makeText(getApplicationContext(), "Requested resource not found check credentials", Toast.LENGTH_LONG).show();
+            } else if (statusCode == 500) {
+                Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Device without connection",
+                        Toast.LENGTH_LONG).show();
             }
+            prgDialog.hide();
+        }
 
         });
     }
 
 
 
-    private void bdregistro() {
-
-        String username = user.getText().toString();
-        String password = pass.getText().toString();
-
-
-        ArrayList<HashMap<String, String>> userList =  controller.getUsers();
-        if(userList.size()!=0) {
-            ArrayList<HashMap<String, String>> loginlist = controller.login();
-            int i=0;
-            for (HashMap<String, String> hashMap : loginlist) {
-
-                if (username.equals(hashMap.get("usuario"))&&password.equals(hashMap.get("pass"))) {
-
-                    //envioDatos.enviar();
-                    Intent x = new Intent(Login.this, Pedidos.class);
-                    Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_LONG).show();
-                    x.putExtra("idusuario",hashMap.get("idusuario")  );
-                    startActivity(x);
-
-                }else{i++;}
-                if(userList.size()==i){Toast.makeText(getApplicationContext(), "Usuario ó Contraseña Incorrecta", Toast.LENGTH_LONG).show();}
-
-            }
-        }else{Toast.makeText(getApplicationContext(), "No existe ningun usuario registrado", Toast.LENGTH_LONG).show();}
-     }
-
+//    private void bdregistro() {
+//
+//        String username = user.getText().toString();
+//
+//
+//        ArrayList<HashMap<String, String>> userList =  controller.getUsers();
+//        if(userList.size()!=0) {
+//            ArrayList<HashMap<String, String>> loginlist = controller.login();
+//            int i=0;
+//            for (HashMap<String, String> hashMap : loginlist) {
+//
+//                if (username.equals(hashMap.get("usuario"))&&password.equals(hashMap.get("pass"))) {
+//
+//                    //envioDatos.enviar();
+//                    Intent x = new Intent(Login.this, Pedidos.class);
+//                    Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_LONG).show();
+//                    x.putExtra("idusuario",hashMap.get("idusuario")  );
+//                    startActivity(x);
+//
+//                }else{i++;}
+//                if(userList.size()==i){Toast.makeText(getApplicationContext(), "Usuario ó Contraseña Incorrecta", Toast.LENGTH_LONG).show();}
+//
+//            }
+//        }else{Toast.makeText(getApplicationContext(), "No existe ningun usuario registrado", Toast.LENGTH_LONG).show();}
+//     }
+//
 
 
 
@@ -256,8 +201,6 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         final AlertDialog alert = builder.create();
         alert.show();
     }
-
-
     private boolean checkPermission(){
         int result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (result == PackageManager.PERMISSION_GRANTED){
@@ -275,7 +218,30 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
         }
     }
-
+    private void checkToken(JSONObject obj) throws JSONException {
+//        ArrayList tokenExp = controller.tokenExp();
+//        System.out.print(tokenExp);
+//        insertToken(obj);
+//        controller.insertToken();
+//        Intent x = new Intent(Login.this, Pedidos.class);
+//        Toast.makeText(Login.this, obj.get("email").toString(), Toast.LENGTH_LONG).show();
+//        x.putExtra("token", obj.getString("token") );
+//        prgDialog.dismiss();
+//        startActivity(x);
+    }
+    private boolean insertToken(JSONObject obj) throws JSONException {
+        queryValues = new HashMap<String, String>();
+        queryValues.put("token", obj.getString("token"));
+        queryValues.put("exp", obj.getString("exp"));
+        queryValues.put("email", obj.getString("email"));
+        return controller.insertToken(queryValues);
+    }
+    private void startprogram(){
+        Intent x = new Intent(Login.this, Pedidos.class);
+        Toast.makeText(Login.this, "Inicio Correcto", Toast.LENGTH_LONG).show();
+        prgDialog.dismiss();
+        startActivity(x);
+    }
 
 }
 
