@@ -35,50 +35,38 @@ public class EnvioDatos {
     public void enviar()
     {
         DBController dbController = new DBController(context);
-        String lon=null,lat=null,dato=null;
+        String lon=null,lat=null;
         ArrayList<HashMap<String,String>> listgps = dbController.getgps();
         for (HashMap<String, String> hashMap : listgps) {
             lon = hashMap.get("longitud");
             lat = hashMap.get("latitud");
         }
 
+        ArrayList token = dbController.tokenExp();
 
-        System.out.println("lon:"+lon+"lat:"+lat);
+        if (token != null){
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.addHeader("Content-type", "application/json;charset=utf-8");
+            client.addHeader("Authorization", token.get(0).toString());
+            RequestParams params = new RequestParams();
+            params.add("latitude", lat);
+            params.add("longitude", lon);
+            try{
+                client.post("http://186.155.202.23:3000/api/v1/send_gps", params, new AsyncHttpResponseHandler() {
 
-        dato = dbController.idtecnico();
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        ArrayList<HashMap<String, String>> wordList;
-        wordList = new ArrayList<HashMap<String, String>>();
-        wordList.add(queryValues);
-
-
-        params.add("lat", lat);
-        params.add("lon", lon);
-        params.add("tecnico", dato);
-
-
-         client.get("http://blueboxcol.com/dipzotecnico/ElcaGPS/getgpsauto.php", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
-                    Toast.makeText(context, "Ubicacion Enviada",
-                            Toast.LENGTH_LONG).show();
-                    System.out.println(response);
-                }
-                @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
-                    if (statusCode == 404) {
-                        Toast.makeText(context, "Requested resource not found", Toast.LENGTH_LONG).show();
-                    } else if (statusCode == 500) {
-                        Toast.makeText(context, "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(context, "Dispositivo Sin Conexión a Internet",
+                    @Override
+                    public void onSuccess(String response) {
+                        Toast.makeText(context, "Ubicacion Enviada",
                                 Toast.LENGTH_LONG).show();
+                        System.out.println(response);
                     }
-
-                }
-            });
+                    @Override
+                    public void onFailure(int statusCode, Throwable error,
+                                          String content) {
+                        System.out.println(statusCode);
+                    }
+                });}catch (Exception e){}
+        }
 
 
 

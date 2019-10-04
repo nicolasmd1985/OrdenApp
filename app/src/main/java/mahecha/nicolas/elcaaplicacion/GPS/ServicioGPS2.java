@@ -122,12 +122,12 @@ public class ServicioGPS2 extends Service implements LocationListener {
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
             client.addHeader("Content-type", "application/json;charset=utf-8");
-            client.addHeader("Authorization", token.get(1).toString());
+            client.addHeader("Authorization", token.get(0).toString());
             RequestParams params = new RequestParams();
-            params.add("lat", lat);
-            params.add("lon", lon);
+            params.add("latitude", lat);
+            params.add("longitude", lon);
             try{
-                client.get("http://blueboxcol.com/dipzotecnico/ElcaGPS/getgps.php", params, new AsyncHttpResponseHandler() {
+                client.post("http://186.155.202.23:3000/api/v1/send_gps", params, new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(String response) {

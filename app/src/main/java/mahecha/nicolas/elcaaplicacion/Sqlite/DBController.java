@@ -123,7 +123,7 @@ public class DBController extends SQLiteOpenHelper {
     public ArrayList tokenExp()
     {
         ArrayList<String> data = new ArrayList<String>();
-        String query = "SELECT * FROM tokens ORDER BY token DESC LIMIT 1";
+        String query = "SELECT * FROM tokens ORDER BY id_token DESC LIMIT 1";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToLast();
