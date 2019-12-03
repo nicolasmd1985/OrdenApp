@@ -23,14 +23,17 @@ public class Scaner_dispositivo extends AppCompatActivity implements View.OnClic
     DBController controller = new DBController(this);
     EditText codigo, nombre, descripcion, latitud, longitud, tiemp;
     private Button scanBtn;
-    String idped, idusuar, lat,lon;
+    String id_order, id_tecnic, lat,lon;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scaner_dispositivo);
-        idusuar = getIntent().getStringExtra("idusuario");
+
+        id_tecnic = getIntent().getStringExtra("id_tecnic");
+        id_order = getIntent().getStringExtra("id_order");
+
         scanBtn = (Button) findViewById(R.id.scan_button);
         codigo = (EditText) findViewById(R.id.codigo);
         nombre = (EditText) findViewById(R.id.nomdisp);
@@ -39,7 +42,6 @@ public class Scaner_dispositivo extends AppCompatActivity implements View.OnClic
         longitud = (EditText) findViewById(R.id.longitud);
         tiemp = (EditText) findViewById(R.id.tiempo);
         scanBtn.setOnClickListener(this);
-        idped = getIntent().getStringExtra("idpedido");
         tiemp.setText(tiempo());
 
     }
@@ -69,8 +71,8 @@ public class Scaner_dispositivo extends AppCompatActivity implements View.OnClic
     public void callHomeActivity(View view) {
         Intent objIntent = new Intent(getApplicationContext(),
                 Agregar_dispositivos.class);
-        objIntent.putExtra("idpedido", idped );
-        objIntent.putExtra("idusuario",idusuar );
+        objIntent.putExtra("id_order", id_order );
+        objIntent.putExtra("id_tecnic",id_tecnic );
         startActivity(objIntent);
     }
 
@@ -97,21 +99,16 @@ public class Scaner_dispositivo extends AppCompatActivity implements View.OnClic
     public void adddip(View view) {
 
 
-        ArrayList<HashMap<String,String>> listgps = controller.getgps();
-        for (HashMap<String, String> hashMap : listgps) {
-                lon = hashMap.get("longitud");
-                lat = hashMap.get("latitud");
-            System.out.println(lat+"-"+lon);
-        }
+        ArrayList listgps = controller.getgps();
 
         HashMap<String, String> queryValues = new HashMap<String, String>();
-        queryValues.put("codigo", codigo.getText().toString());
-        queryValues.put("nombre", nombre.getText().toString());
-        queryValues.put("descripcion", descripcion.getText().toString());
-        queryValues.put("latitud",lat);
-        queryValues.put("longitud", lon);
-        queryValues.put("tiempo", tiempo());
-        queryValues.put("fkidpedido", idped);
+        queryValues.put("code_scan", codigo.getText().toString());
+        queryValues.put("name", nombre.getText().toString());
+        queryValues.put("description", descripcion.getText().toString());
+        queryValues.put("latitude",listgps.get(1).toString());
+        queryValues.put("longitude", listgps.get(0).toString());
+        queryValues.put("time_install", tiempo());
+        queryValues.put("fk_order_id", id_order);
         controller.inserdips(queryValues);
         this.callHomeActivity(view);
     }
@@ -130,8 +127,8 @@ public class Scaner_dispositivo extends AppCompatActivity implements View.OnClic
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
             Intent i = new Intent(Scaner_dispositivo.this, Agregar_dispositivos.class);
-            i.putExtra("idpedido", idped );
-            i.putExtra("idusuario",idusuar );
+            i.putExtra("id_order", id_order );
+            i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);
             //return true;
         }

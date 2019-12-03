@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Constans;
 
 /**
  * Created by nicolas on 23/01/2017.
@@ -53,7 +54,6 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
 
         ////////////PROBLEMA!!!!////
-       // dato= (String) intent.getExtras().get("Tecnico");
         return super.onStartCommand(intent, flags, startId);
 
     }
@@ -78,23 +78,11 @@ public class ServicioGPS2 extends Service implements LocationListener {
            lat= ""+loc.getLatitude();
            lon= ""+loc.getLongitude();
            queryValues = new HashMap<String, String>();
-           queryValues.put("latitud",lat);
-           queryValues.put("longitud",lon);
-           ArrayList<HashMap<String,String>> listgps = controller.getgps();
-
-           if(listgps.size()==0){
-               controller.upgps(queryValues);
-              // Toast.makeText(this, "nuevo", Toast.LENGTH_SHORT).show();
-           }else{
-               controller.updGPS(queryValues);
-             // Toast.makeText(this, "viejo", Toast.LENGTH_SHORT).show();
-
-           }
+           queryValues.put("latitude",lat);
+           queryValues.put("longitude",lon);
+           controller.upgps(queryValues);
            envioGPS();
-           //Toast.makeText(this, lat+""+lon, Toast.LENGTH_SHORT).show();
-
        }catch (Exception e){
-           //Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
        }
 
     }
@@ -122,12 +110,12 @@ public class ServicioGPS2 extends Service implements LocationListener {
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
             client.addHeader("Content-type", "application/json;charset=utf-8");
-            client.addHeader("Authorization", token.get(0).toString());
+            client.addHeader("Authorization", token.get(3).toString());
             RequestParams params = new RequestParams();
             params.add("latitude", lat);
             params.add("longitude", lon);
             try{
-                client.post("http://186.155.202.23:3000/api/v1/send_gps", params, new AsyncHttpResponseHandler() {
+                client.post(Constans.API_END + Constans.SEND_GPS , params, new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(String response) {

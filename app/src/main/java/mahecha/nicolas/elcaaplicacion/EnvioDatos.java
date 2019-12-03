@@ -38,8 +38,8 @@ public class EnvioDatos {
         String lon=null,lat=null;
         ArrayList<HashMap<String,String>> listgps = dbController.getgps();
         for (HashMap<String, String> hashMap : listgps) {
-            lon = hashMap.get("longitud");
-            lat = hashMap.get("latitud");
+            lon = hashMap.get("longitude");
+            lat = hashMap.get("latitude");
         }
 
         ArrayList token = dbController.tokenExp();
@@ -52,7 +52,7 @@ public class EnvioDatos {
             params.add("latitude", lat);
             params.add("longitude", lon);
             try{
-                client.post("http://186.155.202.23:3000/api/v1/send_gps", params, new AsyncHttpResponseHandler() {
+                client.post(Constans.API_END +"send_gps", params, new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(String response) {

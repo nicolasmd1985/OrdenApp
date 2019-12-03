@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+//import com.google.gson.JsonArray;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -38,6 +39,7 @@ import java.util.Map;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 
+
 public class Pedidos extends AppCompatActivity {
 
     DBController controller = new DBController(this);
@@ -45,7 +47,6 @@ public class Pedidos extends AppCompatActivity {
 
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
-    String idusuar;
     TextView contador;
     int rems=0;
 
@@ -53,34 +54,26 @@ public class Pedidos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
-
-        idusuar = getIntent().getStringExtra("idusuario");
         Intent GPS = new Intent(Pedidos.this, ServicioGPS2.class);
-        cargabdl(idusuar);
-        //GPS.putExtra("Tecnico",idusuar);
+        cargabdl();
         startService(GPS);
         contador=(TextView)findViewById(R.id.contador);
         contadores();
-
-
-
-
-
     }
     ////////////////////******************AGREGA PEDIDO******************//////////////////
 
     public void addPedidos(View view) {
         Intent objIntent = new Intent(getApplicationContext(), Nuevo_pedido.class);
-        objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
 
     ////////////////*****************CARGA BASE DE DATOS SQLITE************************
-    public void cargabdl(final String idusuar)
+    public void cargabdl()
     {
-        ArrayList<HashMap<String, String>> userList =  controller.get_auxped(idusuar);
+        ArrayList user_id = controller.tokenExp();
+        ArrayList<HashMap<String, String>> userList =  controller.get_orders(user_id.get(0).toString());
         if(userList.size()!=0) {
-            ListAdapter adapter = new SimpleAdapter(Pedidos.this, userList, R.layout.view_pedidos, new String[]{"cliente", "descripcion"}, new int[]{R.id.clieteid, R.id.detalleid});
+            ListAdapter adapter = new SimpleAdapter(Pedidos.this, userList, R.layout.view_pedidos, new String[]{"customer_id", "description"}, new int[]{R.id.clieteid, R.id.detalleid});
             final ListView myList = (ListView) findViewById(android.R.id.list);
             myList.setAdapter(adapter);
             myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,10 +81,11 @@ public class Pedidos extends AppCompatActivity {
                 public void onItemClick(AdapterView parent, View view, int i, long l) {
 
                     Map<String, Object> map = (Map<String, Object>) myList.getItemAtPosition(i);
-                    String idpedido = (String) map.get("idauxpedido");
+                    String id_order = (String) map.get("id_order");
+                    String id_tecnic = (String) map.get("fk_user_id");
                     Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
-                    x.putExtra("idpedido", idpedido);
-                    x.putExtra("idusuario", idusuar);
+                    x.putExtra("id_order", id_order);
+                    x.putExtra("id_tecnic", id_tecnic);
                     startActivity(x);
                 }
             });
@@ -100,10 +94,9 @@ public class Pedidos extends AppCompatActivity {
                 public boolean onItemLongClick(AdapterView adapterView, View view, int i, long l) {
 //                    Toast.makeText(getApplicationContext(), "presiono" + i, Toast.LENGTH_SHORT).show();
                     Map<String, Object> map = (Map<String, Object>)myList.getItemAtPosition(i);
-                    String idpedido = (String) map.get("idauxpedido");
-//                    System.out.println(idpedido);
-                    showSimplePopUp(idpedido);
-
+                    String id_order = (String) map.get("id_order");
+                    String id_tecnic = (String) map.get("fk_user_id");
+                    showSimplePopUp(id_order);
                     return true;
                 }
 
@@ -117,12 +110,12 @@ public class Pedidos extends AppCompatActivity {
 
         AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
         helpBuilder.setTitle("Eliminar");
-        helpBuilder.setMessage("Realmente desea elimiar el pedido");
+        helpBuilder.setMessage("Realmente desea elimiar el pedido"+idped);
         helpBuilder.setPositiveButton("Si",
                 new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        updatestado(idped);
+                        deleteSync(idped);
                     }
                 });
         helpBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -138,48 +131,11 @@ public class Pedidos extends AppCompatActivity {
     }
 
 
-    //////////////***********actualiza status del estado*************************//////////////
-
-    public void updatestado(final String idped) {
-        prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Eliminando Pedido............");
-        prgDialog.setCancelable(false);
-        prgDialog.show();
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-
-        Gson gson = new GsonBuilder().create();
-        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("Id", idped);
-        usersynclist.add(map);
-        String json = gson.toJson(usersynclist);
-        params.put("estado", json);
-        client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String response) {
-                Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-                prgDialog.hide();
-                controller.elim_aux(idped);
-                reloadActivity();
-
-            }
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
-                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-                prgDialog.hide();
-            }
-        });
-    }
 
 
     ///////////////////////////********RECARGA ACTIVIDAD//////////////////
     public void reloadActivity() {
         Intent objIntent = new Intent(getApplicationContext(), Pedidos.class);
-        objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
 
@@ -202,7 +158,7 @@ public class Pedidos extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //////////////************************OBTIENE DATOS DE PHP************************
+    //////////////************************get data orders************************
 
 
     public void syncSQLiteMySQLDB() {
@@ -211,64 +167,66 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.setCancelable(false);
         prgDialog.show();
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("idusuar", idusuar);
-        client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
-                prgDialog.hide();
-                if (statusCode == 404) {
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 500) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Dispositivo Sin Conexión a Internet",
-                            Toast.LENGTH_LONG).show();
+        ArrayList token = controller.tokenExp();
+
+        if (token != null){
+            AsyncHttpClient client = new AsyncHttpClient();
+            RequestParams params = new RequestParams();
+            client.addHeader("Content-type", "application/json;charset=utf-8");
+            client.addHeader("Authorization", token.get(3).toString());
+            client.get(Constans.API_END + Constans.ORDERS, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Throwable error,
+                                      String content) {
+                    prgDialog.hide();
+                    if (statusCode == 404) {
+                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    } else if (statusCode == 500) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Dispositivo Sin Conexión a Internet",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onSuccess(String response) {
-                updateSQLite(response);
-            }
+                @Override
+                public void onSuccess(String response) {
+                    System.out.println(response);
+                    prgDialog.hide();
+                    updateSQLite(response);
+                }
+            });
+        }
 
-        });
+
     }
 
 
-
     /////////////////////////////*******************ACTUALIZA SQLITE*********************////////////////////
-
     public void updateSQLite(String response){
-        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();
         Gson gson = new GsonBuilder().create();
         try {
             JSONArray arr = new JSONArray(response);
             if(arr.length() != 0){
+
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = (JSONObject) arr.get(i);
                     queryValues = new HashMap<String, String>();
-                    queryValues.put("idauxpedido", obj.get("idauxpedido").toString());
-                    queryValues.put("idtecnico", obj.get("idtecnico").toString());
-                    queryValues.put("descripcion", obj.get("descripcion").toString());
-                    queryValues.put("idnumsoporte", obj.get("idnumsoporte").toString());
-                    queryValues.put("cliente", obj.get("cliente").toString());
-                    queryValues.put("calle", obj.get("calle").toString());
-                    queryValues.put("numero", obj.get("numero").toString());
-                    queryValues.put("ciudad", obj.get("ciudad").toString());
-                    queryValues.put("provincia", obj.get("provincia").toString());
-                    queryValues.put("fechacr", obj.get("fechacr").toString());
-                    queryValues.put("fechack", obj.get("fechack").toString());
-                    controller.inser_auxped(queryValues);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("Id", obj.get("idauxpedido").toString());
-                    map.put("status", "1");
-                    usersynclist.add(map);
+                    queryValues.put("id_order", obj.get("id").toString());
+                    queryValues.put("tecnic_id", obj.get("tecnic_id").toString());
+                    queryValues.put("description", obj.get("description").toString());
+                    queryValues.put("address", obj.get("address").toString());
+                    queryValues.put("customer_id", obj.get("customer_id").toString());
+                    queryValues.put("city_id", obj.get("city_id").toString());
+                    queryValues.put("created_at", obj.get("created_at").toString());
+                    queryValues.put("install_date", obj.get("install_date").toString());
+
+                    controller.insert_order(queryValues);
+
+
                 }
-                updateMySQLSyncSts(gson.toJson(usersynclist));
+//
+                updateMySQLSyncSts(arr);
             }else {
                 Toast.makeText(getApplicationContext(), "No Tiene Pedidos Para Sincronizar",
                         Toast.LENGTH_LONG).show();
@@ -282,26 +240,36 @@ public class Pedidos extends AppCompatActivity {
         }
     }
 
-    //////////////***********actualiza status del estado*************************//////////////
-
-    public void updateMySQLSyncSts(String json) {
-        //System.out.println(json);
+    //////////////***********send update sync: true*************************//////////////
+    public void updateMySQLSyncSts(JSONArray json){
+        System.out.println(json);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        ArrayList<HashMap<String, String>> userList = controller.get_auxped(idusuar);
+
+
+        ArrayList user_id = controller.tokenExp();
+
+        client.addHeader("Content-type", "application/json;charset=utf-8");
+        client.addHeader("Authorization", user_id.get(3).toString());
+
+        ArrayList<HashMap<String, String>> userList =  controller.get_orders(user_id.get(0).toString());
 
         if (userList.size() != 0) {
-            params.put("estado", json);
-            client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            params.put("_json", userList);
+            client.post(Constans.API_END + Constans.SYNC, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
+                    System.out.print(response);
                     send_remito();
+                    reloadActivity();
                 }
                 @Override
                 public void onFailure(int statusCode, Throwable error,String content) {
                     Toast.makeText(getApplicationContext(), "ups! ocurrio un error", Toast.LENGTH_LONG).show();
+                    System.out.print(error);
                     send_remito();
+                    reloadActivity();
                 }
             });
         } else {
@@ -309,6 +277,50 @@ public class Pedidos extends AppCompatActivity {
             send_remito();
         }
 
+
+
+
+
+    }
+
+    //////////////***********Update Sync: false and dele SQlite bd Order*************************//////////////
+    public void deleteSync(final String idped) {
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Eliminando Pedido............");
+        prgDialog.setCancelable(false);
+        prgDialog.show();
+
+        ArrayList token = controller.tokenExp();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        client.addHeader("Content-type", "application/json;charset=utf-8");
+        client.addHeader("Authorization", token.get(3).toString());
+
+        Gson gson = new GsonBuilder().create();
+        ArrayList<HashMap<String, String>> usersynclist;
+        usersynclist = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("id", idped);
+        usersynclist.add(map);
+        String json = gson.toJson(usersynclist);
+        client.put(Constans.API_END + Constans.DSYNC + idped, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
+                prgDialog.hide();
+                controller.elim_aux(idped);
+                reloadActivity();
+
+            }
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+                System.out.print(statusCode);
+                prgDialog.hide();
+            }
+        });
     }
 
 
@@ -320,13 +332,14 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.setCancelable(false);
         Gson gson = new GsonBuilder().create();
         prgDialog.show();
-        ArrayList<HashMap<String, String>> aux_pen= controller.conidsop();
-        //////////////ENVIA PEDIDOS CREADOS MANUALMENTE////////////////////////
-        if(aux_pen.size()!=0)
-        {
-            String new_ped = gson.toJson(aux_pen);
-            send_aux_ped(new_ped);
-        }else{enviaremito();}
+        enviaremito();
+//        ArrayList<HashMap<String, String>> aux_pen= controller.conidsop();
+        ////////////ENVIA PEDIDOS CREADOS MANUALMENTE////////////////////////
+//        if(aux_pen.size()!=0)
+//        {
+//            String new_ped = gson.toJson(aux_pen);
+//            send_aux_ped(new_ped);
+//        }else{enviaremito();}
 
 
 
@@ -356,32 +369,23 @@ public class Pedidos extends AppCompatActivity {
     }
 
 
-
 ////////////////////*****************REVISA SI TIENE PEDIDOS NUEVOS*********//////////////////
 
     private void enviaremito(){
-        String nn = "";
-        Gson gson = new GsonBuilder().create();
-        ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
-
-
-        ArrayList<HashMap<String, String>> rem;
-        rem = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, String>> pendiente= controller.get_refferals();
 
         HashMap<String, String> map = new HashMap<String, String>();
+        Gson gson = new Gson();
 
         int i=0;
         if(pendiente.size()!=0 ) {
             for (HashMap<String, String> hashMap : pendiente) {
                 i=i+1;
-                ArrayList<HashMap<String, String>> dispList =  controller.getdisp(hashMap.get("fkidauxpedido"));
-                ArrayList<HashMap<String, String>> remlist = controller.getremito(hashMap.get("fkidauxpedido"));
-                dispList.addAll(remlist);
-                map.put(""+i,gson.toJson(dispList));
+                ArrayList<HashMap<String, String>> things =  controller.getdisp(hashMap.get("fk_id_order"));
+                ArrayList<HashMap<String, String>> referral = controller.get_referral(hashMap.get("fk_id_order"));
+                pendientes(hashMap.get("fk_id_order"), things, referral);
             }
-            rem.add(map);
-            nn= gson.toJson(rem);
-            pendientes(nn,""+i);
+
 
         }else{
             prgDialog.hide();
@@ -391,27 +395,31 @@ public class Pedidos extends AppCompatActivity {
     }
 
 
-
     //////////////***********ENVIO DE REMITOS*************************//////////////
-    public void pendientes(String json,String i) {
+    public void pendientes(final String id_order, ArrayList<HashMap<String, String>> thigs, ArrayList<HashMap<String, String>> referral) {
+        ArrayList token = controller.tokenExp();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("remito", json);
-        params.put("cont", i);
-
+        client.addHeader("Content-type", "application/json;charset=utf-8");
+        client.addHeader("Authorization", token.get(3).toString());
+        params.put("order",id_order);
+        params.put("things", thigs);
+        params.put("referral", referral);
 
         try {
             client.setTimeout(40000);
-            client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
+            client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
-                    //System.out.println(response);
+                    System.out.println(response);
+                    controller.elim_aux(id_order);
 
-                    ArrayList<HashMap<String, String>> pendiente = controller.consulrem();
-                    for (HashMap<String, String> hashMap : pendiente) {
-                        controller.elim_aux(hashMap.get("fkidauxpedido"));
 
-                    }
+//                    ArrayList<HashMap<String, String>> pendiente = controller.get_refferals();
+//                    for (HashMap<String, String> hashMap : pendiente) {
+//                        controller.elim_aux(hashMap.get("fk_id_order"));
+//
+//                    }
                     contadores();
                     prgDialog.hide();
                     Toast.makeText(getApplicationContext(), "Remitos enviados satisfactoriamente", Toast.LENGTH_LONG).show();
@@ -434,10 +442,9 @@ public class Pedidos extends AppCompatActivity {
 
     public void contadores()
     {
-        ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
+        ArrayList<HashMap<String, String>> pendiente= controller.get_refferals();
         contador.setText(String.valueOf(pendiente.size()));
     }
-
 
 
     /////////****************ESTO ES PARA DEVOLVERSE*****************///////////////
@@ -447,7 +454,6 @@ public class Pedidos extends AppCompatActivity {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
             Intent i = new Intent(Pedidos.this, Login.class);
-            i.putExtra("idusuario",idusuar );
             startActivity(i);
             //return true;
         }

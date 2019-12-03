@@ -115,7 +115,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         prgDialog.show();
         params.add("email", username);
         params.add("password", password);
-        client.post("http://186.155.202.23:3000/api/v1/auth/login", params, new AsyncHttpResponseHandler() {
+        client.post(Constans.API_END + Constans.AUTH, params, new AsyncHttpResponseHandler() {
 
         @Override
         public void onSuccess(String response) {
@@ -123,7 +123,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             try {
                 JSONObject obj = new JSONObject(response);
                 if (obj.getString("token") != null){
-                    if(insertToken(obj)){
+                    if(insertUser(obj)){
                         startprogram();
                     }
                 }
@@ -219,22 +219,21 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         }
     }
     private void checkToken(JSONObject obj) throws JSONException {
-//        ArrayList tokenExp = controller.tokenExp();
-//        System.out.print(tokenExp);
-//        insertToken(obj);
-//        controller.insertToken();
-//        Intent x = new Intent(Login.this, Pedidos.class);
-//        Toast.makeText(Login.this, obj.get("email").toString(), Toast.LENGTH_LONG).show();
-//        x.putExtra("token", obj.getString("token") );
-//        prgDialog.dismiss();
-//        startActivity(x);
+        ArrayList tokenExp = controller.tokenExp();
+        System.out.print(tokenExp);
     }
-    private boolean insertToken(JSONObject obj) throws JSONException {
-        queryValues = new HashMap<String, String>();
-        queryValues.put("token", obj.getString("token"));
-        queryValues.put("exp", obj.getString("exp"));
-        queryValues.put("email", obj.getString("email"));
-        return controller.insertToken(queryValues);
+    private boolean insertUser(JSONObject obj) throws JSONException {
+
+        String tecnic_id =  controller.tecnic_id();
+        if (tecnic_id.contentEquals("null") || (!tecnic_id.equals(String.valueOf(obj.getInt("user_id"))))){
+            InsertNewUser(obj);
+        }
+        else {
+            UpdateUser(obj);
+        }
+
+        return true;
+
     }
     private void startprogram(){
         Intent x = new Intent(Login.this, Pedidos.class);
@@ -243,6 +242,24 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         startActivity(x);
     }
 
+
+    private boolean InsertNewUser(JSONObject obj)throws JSONException{
+        queryValues = new HashMap<>();
+        queryValues.put("user_id", String.valueOf(obj.getInt("user_id")));
+        queryValues.put("first_name", obj.getString("first_name"));
+        queryValues.put("last_name", obj.getString("last_name"));
+        queryValues.put("token", obj.getString("token"));
+        queryValues.put("exp", obj.getString("exp"));
+        queryValues.put("email", obj.getString("email"));
+        return controller.insertUser(queryValues);
+    }
+
+    private boolean UpdateUser(JSONObject obj)throws JSONException{
+        queryValues = new HashMap<>();
+        queryValues.put("user_id", String.valueOf(obj.getInt("user_id")));
+        queryValues.put("token", obj.getString("token"));
+        queryValues.put("exp", obj.getString("exp"));
+        return controller.updateUser(queryValues);
+    }
+
 }
-
-

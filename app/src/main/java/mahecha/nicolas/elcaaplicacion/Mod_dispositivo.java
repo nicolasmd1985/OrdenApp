@@ -33,9 +33,9 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         nombre = (EditText) findViewById(R.id.nomdisp);
         descripcion = (EditText) findViewById(R.id.descripcion);
         scanBtn = (Button) findViewById(R.id.scan_button);
-        idped = getIntent().getStringExtra("idpedido");
-        idusuar = getIntent().getStringExtra("idusuario");
-        code = getIntent().getStringExtra("codigoscan");
+        idped = getIntent().getStringExtra("id_order");
+        idusuar = getIntent().getStringExtra("id_tecnic");
+        code = getIntent().getStringExtra("code_scan");
         scanBtn.setOnClickListener(this);
         carga_datos(code);
     }
@@ -47,9 +47,9 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
     private void carga_datos(String code) {
         ArrayList<HashMap<String, String>> dipslist = controller.getdispcod(code);
         for (HashMap<String, String> hashMap : dipslist) {
-            codigo.setText(hashMap.get("codigoscan"));
-            nombre.setText(hashMap.get("nombre"));
-            descripcion.setText(hashMap.get("descripcion"));
+            codigo.setText(hashMap.get("code_scan"));
+            nombre.setText(hashMap.get("name"));
+            descripcion.setText(hashMap.get("description"));
         }
     }
     /////////////************************OBTIENE INFO DEL SCANER*****************////////////////
@@ -71,8 +71,8 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
     public void callHomeActivity(View view) {
         Intent objIntent = new Intent(getApplicationContext(),
                 Agregar_dispositivos.class);
-        objIntent.putExtra("idpedido", idped);
-        objIntent.putExtra("idusuario", idusuar);
+        objIntent.putExtra("id_order", idped);
+        objIntent.putExtra("id_tecnic", idusuar);
 
         startActivity(objIntent);
     }
@@ -88,9 +88,9 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
     public void moddisp(View view) {
         HashMap<String, String> queryValues = new HashMap<String, String>();
 
-        queryValues.put("codigo", codigo.getText().toString());
-        queryValues.put("nombre", nombre.getText().toString());
-        queryValues.put("descripcion", descripcion.getText().toString());
+        queryValues.put("code_scan", codigo.getText().toString());
+        queryValues.put("name", nombre.getText().toString());
+        queryValues.put("description", descripcion.getText().toString());
         controller.updips(queryValues);
         this.callHomeActivity(view);
     }
@@ -117,8 +117,8 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
             Intent i = new Intent(Mod_dispositivo.this, Agregar_dispositivos.class);
-            i.putExtra("idpedido", idped );
-            i.putExtra("idusuario",idusuar );
+            i.putExtra("id_order", idped );
+            i.putExtra("id_tecnic",idusuar );
             startActivity(i);
             //return true;
         }

@@ -31,7 +31,7 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
 
     private Button scanBtn;
 
-    String idpedido,idusuar;
+    String id_order,id_tecnic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +45,10 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
         prob = (TextView) findViewById(R.id.problema);
         scanBtn = (Button)findViewById(R.id.button2);
         scanBtn.setOnClickListener(this);
-        idpedido = getIntent().getStringExtra("idpedido");
-        idusuar = getIntent().getStringExtra("idusuario");
-        System.out.println("idusu"+idusuar);
-        detalle(idpedido);
+        id_order = getIntent().getStringExtra("id_order");
+        id_tecnic = getIntent().getStringExtra("id_tecnic");
+//        System.out.println(id_order+" "+id_tecnic);
+        detalle(id_order);
         }
 
     private void detalle(String idpedido) {
@@ -77,10 +77,9 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
             }else
             {
                 Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
-                i.putExtra("idpedido", idpedido );
-                i.putExtra("idusuario",idusuar );
+                i.putExtra("id_order", id_order );
+                i.putExtra("id_tecnic", id_tecnic );
                 startActivity(i);
-              //  envioDatos.enviar();
             }
 
         }catch(Exception e){
@@ -99,7 +98,8 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
             Intent i = new Intent(Detalles_pedido.this, Pedidos.class);
-            i.putExtra("idusuario",idusuar );
+            i.putExtra("id_order", id_order );
+            i.putExtra("id_tecnic", id_tecnic );
             startActivity(i);
             //return true;
         }

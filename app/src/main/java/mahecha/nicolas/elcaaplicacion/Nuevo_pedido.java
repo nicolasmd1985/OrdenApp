@@ -60,7 +60,7 @@ public class Nuevo_pedido extends AppCompatActivity {
                 if (calle.getText().toString() != null
                         && calle.getText().toString().trim().length() != 0) {
 
-                    controller.inser_auxped(queryValues);
+                    controller.insert_order(queryValues);
                     this.callHomeActivity(view);
 
                 }else {

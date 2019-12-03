@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "remitodipzo.db";
+    private static final String NOMBRE_BASE_DATOS = "ordenapp3.db";
     private static final int VERSION_ACTUAL = 1;
     private final Context contexto;
 
@@ -36,24 +36,23 @@ public class DBController extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String query;
-        ///////////////BASE DE USUARIOS//////////////////
-        query = "CREATE TABLE usuarios ( idusuario INTEGER PRIMARY KEY, nombre TEXT, apellido TEXT, usuario TEXT, pass TEXT)";
+
+        ///////////////USERS//////////////////
+        query = "CREATE TABLE users ( user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, token TEXT, exp TEXT, email TEXT)";
         sqLiteDatabase.execSQL(query);
-        ///////////////BASE AUX PEDIDOS//////////////////
-        query = "CREATE TABLE aux_pedido ( idauxpedido TEXT PRIMARY KEY, fkidusuario INTEGER REFERENCES usuarios(idusuario) ON DELETE CASCADE, cliente TEXT, descripcion TEXT, idnumsoporte TEXT, calle TEXT, numero TEXT, ciudad TEXT, provincia TEXT, fechacr TEXT, fechack TEXT, finalizado TEXT)";
+        ///////////////ORDERS//////////////////
+        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, finish INTEGER DEFAULT 0)";
         sqLiteDatabase.execSQL(query);
-        ///////////////BASE AUX PEDIDOS//////////////////
-        query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT,  fkidauxpedido TEXT REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE)";
+        ///////////////THINGS//////////////////
+        query = "CREATE TABLE things ( id_thing INTEGER PRIMARY KEY, code_scan TEXT, name TEXT, description TEXT, latitude TEXT, longitude TEXT, time_install TEXT, fk_order_id TEXT REFERENCES orders(id_order) ON DELETE CASCADE)";
         sqLiteDatabase.execSQL(query);
-        ///////////////BASE DEL REMITO//////////////////
-        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, fkidauxpedido TEXT REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE, observaciones TEXT, firma TEXT, aclaracion TEXT, horafinalizado TEXT, email TEXT)";
+        ///////////////REFERRALS//////////////////
+        query = "CREATE TABLE referrals ( id_referral INTEGER PRIMARY KEY, fk_id_order TEXT REFERENCES orders(id_order) ON DELETE CASCADE, comment TEXT, signature TEXT, full_name TEXT, final_time TEXT, email TEXT)";
         sqLiteDatabase.execSQL(query);
         /////////////////UBICACION GPS//////////////////////////
-        query = "CREATE TABLE GPSlogs (id_gps INTEGER PRIMARY KEY, longitud TEXT, latitud TEXT )";
+        query = "CREATE TABLE GPSlogs (id_gps INTEGER PRIMARY KEY, longitude TEXT, latitude TEXT )";
         sqLiteDatabase.execSQL(query);
-        ///////////////BASE DE TOKEN//////////////////
-        query = "CREATE TABLE tokens ( id_token INTEGER PRIMARY KEY, token TEXT, exp TEXT, email TEXT)";
-        sqLiteDatabase.execSQL(query);
+
 
 
     }
@@ -61,31 +60,25 @@ public class DBController extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int version_old, int current_version) {
         String query;
-        query = "DROP TABLE IF EXISTS usuarios";
+        query = "DROP TABLE IF EXISTS users";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
 
-        query = "DROP TABLE IF EXISTS aux_pedido";
+        query = "DROP TABLE IF EXISTS orders";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
 
-        query = "DROP TABLE IF EXISTS dispositivos";
+        query = "DROP TABLE IF EXISTS things";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
 
-        query = "DROP TABLE IF EXISTS remito";
+        query = "DROP TABLE IF EXISTS referrals";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
 
         query = "DROP TABLE IF EXISTS GPSlogs";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
-
-        query = "DROP TABLE IF EXISTS tokens";
-        sqLiteDatabase.execSQL(query);
-        onCreate(sqLiteDatabase);
-
-
     }
 
     @Override
@@ -96,18 +89,43 @@ public class DBController extends SQLiteOpenHelper {
     }
 
 
-///////////////////*****************TOKEN***************/////////////ok
+///////////////////*****************INSERT NEW USER***************/////////////ok
 
-    /**
-     * Inserts User into SQLite DB   * @param queryValues
-     */
-    public boolean insertToken(HashMap<String, String> queryValues) {
+/**
+ * Inserts User into SQLite DB   * @param queryValues
+ */
+public boolean insertUser(HashMap<String, String> queryValues) {
+    SQLiteDatabase database = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put("user_id", queryValues.get("user_id"));
+    values.put("first_name", queryValues.get("first_name"));
+    values.put("last_name", queryValues.get("last_name"));
+    values.put("token", queryValues.get("token"));
+    values.put("exp", queryValues.get("exp"));
+    values.put("email", queryValues.get("email"));
+
+    long check = database.insert("users", null, values);
+    database.close();
+    if(check > 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+
+///////////////////***********UPDATE USER**************//////////////////////
+
+    public boolean updateUser(HashMap<String, String> queryValues){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("token", queryValues.get("token"));
         values.put("exp", queryValues.get("exp"));
-        values.put("email", queryValues.get("email"));
-        long check = database.insert("tokens", null, values);
+
+        String id =  "'"+queryValues.get("user_id")+"'";
+
+        long check= database.update("users", values ,"user_id"+"="+id, null);
         database.close();
         if(check > 0){
             return true;
@@ -117,93 +135,100 @@ public class DBController extends SQLiteOpenHelper {
         }
     }
 
-
 //////////////////************OBTENER TOKEN NO EXPIRADO***************///////////
 
     public ArrayList tokenExp()
     {
         ArrayList<String> data = new ArrayList<String>();
-        String query = "SELECT * FROM tokens ORDER BY id_token DESC LIMIT 1";
+        String query = "SELECT * FROM users ORDER BY user_id DESC LIMIT 1";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToLast();
+        data.add(cursor.getString(0));
         data.add(cursor.getString(1));
         data.add(cursor.getString(2));
+        data.add(cursor.getString(3));
+        data.add(cursor.getString(4));
 
         return data;
     }
 
-//////////////////************OBTENER IDTECNICO***************///////////
+//////////////////************GET TECNIC ID***************///////////
 
-    public String idtecnico()
+    public String tecnic_id()
     {
-        String query = "SELECT idusuario FROM usuarios";
+        String query = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(query, null);
-        cursor.moveToFirst();
-        String tecnico = cursor.getString(0);
+        if(!(cursor.moveToFirst()) || cursor.getCount() ==0){
+            return "null";
+        }
+        else{
+            cursor.moveToLast();
+            String tecnico = cursor.getString(0);
+            return tecnico;
+        }
 
-        return tecnico;
     }
 
 
 ////////////////////*************OBTENER LISTA DE USUARIOS***********///////////ok
-
-
-    /**
-     * Get list of Users from SQLite DB as Array List
-     * @return
-     */
-    public ArrayList<HashMap<String, String>> getUsers() {
-        ArrayList<HashMap<String, String>> wordList;
-        //crea lista
-        wordList = new ArrayList<HashMap<String, String>>();
-
-        String selectQuery = "SELECT  nombre,apellido,usuario,pass FROM usuarios ";
-
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("nombre", cursor.getString(0));
-                map.put("apellido", cursor.getString(1));
-                map.put("usuario", cursor.getString(2));
-                map.put("pass", cursor.getString(3));
-               // map.put("tecnico", cursor.getString(4));
-
-
-                wordList.add(map);
-            } while (cursor.moveToNext());
-        }
-        database.close();
-        return wordList;
-    }
+//
+//
+//    /**
+//     * Get list of Users from SQLite DB as Array List
+//     * @return
+//     */
+//    public ArrayList<HashMap<String, String>> getUsers() {
+//        ArrayList<HashMap<String, String>> wordList;
+//        //crea lista
+//        wordList = new ArrayList<HashMap<String, String>>();
+//
+//        String selectQuery = "SELECT  nombre,apellido,usuario,pass FROM usuarios ";
+//
+//        SQLiteDatabase database = this.getWritableDatabase();
+//        Cursor cursor = database.rawQuery(selectQuery, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                HashMap<String, String> map = new HashMap<String, String>();
+//                map.put("nombre", cursor.getString(0));
+//                map.put("apellido", cursor.getString(1));
+//                map.put("usuario", cursor.getString(2));
+//                map.put("pass", cursor.getString(3));
+//               // map.put("tecnico", cursor.getString(4));
+//
+//
+//                wordList.add(map);
+//            } while (cursor.moveToNext());
+//        }
+//        database.close();
+//        return wordList;
+//    }
 
 
     ///////////////////////QUERY PARA ACCESO////////////////////////////////////ok
-    public ArrayList<HashMap<String, String>> login() {
-        ArrayList<HashMap<String, String>> logind;
-        logind = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  idusuario,usuario,pass FROM usuarios";
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                HashMap<String, String> map = new HashMap<String, String>();
-
-                map.put("idusuario", cursor.getString(0));
-                map.put("usuario", cursor.getString(1));
-                map.put("pass", cursor.getString(2));
-
-                logind.add(map);
-
-            }while (cursor.moveToNext());
-        }
-        database.close();
-        return logind;
-
-    }
+//    public ArrayList<HashMap<String, String>> login() {
+//        ArrayList<HashMap<String, String>> logind;
+//        logind = new ArrayList<HashMap<String, String>>();
+//        String selectQuery = "SELECT  idusuario,usuario,pass FROM usuarios";
+//        SQLiteDatabase database = this.getWritableDatabase();
+//        Cursor cursor = database.rawQuery(selectQuery, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                HashMap<String, String> map = new HashMap<String, String>();
+//
+//                map.put("idusuario", cursor.getString(0));
+//                map.put("usuario", cursor.getString(1));
+//                map.put("pass", cursor.getString(2));
+//
+//                logind.add(map);
+//
+//            }while (cursor.moveToNext());
+//        }
+//        database.close();
+//        return logind;
+//
+//    }
 
 
 
@@ -214,54 +239,48 @@ public class DBController extends SQLiteOpenHelper {
      * Inserts User into SQLite DB
      * @param queryValues
      */
-    public void inser_auxped(HashMap<String, String> queryValues) {
+    public void insert_order(HashMap<String, String> queryValues) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put("idauxpedido", queryValues.get("idauxpedido"));
-        values.put("fkidusuario", queryValues.get("idtecnico"));
-        values.put("idnumsoporte", queryValues.get("idnumsoporte"));
-        values.put("descripcion", queryValues.get("descripcion"));
-        values.put("cliente", queryValues.get("cliente"));
-        values.put("calle", queryValues.get("calle"));
-        values.put("numero", queryValues.get("numero"));
-        values.put("ciudad", queryValues.get("ciudad"));
-        values.put("provincia", queryValues.get("provincia"));
-        values.put("fechacr", queryValues.get("fechacr"));
-        values.put("fechack", queryValues.get("fechack"));
+        values.put("id_order", queryValues.get("id_order"));
+        values.put("fk_user_id", queryValues.get("tecnic_id"));
+        values.put("description", queryValues.get("description"));
+        values.put("address", queryValues.get("address"));
+        values.put("customer_id", queryValues.get("customer_id"));
+        values.put("city_id", queryValues.get("city_id"));
+        values.put("created_at", queryValues.get("created_at"));
+        values.put("install_date", queryValues.get("install_date"));
 
 
         //values.put("udpateStatus", "no");
-        database.insert("aux_pedido", null, values);
+        database.insert("orders", null, values);
         database.close();
     }
 
 
 
-
-///////////////////**************OBTIENE USUARIO**************///////////OK
+//
+/////////////////////**************OBTIENE USUARIO**************///////////OK
     /**
      * Get list of Users from SQLite DB as Array List
      * @return
      */
-    public ArrayList<HashMap<String, String>> get_auxped(String idusuar) {
+    public ArrayList<HashMap<String, String>> get_orders(String user_id) {
         ArrayList<HashMap<String, String>> wordList;
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
-
-        //String selectQuery = "SELECT  * FROM aux_pedido where fkidusuario = "+idusuar+" and finalizado is null  ";
-        String selectQuery = "SELECT  * FROM aux_pedido where fkidusuario = '"+idusuar+"' and finalizado is null  ";
+        String selectQuery = "SELECT id_order, customer_id, description FROM orders where fk_user_id = "+user_id+" and finish = 0";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("idauxpedido", cursor.getString(0));
-                //map.put("idtecnico", cursor.getString(1));
-                map.put("cliente", cursor.getString(2));
-                map.put("descripcion", cursor.getString(3));
-                map.put("idnumsoporte", cursor.getString(4));
+                map.put("id_order", cursor.getString(0));
+                map.put("customer_id", cursor.getString(1));
+                map.put("description", cursor.getString(2));
+                map.put("fk_user_id", user_id);
 
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -271,11 +290,11 @@ public class DBController extends SQLiteOpenHelper {
     }
 
 
-    ///////////////////////QUERY PARA ACCESO////////////////////////////////////
-    public ArrayList<HashMap<String, String>> listdetalle(String idpedido) {
+//    ///////////////////////QUERY PARA ACCESO////////////////////////////////////
+    public ArrayList<HashMap<String, String>> listdetalle(String id_order) {
         ArrayList<HashMap<String, String>> detalle;
         detalle = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  cliente,calle,numero,ciudad,provincia,descripcion FROM aux_pedido where idauxpedido = '"+idpedido+"' ";
+        String selectQuery = "SELECT  customer_id,address,city_id,description FROM orders where id_order = '"+id_order+"' ";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -283,12 +302,8 @@ public class DBController extends SQLiteOpenHelper {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("cliente", cursor.getString(0));
                 map.put("calle", cursor.getString(1));
-                map.put("numero", cursor.getString(2));
-                map.put("ciudad", cursor.getString(3));
-                map.put("provincia", cursor.getString(4));
-                map.put("descripcion", cursor.getString(5));
-                // map.put("fechacr", cursor.getString(6));
-                //  map.put("fechack", cursor.getString(7));
+                map.put("ciudad", cursor.getString(2));
+                map.put("descripcion", cursor.getString(3));
 
                 detalle.add(map);
 
@@ -315,21 +330,19 @@ public class DBController extends SQLiteOpenHelper {
         wordList = new ArrayList<HashMap<String, String>>();
 
         ///////QUERY DE DISPOSITIVOS
-      //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
-        String selectQuery = "SELECT  codigoscan,nombre,descripcion,latitud,longitud,horasca,fkidauxpedido FROM dispositivos where fkidauxpedido = '"+idped+"'";
-
+        String selectQuery = "SELECT  code_scan,name,description,latitude,longitude,time_install,fk_order_id FROM things where fk_order_id = '"+idped+"'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("codigoscan", cursor.getString(0));
-                map.put("nombre", cursor.getString(1));
-                map.put("descripcion", cursor.getString(2));
-                map.put("latitud", cursor.getString(3));
-                map.put("longitud", cursor.getString(4));
-                map.put("horasca", cursor.getString(5));
-                map.put("fkidauxpedido", cursor.getString(6));
+                map.put("code_scan", cursor.getString(0));
+                map.put("name", cursor.getString(1));
+                map.put("description", cursor.getString(2));
+                map.put("latitude", cursor.getString(3));
+                map.put("longitude", cursor.getString(4));
+                map.put("time_install", cursor.getString(5));
+                map.put("fk_order_id", cursor.getString(6));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -350,21 +363,19 @@ public class DBController extends SQLiteOpenHelper {
     public void inserdips(HashMap<String, String> queryValues) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        //values.put("idauxpedido", queryValues.get("idauxpedido"));
-        //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
 
-        values.put("codigoscan", queryValues.get("codigo"));
-        values.put("nombre", queryValues.get("nombre"));
-        values.put("descripcion", queryValues.get("descripcion"));
-        values.put("latitud", queryValues.get("latitud"));
-        values.put("longitud", queryValues.get("longitud"));
-        values.put("horasca", queryValues.get("tiempo"));
-        values.put("fkidauxpedido", queryValues.get("fkidpedido"));
+        values.put("code_scan", queryValues.get("code_scan"));
+        values.put("name", queryValues.get("name"));
+        values.put("description", queryValues.get("description"));
+        values.put("latitude", queryValues.get("latitude"));
+        values.put("longitude", queryValues.get("longitude"));
+        values.put("time_install", queryValues.get("time_install"));
+        values.put("fk_order_id", queryValues.get("fk_order_id"));
 
 
 
         //values.put("udpateStatus", "no");
-        database.insert("dispositivos", null, values);
+        database.insert("things", null, values);
         database.close();
     }
 
@@ -378,7 +389,7 @@ public class DBController extends SQLiteOpenHelper {
 
         SQLiteDatabase database = this.getWritableDatabase();
 
-        database.delete("dispositivos", "codigoscan='"+iddisp+"'", null);
+        database.delete("things", "codigoscan='"+iddisp+"'", null);
 
     }
 
@@ -396,18 +407,17 @@ public class DBController extends SQLiteOpenHelper {
         wordList = new ArrayList<HashMap<String, String>>();
 
         ///////QUERY DE DISPOSITIVOS
-        //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
 
-        String selectQuery = "SELECT  codigoscan,nombre,descripcion FROM dispositivos where codigoscan ='"+cod+"'";
+        String selectQuery = "SELECT  code_scan,name,description FROM things where code_scan ='"+cod+"'";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("codigoscan", cursor.getString(0));
-                map.put("nombre", cursor.getString(1));
-                map.put("descripcion", cursor.getString(2));
+                map.put("code_scan", cursor.getString(0));
+                map.put("name", cursor.getString(1));
+                map.put("description", cursor.getString(2));
 
 
                 wordList.add(map);
@@ -427,34 +437,31 @@ public class DBController extends SQLiteOpenHelper {
     public void updips(HashMap<String, String> queryValues) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        //values.put("idauxpedido", queryValues.get("idauxpedido"));
-        values.put("codigoscan", queryValues.get("codigo"));
-        values.put("nombre", queryValues.get("nombre"));
-        values.put("descripcion", queryValues.get("descripcion"));
-
-        String id =  "'"+queryValues.get("codigo")+"'";
-
-        database.update("dispositivos", values ,"codigoscan"+"="+id, null);
+        values.put("code_scan", queryValues.get("code_scan"));
+        values.put("name", queryValues.get("name"));
+        values.put("description", queryValues.get("description"));
+        String id =  "'"+queryValues.get("code_scan")+"'";
+        database.update("things", values ,"code_scan"+"="+id, null);
         database.close();
     }
 
 
 ////////////////*****************INSERTAR REMITO***********////////////////
 
-    public void upfoto(HashMap<String, String> queryValues) {
+    public void insert_referral(HashMap<String, String> queryValues) {
         {
             SQLiteDatabase database = this.getWritableDatabase();
 
 
             ContentValues values = new ContentValues();
-            values.put("fkidauxpedido", queryValues.get("idpedido"));
-            values.put("observaciones", queryValues.get("observaciones"));
-            values.put("aclaracion", queryValues.get("aclaracion"));
-            values.put("firma", queryValues.get("firma"));
-            values.put("horafinalizado", queryValues.get("horafinal"));
+            values.put("fk_id_order", queryValues.get("id_order"));
+            values.put("comment", queryValues.get("comment"));
+            values.put("full_name", queryValues.get("full_name"));
+            values.put("signature", queryValues.get("signature"));
+            values.put("final_time", queryValues.get("final_time"));
             values.put("email", queryValues.get("email"));
 
-            database.insert("remito", null,values );
+            database.insert("referrals", null,values );
             database.close();
 
         }
@@ -469,16 +476,16 @@ public class DBController extends SQLiteOpenHelper {
      * Inserts User into SQLite DB
      * //@param queryValues
      */
-    public void upload_aux(String idped) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        //values.put("idauxpedido", queryValues.get("idauxpedido"));
-
-        values.put("finalizado", "1" );
-
-        database.update("aux_pedido", values ,"idauxpedido='"+idped+"'", null);
-        database.close();
-    }
+//    public void upload_aux(String idped) {
+//        SQLiteDatabase database = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        //values.put("idauxpedido", queryValues.get("idauxpedido"));
+//
+//        values.put("finalizado", "1" );
+//
+//        database.update("aux_pedido", values ,"idauxpedido='"+idped+"'", null);
+//        database.close();
+//    }
 
 
 
@@ -491,7 +498,7 @@ public class DBController extends SQLiteOpenHelper {
 
         SQLiteDatabase database = this.getWritableDatabase();
 
-        database.delete("aux_pedido", "idauxpedido='"+idped+"'", null);
+        database.delete("orders", "id_order='"+idped+"'", null);
 
     }
 
@@ -502,27 +509,27 @@ public class DBController extends SQLiteOpenHelper {
      * Get list of Users from SQLite DB as Array List
      * @return
      */
-    public ArrayList<HashMap<String, String>> getremito(String idped) {
+    public ArrayList<HashMap<String, String>> get_referral(String idped) {
         ArrayList<HashMap<String, String>> wordList;
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
 
         ///////QUERY DE DISPOSITIVOS
-        //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
+//        query = "CREATE TABLE referrals ( id_referral INTEGER PRIMARY KEY, fk_id_order TEXT REFERENCES orders(id_order) ON DELETE CASCADE, comment TEXT, signature TEXT, full_name TEXT, final_time TEXT, email TEXT)";
 
-        String selectQuery = "SELECT  observaciones,firma,aclaracion,horafinalizado,fkidauxpedido,email FROM remito where fkidauxpedido ='"+idped+"'";
+
+        String selectQuery = "SELECT  comment,signature,full_name,final_time,email FROM referrals where fk_id_order ='"+idped+"'";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("observaciones", cursor.getString(0));
-                map.put("firma", cursor.getString(1));
-                map.put("aclaracion", cursor.getString(2));
-                map.put("horafinalizado", cursor.getString(3));
-                map.put("fkidauxpedido", cursor.getString(4));
-                map.put("email", cursor.getString(5));
+                map.put("comment", cursor.getString(0));
+                map.put("signature", cursor.getString(1));
+                map.put("full_name", cursor.getString(2));
+                map.put("final_time", cursor.getString(3));
+                map.put("email", cursor.getString(4));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -534,28 +541,39 @@ public class DBController extends SQLiteOpenHelper {
     ///////////////////////**************CONSULTA REMITOS***************///////////////////
 
 
-    public ArrayList<HashMap<String, String>> consulrem() {
+    public ArrayList<HashMap<String, String>> get_refferals() {
         ArrayList<HashMap<String, String>> wordList;
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
 
         ///////QUERY DE DISPOSITIVOS
-        //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
-
-        String selectQuery = "SELECT fkidauxpedido FROM remito";
-
+        String selectQuery = "SELECT fk_id_order FROM referrals";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("fkidauxpedido", cursor.getString(0));
+                map.put("fk_id_order", cursor.getString(0));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
         }
         database.close();
         return wordList;
+    }
+
+    public Boolean finish_order(Integer id_order){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("finish", 1);
+        long check= database.update("orders", values ,"id_order"+"="+id_order, null);
+        database.close();
+        if(check > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 
@@ -566,9 +584,7 @@ public class DBController extends SQLiteOpenHelper {
     {
         ArrayList<HashMap<String, String>> wordList;
         wordList = new ArrayList<HashMap<String, String>>();
-
         String selectQuery = "SELECT idauxpedido,fkidusuario,cliente,descripcion,calle,numero,ciudad,provincia FROM aux_pedido where idnumsoporte is null";
-
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -598,53 +614,25 @@ public class DBController extends SQLiteOpenHelper {
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("longitud", queryValues.get("longitud"));
-        values.put("latitud", queryValues.get("latitud"));
+        values.put("longitude", queryValues.get("longitude"));
+        values.put("latitude", queryValues.get("latitude"));
         database.insert("GPSlogs", null,values );
         database.close();
     }
 
 
-    public ArrayList<HashMap<String, String>> getgps()
+    public ArrayList getgps()
     {
-        ArrayList<HashMap<String, String>> wordList;
-        wordList = new ArrayList<HashMap<String, String>>();
-
-        String selectQuery = "SELECT longitud, latitud FROM GPSlogs";
-
+        ArrayList<String> data = new ArrayList<String>();
+        String query = "SELECT longitude, latitude FROM GPSlogs ORDER BY id_gps DESC LIMIT 1";
         SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-
-            do {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("longitud", cursor.getString(0));
-                map.put("latitud", cursor.getString(1));
-                //map.put("id_gps", cursor.getString(2));
-
-                wordList.add(map);
-            } while (cursor.moveToNext());
-        }
-        database.close();
-        return wordList;
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToLast();
+        data.add(cursor.getString(0));
+        data.add(cursor.getString(1));
+        return data;
     }
 
-    //////////////////////************************MODIFICAR DISPOSITIVOS*********/////////////////
-
-    /**
-     * Inserts User into SQLite DB
-     * @param queryValues
-     */
-    public void updGPS(HashMap<String, String> queryValues) {
-
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        //values.put("idauxpedido", queryValues.get("idauxpedido"));
-        values.put("latitud", queryValues.get("latitud"));
-        values.put("longitud", queryValues.get("longitud"));
-        database.update("GPSlogs", values ,"id_gps"+"="+1, null);
-        database.close();
-    }
 
 
 }
