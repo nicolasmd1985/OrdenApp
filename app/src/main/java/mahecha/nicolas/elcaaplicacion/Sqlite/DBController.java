@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "ordenapp3.db";
+    private static final String NOMBRE_BASE_DATOS = "ordenapp7.db";
     private static final int VERSION_ACTUAL = 1;
     private final Context contexto;
 
