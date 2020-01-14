@@ -37,22 +37,21 @@ public class EnvioDatos {
         DBController dbController = new DBController(context);
         String lon=null,lat=null;
         ArrayList<HashMap<String,String>> listgps = dbController.getgps();
-        for (HashMap<String, String> hashMap : listgps) {
-            lon = hashMap.get("longitude");
-            lat = hashMap.get("latitude");
-        }
+        lon = String.valueOf(listgps.get(0));
+        lat = String.valueOf(listgps.get(1));
+
 
         ArrayList token = dbController.tokenExp();
 
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
             client.addHeader("Content-type", "application/json;charset=utf-8");
-            client.addHeader("Authorization", token.get(0).toString());
+            client.addHeader("Authorization", token.get(3).toString());
             RequestParams params = new RequestParams();
             params.add("latitude", lat);
             params.add("longitude", lon);
             try{
-                client.post(Constans.API_END +"send_gps", params, new AsyncHttpResponseHandler() {
+                client.post(Constans.API_END + Constans.SEND_GPS , params, new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(String response) {

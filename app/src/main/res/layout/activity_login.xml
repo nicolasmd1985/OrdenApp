@@ -38,7 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/password"
         android:layout_alignStart="@+id/password"
-        android:text="Contraseña" />
+        android:text="Contraseña"
+        android:layout_alignLeft="@+id/password" />
 
     <EditText
         android:id="@+id/username"
