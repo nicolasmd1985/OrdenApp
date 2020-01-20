@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,7 +37,7 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_pedido);
         Emp = (TextView) findViewById(R.id.empresa);
-        cal = (TextView) findViewById(R.id.calle);
+        cal = (TextView) findViewById(R.id.address);
         num = (TextView) findViewById(R.id.Numero);
         ciu = (TextView) findViewById(R.id.ciudad);
         prov = (TextView) findViewById(R.id.provincia);

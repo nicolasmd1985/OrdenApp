@@ -67,8 +67,8 @@
                 android:text="Medium Text"
                 android:id="@+id/empresa"
                 android:layout_alignTop="@+id/textView"
-                android:layout_alignLeft="@+id/calle"
-                android:layout_alignStart="@+id/calle" />
+                android:layout_alignLeft="@+id/address"
+                android:layout_alignStart="@+id/address" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/calle"
+                android:id="@+id/address"
                 android:layout_above="@+id/Numero"
                 android:layout_alignLeft="@+id/Numero"
                 android:layout_alignStart="@+id/Numero" />

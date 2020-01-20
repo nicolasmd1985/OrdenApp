@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 
@@ -44,6 +43,7 @@ public class Pedidos extends AppCompatActivity {
 
     DBController controller = new DBController(this);
     EnvioDatos envioDatos = new EnvioDatos(this);
+    customer_controller customers = new customer_controller(this);
 
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
@@ -131,8 +131,6 @@ public class Pedidos extends AppCompatActivity {
     }
 
 
-
-
     ///////////////////////////********RECARGA ACTIVIDAD//////////////////
     public void reloadActivity() {
         Intent objIntent = new Intent(getApplicationContext(), Pedidos.class);
@@ -162,6 +160,8 @@ public class Pedidos extends AppCompatActivity {
 
 
     public void syncSQLiteMySQLDB() {
+
+        customers.customer_request();
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Sincronizando Pedidos, espere un momento............");
         prgDialog.setCancelable(false);
@@ -204,7 +204,7 @@ public class Pedidos extends AppCompatActivity {
 
     /////////////////////////////*******************ACTUALIZA SQLITE*********************////////////////////
     public void updateSQLite(String response){
-        Gson gson = new GsonBuilder().create();
+//        Gson gson = new GsonBuilder().create();
         try {
             JSONArray arr = new JSONArray(response);
             if(arr.length() != 0){
@@ -326,7 +326,6 @@ public class Pedidos extends AppCompatActivity {
 
     public void send_remito()
     {
-
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Enviando y Recibiendo Pedidos Pendientes, espere un momento............");
         prgDialog.setCancelable(false);

@@ -52,6 +52,9 @@ public class DBController extends SQLiteOpenHelper {
         /////////////////UBICACION GPS//////////////////////////
         query = "CREATE TABLE GPSlogs (id_gps INTEGER PRIMARY KEY, longitude TEXT, latitude TEXT )";
         sqLiteDatabase.execSQL(query);
+        ///////////////CUSTOMERS//////////////////
+        query = "CREATE TABLE customers ( customer_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT)";
+        sqLiteDatabase.execSQL(query);
 
 
 
@@ -77,6 +80,10 @@ public class DBController extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
 
         query = "DROP TABLE IF EXISTS GPSlogs";
+        sqLiteDatabase.execSQL(query);
+        onCreate(sqLiteDatabase);
+
+        query = "DROP TABLE IF EXISTS customers";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
     }
@@ -114,6 +121,61 @@ public boolean insertUser(HashMap<String, String> queryValues) {
     }
 }
 
+
+///////////////////*****************INSERT NEW CUSTOMERS***************/////////////ok
+
+    /**
+     * Inserts User into SQLite DB   * @param queryValues
+     */
+    public boolean insertCustomers(HashMap<String, String> queryValues) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String id = queryValues.get("customer_id");
+        String query = "SELECT customer_id FROM customers where customer_id ="+id;
+        Cursor cursor = database.rawQuery(query, null);
+        if (!cursor.moveToFirst()) {
+            values.put("customer_id", queryValues.get("customer_id"));
+            values.put("first_name", queryValues.get("first_name"));
+            values.put("last_name", queryValues.get("last_name"));
+            long check = database.insert("customers", null, values);
+            database.close();
+            if(check > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
+    //////////////////************GET LIST CUSTOMERS***************///////////
+
+    public ArrayList customers()
+    {
+        ArrayList<String> data = new ArrayList<String>();
+        String query = "SELECT customer_id,first_name,last_name  FROM customers ORDER BY customer_id";
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("customer_id", cursor.getString(0));
+                map.put("first_name", cursor.getString(1));
+                map.put("Last_name", cursor.getString(2));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+
+
+        return wordList;
+    }
 
 ///////////////////***********UPDATE USER**************//////////////////////
 
