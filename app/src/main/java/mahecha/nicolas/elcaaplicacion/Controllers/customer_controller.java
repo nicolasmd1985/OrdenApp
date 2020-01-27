@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Constans;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 public class customer_controller {
 
@@ -33,8 +34,9 @@ public class customer_controller {
 
     public String customer_request() {
 
-        DBController controller = new DBController(context);
-        ArrayList token = controller.tokenExp();
+        users users = new users(context);
+
+        ArrayList token = users.tokenExp();
         if (token != null){
 
             prgDialog = new ProgressDialog(context);
@@ -87,6 +89,9 @@ public class customer_controller {
                     queryValues.put("customer_id", obj.get("customer_id").toString());
                     queryValues.put("first_name", obj.get("first_name").toString());
                     queryValues.put("last_name", obj.get("last_name").toString());
+                    queryValues.put("email", obj.get("email").toString());
+                    queryValues.put("phone_number", obj.get("phone_number").toString());
+                    queryValues.put("city", obj.get("city").toString());
                     controller.insertCustomers(queryValues);
                 }
             }else {

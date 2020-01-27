@@ -35,15 +35,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
+import mahecha.nicolas.elcaaplicacion.Controllers.manual_referral;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.orders;
+import mahecha.nicolas.elcaaplicacion.Sqlite.referrals;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 
 public class Pedidos extends AppCompatActivity {
 
     DBController controller = new DBController(this);
+    users users = new users(this);
+    orders orders = new orders(this);
+    referrals referrals = new referrals(this);
+
+
+
     EnvioDatos envioDatos = new EnvioDatos(this);
     customer_controller customers = new customer_controller(this);
+    manual_referral manual_referral = new manual_referral(this);
+
+
 
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
@@ -70,7 +83,7 @@ public class Pedidos extends AppCompatActivity {
     ////////////////*****************CARGA BASE DE DATOS SQLITE************************
     public void cargabdl()
     {
-        ArrayList user_id = controller.tokenExp();
+        ArrayList user_id = users.tokenExp();
         ArrayList<HashMap<String, String>> userList =  controller.get_orders(user_id.get(0).toString());
         if(userList.size()!=0) {
             ListAdapter adapter = new SimpleAdapter(Pedidos.this, userList, R.layout.view_pedidos, new String[]{"customer_id", "description"}, new int[]{R.id.clieteid, R.id.detalleid});
@@ -167,7 +180,7 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.setCancelable(false);
         prgDialog.show();
 
-        ArrayList token = controller.tokenExp();
+        ArrayList token = users.tokenExp();
 
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
@@ -204,7 +217,6 @@ public class Pedidos extends AppCompatActivity {
 
     /////////////////////////////*******************ACTUALIZA SQLITE*********************////////////////////
     public void updateSQLite(String response){
-//        Gson gson = new GsonBuilder().create();
         try {
             JSONArray arr = new JSONArray(response);
             if(arr.length() != 0){
@@ -242,12 +254,12 @@ public class Pedidos extends AppCompatActivity {
 
     //////////////***********send update sync: true*************************//////////////
     public void updateMySQLSyncSts(JSONArray json){
-        System.out.println(json);
+//        System.out.println(json);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
 
-        ArrayList user_id = controller.tokenExp();
+        ArrayList user_id = users.tokenExp();
 
         client.addHeader("Content-type", "application/json;charset=utf-8");
         client.addHeader("Authorization", user_id.get(3).toString());
@@ -290,7 +302,7 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.setCancelable(false);
         prgDialog.show();
 
-        ArrayList token = controller.tokenExp();
+        ArrayList token = users.tokenExp();
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -329,60 +341,46 @@ public class Pedidos extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Enviando y Recibiendo Pedidos Pendientes, espere un momento............");
         prgDialog.setCancelable(false);
-        Gson gson = new GsonBuilder().create();
         prgDialog.show();
-        enviaremito();
-//        ArrayList<HashMap<String, String>> aux_pen= controller.conidsop();
-        ////////////ENVIA PEDIDOS CREADOS MANUALMENTE////////////////////////
-//        if(aux_pen.size()!=0)
-//        {
-//            String new_ped = gson.toJson(aux_pen);
-//            send_aux_ped(new_ped);
-//        }else{enviaremito();}
+
+        ArrayList<HashMap<String, String>> aux_pen= orders.manual_order();
+        //////////ENVIA PEDIDOS CREADOS MANUALMENTE////////////////////////
+        if(aux_pen.size()!=0)
+        {
+            for (int i = 0; i < aux_pen.size(); i++) {
+
+                manual_referral.send_manual_order(aux_pen.get(i));
+            }
+//            prgDialog.hide();
+            enviaremito();
+
+        }else{enviaremito();}
 
 
 
     }
 
 
-    //////////////***********ENVIA AUX_PEDIDOS NUEVOS*************************//////////////
-    public void send_aux_ped(String json) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("aux_ped", json);
 
-        try {
-            client.setTimeout(40000);
-            client.post("http://blueboxcol.com/dipzotecnico/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String response) {
-                enviaremito();
-            }
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
-                Toast.makeText(getApplicationContext(), "ups! ocurrio un error en pedidos Nuevos", Toast.LENGTH_LONG).show();
-                prgDialog.hide();
-            }
-        });}catch (Exception e){}
-    }
+
 
 
 ////////////////////*****************REVISA SI TIENE PEDIDOS NUEVOS*********//////////////////
 
     private void enviaremito(){
-        ArrayList<HashMap<String, String>> pendiente= controller.get_refferals();
 
-        HashMap<String, String> map = new HashMap<String, String>();
-        Gson gson = new Gson();
 
+
+        ArrayList<HashMap<String, String>> pendiente= referrals.get_refferals();
+        ArrayList<HashMap<String, String>> pendiente_manual= referrals.get_manual_refferals();
+        System.out.println(pendiente_manual);
         int i=0;
         if(pendiente.size()!=0 ) {
             for (HashMap<String, String> hashMap : pendiente) {
                 i=i+1;
-                ArrayList<HashMap<String, String>> things =  controller.getdisp(hashMap.get("fk_id_order"));
-                ArrayList<HashMap<String, String>> referral = controller.get_referral(hashMap.get("fk_id_order"));
-                pendientes(hashMap.get("fk_id_order"), things, referral);
+                ArrayList<HashMap<String, String>> things =  controller.getdisp(hashMap.get("fk_order_id"));
+                ArrayList<HashMap<String, String>> referral = controller.get_referral(hashMap.get("fk_order_id"));
+                pendientes(hashMap.get("fk_order_id"), things, referral);
             }
 
 
@@ -396,7 +394,7 @@ public class Pedidos extends AppCompatActivity {
 
     //////////////***********ENVIO DE REMITOS*************************//////////////
     public void pendientes(final String id_order, ArrayList<HashMap<String, String>> thigs, ArrayList<HashMap<String, String>> referral) {
-        ArrayList token = controller.tokenExp();
+        ArrayList token = users.tokenExp();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         client.addHeader("Content-type", "application/json;charset=utf-8");
@@ -441,7 +439,7 @@ public class Pedidos extends AppCompatActivity {
 
     public void contadores()
     {
-        ArrayList<HashMap<String, String>> pendiente= controller.get_refferals();
+        ArrayList<HashMap<String, String>> pendiente= referrals.get_refferals();
         contador.setText(String.valueOf(pendiente.size()));
     }
 

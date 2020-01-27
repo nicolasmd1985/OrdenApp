@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 /**
  * Created by nicolas on 27/04/2017.
@@ -35,13 +36,15 @@ public class EnvioDatos {
     public void enviar()
     {
         DBController dbController = new DBController(context);
+        users users = new users(context);
+
         String lon=null,lat=null;
         ArrayList<HashMap<String,String>> listgps = dbController.getgps();
         lon = String.valueOf(listgps.get(0));
         lat = String.valueOf(listgps.get(1));
 
 
-        ArrayList token = dbController.tokenExp();
+        ArrayList token = users.tokenExp();
 
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();

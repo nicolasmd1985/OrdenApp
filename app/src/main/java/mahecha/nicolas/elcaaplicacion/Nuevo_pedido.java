@@ -7,6 +7,7 @@ package mahecha.nicolas.elcaaplicacion;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,24 +25,30 @@ import java.util.UUID;
 
 import mahecha.nicolas.elcaaplicacion.Model.Customer;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 public class Nuevo_pedido extends AppCompatActivity {
 
-    Spinner opciones;
-    EditText descripcion,cliente,calle,numero,ciudad,provincia;
+    Spinner customer_options;
+    EditText description_field,
+            address_field,
+            city_field,
+            phone_field,
+            email_field;
     DBController controller = new DBController(this);
-    String idusuar;
+    String customer_id_field;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_pedido);
 
-        opciones = (Spinner)findViewById(R.id.spinner);
-        calle = (EditText) findViewById(R.id.address);
-        numero = (EditText) findViewById(R.id.city);
-        ciudad = (EditText) findViewById(R.id.phone);
-        provincia = (EditText) findViewById(R.id.email);
-        descripcion = (EditText) findViewById(R.id.descripcion);
+        customer_options = (Spinner)findViewById(R.id.spinner);
+
+        address_field = (EditText) findViewById(R.id.address);
+        city_field = (EditText) findViewById(R.id.city);
+        phone_field = (EditText) findViewById(R.id.phone);
+        email_field = (EditText) findViewById(R.id.email);
+        description_field = (EditText) findViewById(R.id.description);
 
 
         onPostExecute();
@@ -54,41 +63,23 @@ public class Nuevo_pedido extends AppCompatActivity {
      * @param view
      */
     public void addNewUser(View view) {
+        users users = new users(this);
+
+        String tecnic_id = users.tecnic_id();
         HashMap<String, String> queryValues = new HashMap<String, String>();
 
-        queryValues.put("idtecnico", idusuar);
-        queryValues.put("idauxpedido", UUID.randomUUID().toString());
-        //queryValues.put("idauxpedido", "hola");
-        queryValues.put("descripcion", descripcion.getText().toString());
-        queryValues.put("cliente", cliente.getText().toString());
-        queryValues.put("calle", calle.getText().toString());
-        queryValues.put("numero", numero.getText().toString());
-        queryValues.put("ciudad", ciudad.getText().toString());
-        queryValues.put("provincia", provincia.getText().toString());
+        queryValues.put("tecnic_id", tecnic_id);
+        queryValues.put("description", description_field.getText().toString());
+        queryValues.put("address", address_field.getText().toString());
+        queryValues.put("customer_id", customer_id_field);
+        queryValues.put("city_id", city_field.getText().toString());
+        queryValues.put("created_at", tiempo());
+        queryValues.put("install_date", tiempo());
+        queryValues.put("aux_order", String.valueOf(1) );
 
 
-
-        if (cliente.getText().toString() != null
-                && cliente.getText().toString().trim().length() != 0) {
-            if (descripcion.getText().toString() != null
-                    && descripcion.getText().toString().trim().length() != 0) {
-                if (calle.getText().toString() != null
-                        && calle.getText().toString().trim().length() != 0) {
-
-                    controller.insert_order(queryValues);
-                    this.callHomeActivity(view);
-
-                }else {
-                    Toast.makeText(getApplicationContext(), "Instroduzca Domicilio",
-                            Toast.LENGTH_LONG).show();}
-
-            }else {
-                Toast.makeText(getApplicationContext(), "Instroduzca descripcion",
-                        Toast.LENGTH_LONG).show();}
-        } else {
-            Toast.makeText(getApplicationContext(), "Instroduzca cliente",
-                    Toast.LENGTH_LONG).show();
-        }
+        controller.insert_order(queryValues);
+        this.callHomeActivity(view);
 
     }
 
@@ -99,7 +90,6 @@ public class Nuevo_pedido extends AppCompatActivity {
     public void callHomeActivity(View view) {
         Intent objIntent = new Intent(getApplicationContext(),
                 Pedidos.class);
-        objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
 
@@ -122,15 +112,21 @@ public class Nuevo_pedido extends AppCompatActivity {
         customers = controller.customers();
         ArrayList<HashMap<String, String>> userList =  customers;
         for (HashMap<String, String> hashMap : userList) {
-            map.put("customer"+i, new Customer(Integer.parseInt(hashMap.get("customer_id")), hashMap.get("first_name"),hashMap.get("last_name")));
+            map.put("customer"+i, new Customer(
+                    Integer.parseInt(hashMap.get("customer_id")),
+                    hashMap.get("first_name"),
+                    hashMap.get("last_name"),
+                    hashMap.get("email"),
+                    hashMap.get("phone_number"),
+                    hashMap.get("city")));
             customerList.add(map.get("customer"+i));
         }
 
         ArrayAdapter<Customer> adapter = new ArrayAdapter<Customer>(this, android.R.layout.simple_spinner_item, customerList );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        opciones.setAdapter(adapter);
-        opciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        customer_options.setAdapter(adapter);
+        customer_options.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Customer customer = (Customer) adapterView.getSelectedItem();
@@ -147,9 +143,27 @@ public class Nuevo_pedido extends AppCompatActivity {
 
     public void diplayCustomerData(Customer custumer){
         int customer_id = custumer.getCustomer_id();
-        String first_name = custumer.getFirst_name();
+        String city = custumer.getCity();
+        String email = custumer.getEmail();
+        String phone_number = custumer.getPhone_number();
 
-        String customerData = "customer_id: " + customer_id + "\nFirst Name:" + first_name ;
-        Toast.makeText(this, customerData, Toast.LENGTH_LONG).show();
+//        String customerData = "customer_id: " + customer_id + "\nFirst Name:" + first_name + "\nemail:" + email ;
+//        Toast.makeText(this, customerData, Toast.LENGTH_LONG).show();
+
+//        address_field.setText(address);
+        city_field.setText(city);
+        phone_field.setText(phone_number);
+        email_field.setText(email);
+        customer_id_field = String.valueOf(customer_id);
+
+    }
+
+
+    private String tiempo()
+    {
+        Date date = new Date();
+        CharSequence s  = DateFormat.format("d/M/yyyy H:m", date.getTime());
+        String time = s.toString();
+        return time ;
     }
 }

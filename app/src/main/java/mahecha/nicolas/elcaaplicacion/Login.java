@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
-import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 public class Login extends AppCompatActivity  implements View.OnClickListener{
 
@@ -48,8 +48,8 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
 
-    DBController controller = new DBController(this);
-    EnvioDatos envioDatos = new EnvioDatos(this);
+    users users = new users(this);
+
 
     private static final int PERMISSION_REQUEST_CODE = 1;
     private boolean LocationAvailable;
@@ -219,12 +219,12 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         }
     }
     private void checkToken(JSONObject obj) throws JSONException {
-        ArrayList tokenExp = controller.tokenExp();
-        System.out.print(tokenExp);
+        ArrayList tokenExp = users.tokenExp();
+//        System.out.print(tokenExp);
     }
     private boolean insertUser(JSONObject obj) throws JSONException {
 
-        String tecnic_id =  controller.tecnic_id();
+        String tecnic_id =  users.tecnic_id();
         if (tecnic_id.contentEquals("null") || (!tecnic_id.equals(String.valueOf(obj.getInt("user_id"))))){
             InsertNewUser(obj);
         }
@@ -251,7 +251,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         queryValues.put("token", obj.getString("token"));
         queryValues.put("exp", obj.getString("exp"));
         queryValues.put("email", obj.getString("email"));
-        return controller.insertUser(queryValues);
+        return users.insertUser(queryValues);
     }
 
     private boolean UpdateUser(JSONObject obj)throws JSONException{
@@ -259,7 +259,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         queryValues.put("user_id", String.valueOf(obj.getInt("user_id")));
         queryValues.put("token", obj.getString("token"));
         queryValues.put("exp", obj.getString("exp"));
-        return controller.updateUser(queryValues);
+        return users.updateUser(queryValues);
     }
 
 }

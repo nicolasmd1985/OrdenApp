@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Constans;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 /**
  * Created by nicolas on 23/01/2017.
@@ -32,6 +33,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
     String lat, lon;
     HashMap<String, String> queryValues;
     DBController controller = new DBController(this);
+    users users = new users(this);
 
 
     @Override
@@ -105,7 +107,7 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
     public void envioGPS ()
     {
-        ArrayList token = controller.tokenExp();
+        ArrayList token = users.tokenExp();
 
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
