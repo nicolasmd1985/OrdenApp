@@ -172,62 +172,12 @@ public class DBController extends SQLiteOpenHelper {
 
 
 
-    ////////////////////////***************QUERY INSERT PEDIDOS****************///////////////////
 
-    /**
-     * Inserts User into SQLite DB
-     * @param queryValues
-     */
-    public void insert_order(HashMap<String, String> queryValues) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put("id_order", queryValues.get("id_order"));
-        values.put("fk_user_id", queryValues.get("tecnic_id"));
-        values.put("description", queryValues.get("description"));
-        values.put("address", queryValues.get("address"));
-        values.put("customer_id", queryValues.get("customer_id"));
-        values.put("city_id", queryValues.get("city_id"));
-        values.put("created_at", queryValues.get("created_at"));
-        values.put("install_date", queryValues.get("install_date"));
-        values.put("aux_order", queryValues.get("aux_order"));
-
-
-        //values.put("udpateStatus", "no");
-        database.insert("orders", null, values);
-        database.close();
-    }
 
 
 
 //
-/////////////////////**************OBTIENE USUARIO**************///////////OK
-    /**
-     * Get list of Users from SQLite DB as Array List
-     * @return
-     */
-    public ArrayList<HashMap<String, String>> get_orders(String user_id) {
-        ArrayList<HashMap<String, String>> wordList;
-        //crea lista
-        wordList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT id_order, customer_id, description FROM orders where fk_user_id = "+user_id+" and finish = 0";
 
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("id_order", cursor.getString(0));
-                map.put("customer_id", cursor.getString(1));
-                map.put("description", cursor.getString(2));
-                map.put("fk_user_id", user_id);
-
-                wordList.add(map);
-            } while (cursor.moveToNext());
-        }
-        database.close();
-        return wordList;
-    }
 
 
 //    ///////////////////////QUERY PARA ACCESO////////////////////////////////////
@@ -387,44 +337,6 @@ public class DBController extends SQLiteOpenHelper {
 
     }
 
-
-
-    //////////////////////***********************ACTUALIZAR ESTADO DEL PEDIDO*********/////////////////
-
-    /**
-     * Inserts User into SQLite DB
-     * //@param queryValues
-     */
-//    public void update_order(String new_id_order, String id_order) {
-//        SQLiteDatabase database = this.getWritableDatabase();
-//        String[] idArg = new String[] { Long.toString(Long.parseLong(id_order)) };
-////        String selectQuery = "SELECT id_referral FROM referrals where fk_order_id ='"+id_order+"'";
-////        Cursor cursor = database.rawQuery(selectQuery, null);
-////        if (cursor.moveToFirst()) {
-////           String id_referral = cursor.getString(0);
-////            ContentValues values2 = new ContentValues();
-////            values2.put("fk_order_id", new_id_order );
-////            database.update("referrals", values2 ,"fk_order_id='"+id_referral+"'", null);
-////        }
-//
-//        ContentValues values = new ContentValues();
-//        values.put("id_order", new_id_order );
-//        int consulta = database.update("orders", values ,"id_order = ?", idArg);
-//        System.out.println(consulta);
-//        database.close();
-//
-//
-//
-////        ContentValues values1 = new ContentValues();
-////        values1.put("id_order", new_id_order );
-////        database.update("orders", values1 ,"id_order='"+id_order+"'", null);
-////        database.update("referrals", values1 ,"fk_order_id='"+id_order+"'", null);
-//
-//
-////        database.update("things", values2 ,"fk_order_id='"+id_order+"'", null);
-////
-//
-//    }
 
 
 

@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import mahecha.nicolas.elcaaplicacion.Model.Customer;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.orders;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 public class Nuevo_pedido extends AppCompatActivity {
@@ -62,8 +63,9 @@ public class Nuevo_pedido extends AppCompatActivity {
      * Called when Save button is clicked
      * @param view
      */
-    public void addNewUser(View view) {
+    public void addNewOrder(View view) {
         users users = new users(this);
+        orders orders = new orders(this);
 
         String tecnic_id = users.tecnic_id();
         HashMap<String, String> queryValues = new HashMap<String, String>();
@@ -75,10 +77,9 @@ public class Nuevo_pedido extends AppCompatActivity {
         queryValues.put("city_id", city_field.getText().toString());
         queryValues.put("created_at", tiempo());
         queryValues.put("install_date", tiempo());
-        queryValues.put("aux_order", String.valueOf(1) );
 
 
-        controller.insert_order(queryValues);
+        orders.insert_order(queryValues, 1);
         this.callHomeActivity(view);
 
     }

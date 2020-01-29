@@ -64,9 +64,7 @@ public class customer_controller {
 
                 @Override
                 public void onSuccess(String response) {
-                    System.out.println(response);
                     save_customers(response);
-                    prgDialog.hide();
                 }
             });
         }

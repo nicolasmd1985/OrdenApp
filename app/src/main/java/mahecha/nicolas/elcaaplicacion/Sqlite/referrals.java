@@ -40,7 +40,7 @@ public class referrals extends DBController {
         ArrayList<HashMap<String, String>> wordList;
         wordList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT fk_order_id, aux_order FROM referrals INNER JOIN orders ON referrals.fk_order_id = orders.id_order WHERE aux_order > 1";
+        String selectQuery = "SELECT fk_order_id, aux_order FROM referrals INNER JOIN orders ON referrals.fk_order_id = orders.id_order WHERE aux_order >= 1";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

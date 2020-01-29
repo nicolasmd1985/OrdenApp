@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mahecha.nicolas.elcaaplicacion.Controllers.auto_referral;
+import mahecha.nicolas.elcaaplicacion.Controllers.count_referrals;
 import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
 import mahecha.nicolas.elcaaplicacion.Controllers.manual_referral;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
@@ -55,13 +57,12 @@ public class Pedidos extends AppCompatActivity {
     EnvioDatos envioDatos = new EnvioDatos(this);
     customer_controller customers = new customer_controller(this);
     manual_referral manual_referral = new manual_referral(this);
+    count_referrals count_referrals = new count_referrals(this);
 
 
 
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
-    TextView contador;
-    int rems=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +71,9 @@ public class Pedidos extends AppCompatActivity {
         Intent GPS = new Intent(Pedidos.this, ServicioGPS2.class);
         cargabdl();
         startService(GPS);
-        contador=(TextView)findViewById(R.id.contador);
-        contadores();
+        String suma = String.valueOf(count_referrals.count());
+        Toast.makeText(getApplicationContext(), "Tiene "+ suma+ " ordenes finalizas por enviar",
+                Toast.LENGTH_LONG).show();
     }
     ////////////////////******************AGREGA PEDIDO******************//////////////////
 
@@ -84,7 +86,7 @@ public class Pedidos extends AppCompatActivity {
     public void cargabdl()
     {
         ArrayList user_id = users.tokenExp();
-        ArrayList<HashMap<String, String>> userList =  controller.get_orders(user_id.get(0).toString());
+        ArrayList<HashMap<String, String>> userList =  orders.get_orders(user_id.get(0).toString());
         if(userList.size()!=0) {
             ListAdapter adapter = new SimpleAdapter(Pedidos.this, userList, R.layout.view_pedidos, new String[]{"customer_id", "description"}, new int[]{R.id.clieteid, R.id.detalleid});
             final ListView myList = (ListView) findViewById(android.R.id.list);
@@ -135,7 +137,6 @@ public class Pedidos extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                System.out.println("no");
             }
         });
 
@@ -204,7 +205,6 @@ public class Pedidos extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(String response) {
-                    System.out.println(response);
                     prgDialog.hide();
                     updateSQLite(response);
                 }
@@ -233,17 +233,17 @@ public class Pedidos extends AppCompatActivity {
                     queryValues.put("created_at", obj.get("created_at").toString());
                     queryValues.put("install_date", obj.get("install_date").toString());
 
-                    controller.insert_order(queryValues);
+                    orders.insert_order(queryValues, 0);
 
 
                 }
 //
-                updateMySQLSyncSts(arr);
+                updateMySQLSyncSts();
             }else {
                 Toast.makeText(getApplicationContext(), "No Tiene Pedidos Para Sincronizar",
                         Toast.LENGTH_LONG).show();
                 prgDialog.hide();
-                send_remito();
+                send_referrals();
             }
 
         } catch (JSONException e) {
@@ -253,8 +253,7 @@ public class Pedidos extends AppCompatActivity {
     }
 
     //////////////***********send update sync: true*************************//////////////
-    public void updateMySQLSyncSts(JSONArray json){
-//        System.out.println(json);
+    public void updateMySQLSyncSts(){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
@@ -264,29 +263,24 @@ public class Pedidos extends AppCompatActivity {
         client.addHeader("Content-type", "application/json;charset=utf-8");
         client.addHeader("Authorization", user_id.get(3).toString());
 
-        ArrayList<HashMap<String, String>> userList =  controller.get_orders(user_id.get(0).toString());
-
-        if (userList.size() != 0) {
-            params.put("_json", userList);
+        ArrayList<HashMap<String, String>> order_list_to_sync =  orders.get_orders_auto(user_id.get(0).toString());
+        if (order_list_to_sync.size() != 0) {
+            params.put("_json", order_list_to_sync);
             client.post(Constans.API_END + Constans.SYNC, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-                    System.out.print(response);
-                    send_remito();
-                    reloadActivity();
+                    send_referrals();
                 }
                 @Override
                 public void onFailure(int statusCode, Throwable error,String content) {
                     Toast.makeText(getApplicationContext(), "ups! ocurrio un error", Toast.LENGTH_LONG).show();
-                    System.out.print(error);
-                    send_remito();
-                    reloadActivity();
+                    send_referrals();
                 }
             });
         } else {
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
-            send_remito();
+            send_referrals();
         }
 
 
@@ -329,14 +323,13 @@ public class Pedidos extends AppCompatActivity {
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-                System.out.print(statusCode);
                 prgDialog.hide();
             }
         });
     }
 
 
-    public void send_remito()
+    public void send_referrals()
     {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Enviando y Recibiendo Pedidos Pendientes, espere un momento............");
@@ -344,20 +337,14 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.show();
 
         ArrayList<HashMap<String, String>> aux_pen= orders.manual_order();
-        //////////ENVIA PEDIDOS CREADOS MANUALMENTE////////////////////////
+        System.out.println(aux_pen);
         if(aux_pen.size()!=0)
         {
             for (int i = 0; i < aux_pen.size(); i++) {
-
                 manual_referral.send_manual_order(aux_pen.get(i));
             }
-//            prgDialog.hide();
             enviaremito();
-
         }else{enviaremito();}
-
-
-
     }
 
 
@@ -368,80 +355,25 @@ public class Pedidos extends AppCompatActivity {
 ////////////////////*****************REVISA SI TIENE PEDIDOS NUEVOS*********//////////////////
 
     private void enviaremito(){
+        auto_referral auto_referral = new auto_referral(this);
 
 
-
-        ArrayList<HashMap<String, String>> pendiente= referrals.get_refferals();
-        ArrayList<HashMap<String, String>> pendiente_manual= referrals.get_manual_refferals();
-        System.out.println(pendiente_manual);
-        int i=0;
-        if(pendiente.size()!=0 ) {
-            for (HashMap<String, String> hashMap : pendiente) {
-                i=i+1;
-                ArrayList<HashMap<String, String>> things =  controller.getdisp(hashMap.get("fk_order_id"));
-                ArrayList<HashMap<String, String>> referral = controller.get_referral(hashMap.get("fk_order_id"));
-                pendientes(hashMap.get("fk_order_id"), things, referral);
-            }
+        ArrayList<HashMap<String, String>> pending= referrals.get_refferals();
+        auto_referral.send_auto_referral(pending);
 
 
-        }else{
-            prgDialog.hide();
-            reloadActivity();
-        }
+        ArrayList<HashMap<String, String>> pending_manual= referrals.get_manual_refferals();
+        manual_referral.send_manual_referral(pending_manual);
 
+
+        prgDialog.hide();
+        reloadActivity();
     }
 
-
-    //////////////***********ENVIO DE REMITOS*************************//////////////
-    public void pendientes(final String id_order, ArrayList<HashMap<String, String>> thigs, ArrayList<HashMap<String, String>> referral) {
-        ArrayList token = users.tokenExp();
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        client.addHeader("Content-type", "application/json;charset=utf-8");
-        client.addHeader("Authorization", token.get(3).toString());
-        params.put("order",id_order);
-        params.put("things", thigs);
-        params.put("referral", referral);
-
-        try {
-            client.setTimeout(40000);
-            client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
-                    System.out.println(response);
-                    controller.elim_aux(id_order);
-
-
-//                    ArrayList<HashMap<String, String>> pendiente = controller.get_refferals();
-//                    for (HashMap<String, String> hashMap : pendiente) {
-//                        controller.elim_aux(hashMap.get("fk_id_order"));
-//
-//                    }
-                    contadores();
-                    prgDialog.hide();
-                    Toast.makeText(getApplicationContext(), "Remitos enviados satisfactoriamente", Toast.LENGTH_LONG).show();
-                    reloadActivity();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
-                    prgDialog.hide();
-                    Toast.makeText(getApplicationContext(), "ups! ocurrio un error en remitos enviados", Toast.LENGTH_LONG).show();
-                    reloadActivity();
-                }
-            });
-        }catch (Exception e){}
-
-    }
 
     //////////////***********CONTADORES*************************//////////////
 
-    public void contadores()
-    {
-        ArrayList<HashMap<String, String>> pendiente= referrals.get_refferals();
-        contador.setText(String.valueOf(pendiente.size()));
-    }
+
 
 
     /////////****************ESTO ES PARA DEVOLVERSE*****************///////////////

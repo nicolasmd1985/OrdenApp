@@ -121,12 +121,10 @@ public class ServicioGPS2 extends Service implements LocationListener {
 
                     @Override
                     public void onSuccess(String response) {
-                        System.out.println(response);
                     }
                     @Override
                     public void onFailure(int statusCode, Throwable error,
                                           String content) {
-                        System.out.println(statusCode);
                     }
                 });}catch (Exception e){}
         }
