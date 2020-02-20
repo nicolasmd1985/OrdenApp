@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -30,14 +30,31 @@
             android:enabled="true"
             android:exported="true" />
 
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+
         <activity android:name=".Pedidos" />
         <activity android:name=".Controllers.customer_controller" />
         <activity android:name=".Detalles_pedido" />
         <activity android:name=".Nuevo_pedido" />
         <activity android:name=".Agregar_dispositivos" />
         <activity android:name=".Mod_dispositivo" />
-        <activity android:name=".Scaner_dispositivo" />
+        <activity android:name=".thing_detail" />
         <activity android:name=".Remito"></activity>
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="mahecha.nicolas.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
+
     </application>
 
 </manifest>

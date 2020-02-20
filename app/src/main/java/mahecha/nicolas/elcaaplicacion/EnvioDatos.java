@@ -11,9 +11,11 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import cz.msebera.android.httpclient.Header;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
@@ -48,8 +50,7 @@ public class EnvioDatos {
 
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
-            client.addHeader("Content-type", "application/json;charset=utf-8");
-            client.addHeader("Authorization", token.get(3).toString());
+            client.setBearerAuth(token.get(3).toString());
             RequestParams params = new RequestParams();
             params.add("latitude", lat);
             params.add("longitude", lon);
@@ -57,16 +58,17 @@ public class EnvioDatos {
                 client.post(Constans.API_END + Constans.SEND_GPS , params, new AsyncHttpResponseHandler() {
 
                     @Override
-                    public void onSuccess(String response) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Toast.makeText(context, "Ubicacion Enviada",
                                 Toast.LENGTH_LONG).show();
-                        System.out.println(response);
+                        System.out.println(Arrays.toString(responseBody));
                     }
+
                     @Override
-                    public void onFailure(int statusCode, Throwable error,
-                                          String content) {
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         System.out.println(statusCode);
                     }
+
                 });}catch (Exception e){}
         }
 

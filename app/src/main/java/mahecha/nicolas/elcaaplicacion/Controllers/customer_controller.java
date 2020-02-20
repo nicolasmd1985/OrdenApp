@@ -12,9 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cz.msebera.android.httpclient.Header;
 import mahecha.nicolas.elcaaplicacion.Constans;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
@@ -41,16 +43,25 @@ public class customer_controller {
 
             prgDialog = new ProgressDialog(context);
             prgDialog.setMessage("Actualizando BD de Clientes");
-            prgDialog.setCancelable(false);
+            prgDialog.setCancelable(true);
             prgDialog.show();
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            client.addHeader("Content-type", "application/json;charset=utf-8");
-            client.addHeader("Authorization", token.get(3).toString());
+            client.setBearerAuth(token.get(3).toString());
             client.get(Constans.API_END + Constans.CUSTOMERS, params, new AsyncHttpResponseHandler() {
                 @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try {
+                        String str = new String(responseBody, "UTF-8");
+                        save_customers(str);
+                        prgDialog.hide();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     prgDialog.hide();
                     if (statusCode == 404) {
                         Toast.makeText(context, "Requested resource not found", Toast.LENGTH_LONG).show();
@@ -62,10 +73,6 @@ public class customer_controller {
                     }
                 }
 
-                @Override
-                public void onSuccess(String response) {
-                    save_customers(response);
-                }
             });
         }
 

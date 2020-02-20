@@ -11,6 +11,7 @@ import com.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cz.msebera.android.httpclient.Header;
 import mahecha.nicolas.elcaaplicacion.Constans;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
@@ -46,8 +47,7 @@ public class auto_referral {
         ArrayList token = users.tokenExp();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        client.addHeader("Content-type", "application/json;charset=utf-8");
-        client.addHeader("Authorization", token.get(3).toString());
+        client.setBearerAuth(token.get(3).toString());
         params.put("order",id_order);
         params.put("things", thigs);
         params.put("referral", referral);
@@ -55,7 +55,7 @@ public class auto_referral {
         try {
             client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
                 @Override
-                public void onSuccess(String response) {
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     controller.elim_aux(id_order);
                     count_referrals count_referrals = new count_referrals(context);
                     Toast.makeText(context, "Remitos enviados satisfactoriamente", Toast.LENGTH_LONG).show();
@@ -65,10 +65,12 @@ public class auto_referral {
                 }
 
                 @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Toast.makeText(context, "ups! ocurrio un error en remitos enviados", Toast.LENGTH_LONG).show();
+
                 }
+
+
             });
         }catch (Exception e){}
 

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,10 +32,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
 import mahecha.nicolas.elcaaplicacion.Controllers.auto_referral;
 import mahecha.nicolas.elcaaplicacion.Controllers.count_referrals;
 import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
@@ -71,9 +75,7 @@ public class Pedidos extends AppCompatActivity {
         Intent GPS = new Intent(Pedidos.this, ServicioGPS2.class);
         cargabdl();
         startService(GPS);
-        String suma = String.valueOf(count_referrals.count());
-        Toast.makeText(getApplicationContext(), "Tiene "+ suma+ " ordenes finalizas por enviar",
-                Toast.LENGTH_LONG).show();
+
     }
     ////////////////////******************AGREGA PEDIDO******************//////////////////
 
@@ -107,7 +109,6 @@ public class Pedidos extends AppCompatActivity {
             myList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView adapterView, View view, int i, long l) {
-//                    Toast.makeText(getApplicationContext(), "presiono" + i, Toast.LENGTH_SHORT).show();
                     Map<String, Object> map = (Map<String, Object>)myList.getItemAtPosition(i);
                     String id_order = (String) map.get("id_order");
                     String id_tecnic = (String) map.get("fk_user_id");
@@ -186,12 +187,23 @@ public class Pedidos extends AppCompatActivity {
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            client.addHeader("Content-type", "application/json;charset=utf-8");
-            client.addHeader("Authorization", token.get(3).toString());
+            client.setBearerAuth(token.get(3).toString());
             client.get(Constans.API_END + Constans.ORDERS, params, new AsyncHttpResponseHandler() {
                 @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try {
+                        String str = new String(responseBody, "UTF-8");
+                        prgDialog.hide();
+                        System.out.println(str);
+                        updateSQLite(str);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     prgDialog.hide();
                     if (statusCode == 404) {
                         Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
@@ -203,11 +215,6 @@ public class Pedidos extends AppCompatActivity {
                     }
                 }
 
-                @Override
-                public void onSuccess(String response) {
-                    prgDialog.hide();
-                    updateSQLite(response);
-                }
             });
         }
 
@@ -268,12 +275,13 @@ public class Pedidos extends AppCompatActivity {
             params.put("_json", order_list_to_sync);
             client.post(Constans.API_END + Constans.SYNC, params, new AsyncHttpResponseHandler() {
                 @Override
-                public void onSuccess(String response) {
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
                     send_referrals();
                 }
+
                 @Override
-                public void onFailure(int statusCode, Throwable error,String content) {
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Toast.makeText(getApplicationContext(), "ups! ocurrio un error", Toast.LENGTH_LONG).show();
                     send_referrals();
                 }
@@ -282,10 +290,6 @@ public class Pedidos extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
             send_referrals();
         }
-
-
-
-
 
     }
 
@@ -300,8 +304,7 @@ public class Pedidos extends AppCompatActivity {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        client.addHeader("Content-type", "application/json;charset=utf-8");
-        client.addHeader("Authorization", token.get(3).toString());
+        client.setBearerAuth(token.get(3).toString());
 
         Gson gson = new GsonBuilder().create();
         ArrayList<HashMap<String, String>> usersynclist;
@@ -312,19 +315,19 @@ public class Pedidos extends AppCompatActivity {
         String json = gson.toJson(usersynclist);
         client.put(Constans.API_END + Constans.DSYNC + idped, params, new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(String response) {
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
                 prgDialog.hide();
                 controller.elim_aux(idped);
                 reloadActivity();
-
             }
+
             @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
                 prgDialog.hide();
             }
+
         });
     }
 
@@ -343,7 +346,9 @@ public class Pedidos extends AppCompatActivity {
             for (int i = 0; i < aux_pen.size(); i++) {
                 manual_referral.send_manual_order(aux_pen.get(i));
             }
-            enviaremito();
+
+            prgDialog.hide();
+
         }else{enviaremito();}
     }
 
@@ -402,7 +407,10 @@ public class Pedidos extends AppCompatActivity {
                 envioDatos.enviar();
             }
         }catch(Exception e){Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();}
+
     }
+
+
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);

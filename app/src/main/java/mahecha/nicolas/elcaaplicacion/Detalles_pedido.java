@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 
-public class Detalles_pedido extends ActionBarActivity implements View.OnClickListener{
+public class Detalles_pedido extends AppCompatActivity implements View.OnClickListener{
 
     DBController controller = new DBController(this);
 

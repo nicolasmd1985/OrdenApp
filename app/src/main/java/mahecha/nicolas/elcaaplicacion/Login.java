@@ -6,21 +6,17 @@ package mahecha.nicolas.elcaaplicacion;
  */
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.Debug;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,14 +26,14 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
+import cz.msebera.android.httpclient.Header;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 public class Login extends AppCompatActivity  implements View.OnClickListener{
@@ -117,13 +113,15 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         params.add("password", password);
         client.post(Constans.API_END + Constans.AUTH, params, new AsyncHttpResponseHandler() {
 
-        @Override
-        public void onSuccess(String response) {
-            prgDialog.hide();
-            try {
-                JSONObject obj = new JSONObject(response);
-                if (obj.getString("token") != null){
-                    if(insertUser(obj)){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody, "UTF-8");
+                    prgDialog.hide();
+                    try {
+                     JSONObject obj = new JSONObject(str);
+                     if (obj.getString("token") != null){
+                         if(insertUser(obj)){
                         startprogram();
                     }
                 }
@@ -131,23 +129,24 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
 
-
-        @Override
-        public void onFailure(int statusCode, Throwable error,
-                              String content) {
-
-            if (statusCode == 401) {
-                Toast.makeText(getApplicationContext(), "Requested resource not found check credentials", Toast.LENGTH_LONG).show();
-            } else if (statusCode == 500) {
-                Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Device without connection",
-                        Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
-            prgDialog.hide();
-        }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (statusCode == 401) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found check credentials", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Device without connection",
+                            Toast.LENGTH_LONG).show();
+                }
+                prgDialog.hide();
+            }
 
         });
     }

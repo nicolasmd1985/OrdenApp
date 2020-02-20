@@ -1,6 +1,5 @@
 package mahecha.nicolas.elcaaplicacion;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -94,7 +93,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
 
     ////////////////////******************AGREGA PEDIDO******************//////////////////
     public void adddisp(View view) {
-        Intent objIntent = new Intent(getApplicationContext(), Scaner_dispositivo.class);
+        Intent objIntent = new Intent(getApplicationContext(), thing_detail.class);
         objIntent.putExtra("id_order", id_order );
         objIntent.putExtra("id_tecnic",id_tecnic );
         startActivity(objIntent);
@@ -162,5 +161,6 @@ public class Agregar_dispositivos extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
 }
