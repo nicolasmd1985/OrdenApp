@@ -27,8 +27,8 @@ public class uploader {
     public void uploadtos3 (final Context context, final File file) {
 
         if(file !=null){
-            CognitoCachingCredentialsProvider credentialsProvider;
-            credentialsProvider = new CognitoCachingCredentialsProvider(
+            // Inicializar el proveedor de credenciales de Amazon Cognito
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                     context,
                     "us-east-1:8f0038be-624e-483d-93d3-c15a88f84d23", // ID del grupo de identidades
                     Regions.US_EAST_1 // Región

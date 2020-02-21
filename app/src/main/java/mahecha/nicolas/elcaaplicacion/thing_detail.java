@@ -95,6 +95,8 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
     /////////////************************OBTIENE INFO DEL SCANER*****************////////////////
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        uploader uploader_cam = new uploader(this);
+
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
@@ -125,7 +127,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 os.flush();
                 os.close();
-
+                uploader_cam.uploadtos3(this, imageFile);
 
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
@@ -181,14 +183,10 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
 
     private void dispatchTakePictureIntent(int actionCode) {
-        uploader uploader_cam = new uploader(this);
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            File filesDir = this.getFilesDir();
-            File imageFile = new File(filesDir, "test" + ".jpg");
-            uploader_cam.uploadtos3(this, imageFile);
 
         }
     }
