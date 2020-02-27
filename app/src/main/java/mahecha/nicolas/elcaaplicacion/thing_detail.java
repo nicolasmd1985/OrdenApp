@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,7 +96,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
     /////////////************************OBTIENE INFO DEL SCANER*****************////////////////
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        uploader uploader_cam = new uploader(this);
 
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
@@ -117,8 +117,10 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             Imagetake.setImageBitmap(imageBitmap);
 
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
             File filesDir = this.getFilesDir();
-            File imageFile = new File(filesDir, "test" + ".jpg");
+            File imageFile = new File(filesDir, imageFileName + ".jpg");
 
             OutputStream os;
 
@@ -127,7 +129,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 os.flush();
                 os.close();
-                uploader_cam.uploadtos3(this, imageFile);
 
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
@@ -196,7 +197,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
     ////////////////*********************CLICK EN EL BOTON*************////////////
     public void camera_click(View view) {
         dispatchTakePictureIntent(123);
-
     }
 
 
