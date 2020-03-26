@@ -1,6 +1,6 @@
 package mahecha.nicolas.elcaaplicacion.Controllers;
 
-import android.os.Environment;
+import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
@@ -8,21 +8,26 @@ import java.util.ArrayList;
 
 import mahecha.nicolas.elcaaplicacion.R;
 
+
 public class MenuCamera {
-    private int idImage;
+    private Context context;
+    private String idImage;
     private String titulo;
+    private String id_order;
 
     public MenuCamera(){
-        idImage=0;
+        idImage="";
         titulo="";
+        id_order= "129";
+        this.context = context;
     }
 
-    public MenuCamera(int idImage, String titulo){
+    public MenuCamera(String idImage, String titulo){
         this.idImage=idImage;
         this.titulo=titulo;
     }
 
-    public int getIdImage() {
+    public String getIdImage() {
         return idImage;
     }
 
@@ -33,24 +38,33 @@ public class MenuCamera {
     public ArrayList<MenuCamera>listaMenu(){
         MenuCamera menu;
         ArrayList<MenuCamera> lista = new ArrayList<MenuCamera>();
-        String path = "/data/user/0/mahecha.nicolas.ordenapp/files";
+
+
+
+        String path = "/data/user/0/mahecha.nicolas.ordenapp/files/129";
         Log.d("Files", "Path: " + path);
         File directory = new File(path);
         File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
-        for (int i = 0; i < files.length; i++)
-        {
-            Log.d("Files", "FileName:" + files[i].getName());
+        if (files != null){
+            String[] Idmagenes = new String[files.length];
+            Log.d("Files", "Size: "+ files.length);
+            for (int i = 0; i < files.length; i++)
+            {
+//                Log.d("Files", "FileName:" + files[i].getName());
+                Idmagenes[i] = files[i].getAbsolutePath();
+                System.out.println(Idmagenes[0]);
+                String[]titulos= new String[]{"logo", "send", "font", "font"};
+
+                for (int j = 0; j<Idmagenes.length; j++){
+                    menu = new MenuCamera(Idmagenes[j], titulos[j]);
+                    lista.add(menu);
+                }
+            }
         }
 
-        Integer[]Idmagenes=new Integer[]{1, R.drawable.send, R.drawable.ic_action_refresh};
-        System.out.println(R.drawable.logodip);
-        String[]titulos= new String[]{"logo", "send", "font"};
 
-        for (int i = 0; i<Idmagenes.length; i++){
-            menu = new MenuCamera(Idmagenes[i], titulos[i]);
-            lista.add(menu);
-        }
+
         return lista;
     }
+
 }

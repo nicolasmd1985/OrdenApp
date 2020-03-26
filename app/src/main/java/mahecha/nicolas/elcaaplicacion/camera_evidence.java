@@ -20,18 +20,33 @@ import java.util.Date;
 import mahecha.nicolas.elcaaplicacion.Controllers.uploader;
 import mahecha.nicolas.elcaaplicacion.android.IntentIntegrator;
 import mahecha.nicolas.elcaaplicacion.android.IntentResult;
+import mahecha.nicolas.elcaaplicacion.Controllers.MenuCamera;
 
 import static mahecha.nicolas.elcaaplicacion.thing_detail.REQUEST_IMAGE_CAPTURE;
 
 public class camera_evidence extends AppCompatActivity {
     ImageView Imagetake;
-
+    String id_order,id_tecnic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_evidence);
+
+        MenuCamera menuCamera = new MenuCamera();
+
+
+        id_tecnic = getIntent().getStringExtra("id_tecnic");
+        id_order = getIntent().getStringExtra("id_order");
+
+
         Imagetake = (ImageView) findViewById(R.id.imageView3);
+
+
+
+
+
+
     }
 
     /////////////************************OBTIENE INFO DEL SCANER*****************////////////////
@@ -46,8 +61,13 @@ public class camera_evidence extends AppCompatActivity {
 
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
-            File filesDir = this.getFilesDir();
-            File imageFile = new File(filesDir, imageFileName +".jpg");
+
+            File path = new File(this.getFilesDir(), id_order);
+            if(!path.exists()){
+                path.mkdirs();
+            }
+//            File filesDir = this.getFilesDir();
+            File imageFile = new File(path, imageFileName +".jpg");
 
             OutputStream os;
             try {

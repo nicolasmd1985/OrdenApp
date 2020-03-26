@@ -163,7 +163,10 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
     ////////////////*********************CLICK EN EL BOTON*************////////////
     public void evidence_intent(View view) {
+
         Intent i = new Intent(thing_detail.this, camera_evidence.class);
+        i.putExtra("id_order", id_order );
+        i.putExtra("id_tecnic",id_tecnic );
         startActivity(i);
     }
 

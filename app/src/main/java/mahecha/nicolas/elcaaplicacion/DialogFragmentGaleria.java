@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,9 @@ public class DialogFragmentGaleria extends Fragment {
         adapter =  new RecycleAdapter(listaMenuGaleries, new RecycleAdapter.OnClickRecycler() {
             @Override
             public void OnClickItemRecycler(MenuCamera menu) {
-                Glide.with(getContext()).load((menu.getIdImage())).into(imageView);
+//                Glide.with(getContext()).load((menu.getIdImage())).into(imageView);
+
+                Glide.with(imageView.getContext()).load(menu.getIdImage()).into(imageView);
                 titulo.setText(menu.getTitulo());
             }
         });
