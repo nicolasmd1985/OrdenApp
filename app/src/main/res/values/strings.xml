@@ -25,4 +25,8 @@
     <string name="nomb">Descripcion</string>
     <string name="descrip_disp">Item</string>
     <string name="Moddip">Modificar Dispositivos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_cam">Galeria</string>
 </resources>

@@ -1,0 +1,42 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mahecha.nicolas.elcaaplicacion.DialogFragmentGaleria">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#979797"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:text="@string/title_cam"
+            android:textColor="#FFFFFF" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_weight="10"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/galery"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="10"
+            android:scrollbars="horizontal" />
+
+
+    </LinearLayout>
+
+</FrameLayout>

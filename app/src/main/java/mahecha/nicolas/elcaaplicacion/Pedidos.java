@@ -267,8 +267,8 @@ public class Pedidos extends AppCompatActivity {
 
         ArrayList user_id = users.tokenExp();
 
-        client.addHeader("Content-type", "application/json;charset=utf-8");
-        client.addHeader("Authorization", user_id.get(3).toString());
+        client.setBearerAuth(user_id.get(3).toString());
+
 
         ArrayList<HashMap<String, String>> order_list_to_sync =  orders.get_orders_auto(user_id.get(0).toString());
         if (order_list_to_sync.size() != 0) {

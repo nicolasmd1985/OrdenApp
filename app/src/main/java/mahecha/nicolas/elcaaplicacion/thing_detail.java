@@ -6,7 +6,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -38,7 +42,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
     EditText codigo, nombre, descripcion, latitud, longitud, tiemp;
     private Button scanBtn;
     String id_order, id_tecnic;
-    ImageView Imagetake;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
@@ -56,7 +59,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         latitud = (EditText) findViewById(R.id.latitud);
         longitud = (EditText) findViewById(R.id.longitud);
         tiemp = (EditText) findViewById(R.id.tiempo);
-        Imagetake = (ImageView) findViewById(R.id.Imagetake);
         scanBtn.setOnClickListener(this);
         tiemp.setText(tiempo());
 
@@ -111,33 +113,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
             toast.show();
         }
 
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = intent.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Imagetake.setImageBitmap(imageBitmap);
-
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            File filesDir = this.getFilesDir();
-            File imageFile = new File(filesDir, imageFileName + ".jpg");
-
-            OutputStream os;
-
-            try {
-                os = new FileOutputStream(imageFile);
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-                os.flush();
-                os.close();
-
-            } catch (Exception e) {
-                Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
-            }
-
-
-
-
-        }
     }
 
 
@@ -183,20 +158,13 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
 
 
-    private void dispatchTakePictureIntent(int actionCode) {
-
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
-        }
-    }
 
 
 
     ////////////////*********************CLICK EN EL BOTON*************////////////
-    public void camera_click(View view) {
-        dispatchTakePictureIntent(123);
+    public void evidence_intent(View view) {
+        Intent i = new Intent(thing_detail.this, camera_evidence.class);
+        startActivity(i);
     }
 
 

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -17,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".camera_evidence"></activity>
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +31,6 @@
             android:name=".GPS.ServicioGPS2"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
@@ -41,11 +42,7 @@
         <activity android:name=".Agregar_dispositivos" />
         <activity android:name=".Mod_dispositivo" />
         <activity android:name=".thing_detail" />
-        <activity android:name=".Remito"></activity>
-
-
-
-
+        <activity android:name=".Remito" />
     </application>
 
 </manifest>

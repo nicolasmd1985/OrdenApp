@@ -59,7 +59,7 @@ public class orders extends DBController {
     public ArrayList<HashMap<String, String>> get_orders_auto(String user_id) {
         ArrayList<HashMap<String, String>> wordList;
         //crea lista
-        wordList = new ArrayList<HashMap<String, String>>();
+        wordList = new ArrayList<>();
         String selectQuery = "SELECT id_order, customer_id, description, aux_order FROM orders where fk_user_id = "+user_id+" and finish = 0 and aux_order = 0 ";
 
         SQLiteDatabase database = this.getWritableDatabase();
