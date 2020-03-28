@@ -1,8 +1,12 @@
 package mahecha.nicolas.elcaaplicacion;
 
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +31,10 @@ import static mahecha.nicolas.elcaaplicacion.thing_detail.REQUEST_IMAGE_CAPTURE;
 public class camera_evidence extends AppCompatActivity {
     ImageView Imagetake;
     String id_order,id_tecnic;
+    Fragment newFragment;
+    FragmentManager fragmentManager;
+    FragmentTransaction transaction;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +43,13 @@ public class camera_evidence extends AppCompatActivity {
 
         MenuCamera menuCamera = new MenuCamera();
 
-
         id_tecnic = getIntent().getStringExtra("id_tecnic");
         id_order = getIntent().getStringExtra("id_order");
 
+        bundle = new Bundle();
+        bundle.putString("id_order", id_order);
 
-        Imagetake = (ImageView) findViewById(R.id.imageView3);
-
-
-
-
-
+        create_fragment();
 
     }
 
@@ -57,7 +61,6 @@ public class camera_evidence extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = intent.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Imagetake.setImageBitmap(imageBitmap);
 
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
@@ -76,6 +79,11 @@ public class camera_evidence extends AppCompatActivity {
                 os.flush();
                 os.close();
                 uploads3.uploadtos3(this, imageFile);
+                if(newFragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(newFragment).commit();
+                }
+                create_fragment();
+
 
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
@@ -89,12 +97,21 @@ public class camera_evidence extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
         }
+
     }
 
     ////////////////*********************CLICK EN EL BOTON*************////////////
     public void camera_click(View view) {
         dispatchTakePictureIntent();
+    }
+
+    public void create_fragment(){
+        newFragment = new DialogFragmentGaleria();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        newFragment.setArguments(bundle);
+        transaction.replace(R.id.container_frag,newFragment,id_order);
+        transaction.commit();
     }
 }

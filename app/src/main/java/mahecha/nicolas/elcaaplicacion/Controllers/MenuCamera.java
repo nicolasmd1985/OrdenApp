@@ -5,6 +5,8 @@ import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import mahecha.nicolas.elcaaplicacion.R;
 
@@ -35,34 +37,29 @@ public class MenuCamera {
         return titulo;
     }
 
-    public ArrayList<MenuCamera>listaMenu(){
+    public ArrayList<MenuCamera>listaMenu(String strtext){
         MenuCamera menu;
         ArrayList<MenuCamera> lista = new ArrayList<MenuCamera>();
 
 
 
-        String path = "/data/user/0/mahecha.nicolas.ordenapp/files/129";
+        String path = "/data/user/0/mahecha.nicolas.ordenapp/files/" + strtext;
         Log.d("Files", "Path: " + path);
         File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null){
             String[] Idmagenes = new String[files.length];
-            Log.d("Files", "Size: "+ files.length);
+//            Log.d("Files", "Size: "+ files.length);
             for (int i = 0; i < files.length; i++)
             {
-//                Log.d("Files", "FileName:" + files[i].getName());
                 Idmagenes[i] = files[i].getAbsolutePath();
-                System.out.println(Idmagenes[0]);
-                String[]titulos= new String[]{"logo", "send", "font", "font"};
-
-                for (int j = 0; j<Idmagenes.length; j++){
-                    menu = new MenuCamera(Idmagenes[j], titulos[j]);
-                    lista.add(menu);
-                }
+            }
+            Arrays.sort(Idmagenes, Collections.reverseOrder());
+            for (int j = 0; j<Idmagenes.length; j++){
+                menu = new MenuCamera(Idmagenes[j], Idmagenes[j]);
+                lista.add(menu);
             }
         }
-
-
 
         return lista;
     }

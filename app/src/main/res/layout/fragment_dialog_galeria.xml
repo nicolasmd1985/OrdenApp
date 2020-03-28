@@ -24,7 +24,7 @@
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="350dp"
             android:layout_weight="10"
             android:scaleType="fitXY"
             android:src="@android:drawable/ic_menu_gallery" />

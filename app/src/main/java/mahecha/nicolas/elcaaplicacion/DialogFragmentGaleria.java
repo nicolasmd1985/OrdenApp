@@ -25,6 +25,7 @@ public class DialogFragmentGaleria extends Fragment {
     ImageView imageView;
     ArrayList<MenuCamera> listaMenuGaleries;
     RecycleAdapter adapter;
+    String strtext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +36,8 @@ public class DialogFragmentGaleria extends Fragment {
         imageView= (ImageView)view.findViewById(R.id.imageView2);
         recyclerView = (RecyclerView)view.findViewById(R.id.galery);
 
+        strtext = getArguments().getString("id_order");
+        System.out.println(strtext);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,7 +45,7 @@ public class DialogFragmentGaleria extends Fragment {
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        listaMenuGaleries = new MenuCamera().listaMenu();
+        listaMenuGaleries = new MenuCamera().listaMenu(strtext);
         adapter =  new RecycleAdapter(listaMenuGaleries, new RecycleAdapter.OnClickRecycler() {
             @Override
             public void OnClickItemRecycler(MenuCamera menu) {
