@@ -15,12 +15,10 @@ public class MenuCamera {
     private Context context;
     private String idImage;
     private String titulo;
-    private String id_order;
 
     public MenuCamera(){
         idImage="";
         titulo="";
-        id_order= "129";
         this.context = context;
     }
 

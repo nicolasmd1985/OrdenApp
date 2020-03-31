@@ -29,8 +29,7 @@ import mahecha.nicolas.elcaaplicacion.Controllers.MenuCamera;
 import static mahecha.nicolas.elcaaplicacion.thing_detail.REQUEST_IMAGE_CAPTURE;
 
 public class camera_evidence extends AppCompatActivity {
-    ImageView Imagetake;
-    String id_order,id_tecnic;
+    String id_order,id_tecnic, code_scan;
     Fragment newFragment;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
@@ -45,9 +44,11 @@ public class camera_evidence extends AppCompatActivity {
 
         id_tecnic = getIntent().getStringExtra("id_tecnic");
         id_order = getIntent().getStringExtra("id_order");
+        code_scan = getIntent().getStringExtra("codigo");
 
         bundle = new Bundle();
         bundle.putString("id_order", id_order);
+        bundle.putString("code_scan", code_scan);
 
         create_fragment();
 
@@ -65,11 +66,10 @@ public class camera_evidence extends AppCompatActivity {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
 
-            File path = new File(this.getFilesDir(), id_order);
+            File path = new File(this.getFilesDir(), id_order + "/" + code_scan);
             if(!path.exists()){
                 path.mkdirs();
             }
-//            File filesDir = this.getFilesDir();
             File imageFile = new File(path, imageFileName +".jpg");
 
             OutputStream os;
@@ -79,10 +79,6 @@ public class camera_evidence extends AppCompatActivity {
                 os.flush();
                 os.close();
                 uploads3.uploadtos3(this, imageFile);
-                if(newFragment != null) {
-                    getSupportFragmentManager().beginTransaction().remove(newFragment).commit();
-                }
-                create_fragment();
 
 
             } catch (Exception e) {
@@ -90,6 +86,14 @@ public class camera_evidence extends AppCompatActivity {
             }
 
         }
+        try {
+            create_fragment();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.toString(),
+                    Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -112,6 +116,7 @@ public class camera_evidence extends AppCompatActivity {
         transaction = fragmentManager.beginTransaction();
         newFragment.setArguments(bundle);
         transaction.replace(R.id.container_frag,newFragment,id_order);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
+
     }
 }

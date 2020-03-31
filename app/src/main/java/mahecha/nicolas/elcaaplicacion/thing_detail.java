@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,15 +24,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import mahecha.nicolas.elcaaplicacion.Controllers.MenuCamera;
 import mahecha.nicolas.elcaaplicacion.Controllers.uploader;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.android.IntentIntegrator;
@@ -40,7 +47,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
     DBController controller = new DBController(this);
     EditText codigo, nombre, descripcion, latitud, longitud, tiemp;
-    private Button scanBtn;
+    private Button scanBtn, camera;
     String id_order, id_tecnic;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -53,6 +60,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         id_order = getIntent().getStringExtra("id_order");
 
         scanBtn = (Button) findViewById(R.id.scan_button);
+        camera = (Button) findViewById(R.id.camera);
         codigo = (EditText) findViewById(R.id.codigo);
         nombre = (EditText) findViewById(R.id.nomdisp);
         descripcion = (EditText) findViewById(R.id.descripcion);
@@ -61,6 +69,23 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         tiemp = (EditText) findViewById(R.id.tiempo);
         scanBtn.setOnClickListener(this);
         tiemp.setText(tiempo());
+
+        codigo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() >= 3){
+                    camera.setEnabled(true);
+                }else {camera.setEnabled(false);}
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
 
     }
@@ -102,10 +127,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
-            if(scanContent.length()>15)
-            {
-                descripcion.setText(scanContent);
-            }else {codigo.setText(scanContent);}
+            codigo.setText(scanContent);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -119,7 +141,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
     ////////////////*********************CLICK EN EL BOTON*************////////////
     public void adddip(View view) {
 
-
+//
         ArrayList listgps = controller.getgps();
 
         HashMap<String, String> queryValues = new HashMap<String, String>();
@@ -130,8 +152,33 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         queryValues.put("longitude", listgps.get(0).toString());
         queryValues.put("time_install", tiempo());
         queryValues.put("fk_order_id", id_order);
+
+        ArrayList<String> list = new ArrayList<String>();
+        String path = "/data/user/0/mahecha.nicolas.ordenapp/files/" + id_order + "/" + codigo.getText().toString();
+//        Log.d("Files", "Path: " + path);
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        if (files != null){
+            String[] Idmagenes = new String[files.length];
+//            Log.d("Files", "Size: "+ files.length);
+            for (int i = 0; i < files.length; i++)
+            {
+                Idmagenes[i] = files[i].getName();
+            }
+            Arrays.sort(Idmagenes, Collections.reverseOrder());
+            for (int j = 0; j<Idmagenes.length; j++){
+                list.add(Idmagenes[j]);
+            }
+        }
+
+        Gson gson = new Gson();
+
+        queryValues.put("photos", String.valueOf(gson.toJson(list)));
+//        System.out.println(gson.toJson(list));
+
         controller.inserdips(queryValues);
         this.callHomeActivity(view);
+
     }
 
 
@@ -158,15 +205,13 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
 
 
-
-
-
     ////////////////*********************CLICK EN EL BOTON*************////////////
     public void evidence_intent(View view) {
 
         Intent i = new Intent(thing_detail.this, camera_evidence.class);
         i.putExtra("id_order", id_order );
         i.putExtra("id_tecnic",id_tecnic );
+        i.putExtra("codigo", codigo.getText().toString() );
         startActivity(i);
     }
 
