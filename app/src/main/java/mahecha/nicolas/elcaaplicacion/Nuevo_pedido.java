@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import mahecha.nicolas.elcaaplicacion.Model.Customer;
@@ -66,10 +67,14 @@ public class Nuevo_pedido extends AppCompatActivity {
     public void addNewOrder(View view) {
         users users = new users(this);
         orders orders = new orders(this);
+        Random random = new Random();
 
+        int x = random.nextInt(900) + 1000000;
+        System.out.println(x);
         String tecnic_id = users.tecnic_id();
         HashMap<String, String> queryValues = new HashMap<String, String>();
 
+        queryValues.put("id_order", String.valueOf(x));
         queryValues.put("tecnic_id", tecnic_id);
         queryValues.put("description", description_field.getText().toString());
         queryValues.put("address", address_field.getText().toString());
@@ -142,11 +147,11 @@ public class Nuevo_pedido extends AppCompatActivity {
 
     }
 
-    public void diplayCustomerData(Customer custumer){
-        int customer_id = custumer.getCustomer_id();
-        String city = custumer.getCity();
-        String email = custumer.getEmail();
-        String phone_number = custumer.getPhone_number();
+    public void diplayCustomerData(Customer costumer){
+        int customer_id = costumer.getCustomer_id();
+        String city = costumer.getCity();
+        String email = costumer.getEmail();
+        String phone_number = costumer.getPhone_number();
 
 //        String customerData = "customer_id: " + customer_id + "\nFirst Name:" + first_name + "\nemail:" + email ;
 //        Toast.makeText(this, customerData, Toast.LENGTH_LONG).show();

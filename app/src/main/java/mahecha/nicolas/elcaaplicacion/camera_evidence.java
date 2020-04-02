@@ -119,4 +119,9 @@ public class camera_evidence extends AppCompatActivity {
         transaction.commitAllowingStateLoss();
 
     }
+
+
+    public void back_button(View view) {
+        onBackPressed();    //Call the back button's method
+    }
 }

@@ -111,8 +111,9 @@ public class Pedidos extends AppCompatActivity {
                 public boolean onItemLongClick(AdapterView adapterView, View view, int i, long l) {
                     Map<String, Object> map = (Map<String, Object>)myList.getItemAtPosition(i);
                     String id_order = (String) map.get("id_order");
-                    String id_tecnic = (String) map.get("fk_user_id");
-                    showSimplePopUp(id_order);
+                    String aux_order = (String) map.get("aux_order");
+
+                    showSimplePopUp(id_order, aux_order);
                     return true;
                 }
 
@@ -122,16 +123,16 @@ public class Pedidos extends AppCompatActivity {
     }
 
     //////////******************POP UP**************//////////////
-    private void showSimplePopUp(final String idped) {
+    private void showSimplePopUp(final String idped, final String aux_order) {
 
         AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
         helpBuilder.setTitle("Eliminar");
-        helpBuilder.setMessage("Realmente desea elimiar el pedido"+idped);
+        helpBuilder.setMessage("Realmente desea elimiar el pedido"+idped+" "+aux_order);
         helpBuilder.setPositiveButton("Si",
                 new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteSync(idped);
+                        deleteSync(idped, aux_order);
                     }
                 });
         helpBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -172,8 +173,6 @@ public class Pedidos extends AppCompatActivity {
     }
 
     //////////////************************get data orders************************
-
-
     public void syncSQLiteMySQLDB() {
 
         customers.customer_request();
@@ -194,7 +193,6 @@ public class Pedidos extends AppCompatActivity {
                     try {
                         String str = new String(responseBody, "UTF-8");
                         prgDialog.hide();
-                        System.out.println(str);
                         updateSQLite(str);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -294,41 +292,48 @@ public class Pedidos extends AppCompatActivity {
     }
 
     //////////////***********Update Sync: false and dele SQlite bd Order*************************//////////////
-    public void deleteSync(final String idped) {
-        prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Eliminando Pedido............");
-        prgDialog.setCancelable(false);
-        prgDialog.show();
-
-        ArrayList token = users.tokenExp();
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        client.setBearerAuth(token.get(3).toString());
-
-        Gson gson = new GsonBuilder().create();
-        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("id", idped);
-        usersynclist.add(map);
-        String json = gson.toJson(usersynclist);
-        client.put(Constans.API_END + Constans.DSYNC + idped, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-                prgDialog.hide();
-                controller.elim_aux(idped);
-                reloadActivity();
+    public void deleteSync(final String idped, final String aux_ped) {
+        if(!aux_ped.contentEquals("1")){
+            String id_ped = idped;
+            if(!aux_ped.contentEquals("0")){
+                id_ped = aux_ped;
             }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-                prgDialog.hide();
-            }
+            prgDialog = new ProgressDialog(this);
+            prgDialog.setMessage("Eliminando Pedido............");
+            prgDialog.setCancelable(false);
+            prgDialog.show();
 
-        });
+            ArrayList token = users.tokenExp();
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.setBearerAuth(token.get(3).toString());
+
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("id", id_ped);
+            client.put(Constans.API_END + Constans.DSYNC + id_ped, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
+                    prgDialog.hide();
+                    controller.elim_aux(idped);
+                    reloadActivity();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+                    prgDialog.hide();
+                }
+
+            });
+        }
+        else {
+            controller.elim_aux(idped);
+            Toast.makeText(getApplicationContext(), "Se elimino la orden manual: "+ idped , Toast.LENGTH_LONG).show();
+            reloadActivity();
+        }
+
     }
 
 
@@ -353,10 +358,6 @@ public class Pedidos extends AppCompatActivity {
     }
 
 
-
-
-
-
 ////////////////////*****************REVISA SI TIENE PEDIDOS NUEVOS*********//////////////////
 
     private void enviaremito(){
@@ -374,11 +375,6 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.hide();
         reloadActivity();
     }
-
-
-    //////////////***********CONTADORES*************************//////////////
-
-
 
 
     /////////****************ESTO ES PARA DEVOLVERSE*****************///////////////

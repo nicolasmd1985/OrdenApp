@@ -90,7 +90,7 @@ public class orders extends DBController {
         ArrayList<HashMap<String, String>> wordList;
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT id_order, customer_id, description FROM orders where fk_user_id = "+user_id+" and finish = 0";
+        String selectQuery = "SELECT id_order, customer_id, description, aux_order FROM orders where fk_user_id = "+user_id+" and finish = 0";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -100,6 +100,7 @@ public class orders extends DBController {
                 map.put("id_order", cursor.getString(0));
                 map.put("customer_id", cursor.getString(1));
                 map.put("description", cursor.getString(2));
+                map.put("aux_order", cursor.getString(3));
                 map.put("fk_user_id", user_id);
 
                 wordList.add(map);
