@@ -2,12 +2,14 @@ package mahecha.nicolas.elcaaplicacion.Controllers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Environment;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +27,10 @@ public class auto_referral {
         this.context = context;
     }
 
-    public void send_auto_referral(ArrayList<HashMap<String, String>> pending){
+    public void send_auto_referral(ArrayList<HashMap<String, String>> pending, String path){
         DBController controller = new DBController(context);
+        uploader upImage = new uploader(context);
+        resize_image resizeImage = new resize_image();
 
         int i=0;
         if(pending.size()!=0 ) {
@@ -34,6 +38,24 @@ public class auto_referral {
                 i=i+1;
                 ArrayList<HashMap<String, String>> things =  controller.getdisp(hashMap.get("fk_order_id"));
                 ArrayList<HashMap<String, String>> referral = controller.get_referral(hashMap.get("fk_order_id"));
+                if(things.size()!=0 ) {
+                    for (int j=0; j < things.size(); j++ ){
+                        if (things.get(j).get("photos") != null){
+                            String id_order = things.get(j).get("fk_order_id");
+                            String code = things.get(j).get("code_scan");
+                            String storageDir = path + "/" + id_order + "/" + code;
+                            File directory = new File(storageDir);
+                            File[] files = directory.listFiles();
+                            if (files != null){
+                                for (int k = 0; k < files.length; k++)
+                                {
+                                    upImage.uploadtos3(context, resizeImage.saveBitmapToFile(files[k]));
+                                }
+                            }
+                        }
+                    }
+
+                }
                 pendientes(hashMap.get("fk_order_id"), things, referral);
             }
 
@@ -70,7 +92,6 @@ public class auto_referral {
                     Toast.makeText(context, "ups! ocurrio un error en remitos enviados", Toast.LENGTH_LONG).show();
                     try {
                         String str = new String(responseBody, "UTF-8");
-                        System.out.println(str);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

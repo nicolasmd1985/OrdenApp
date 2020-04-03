@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import mahecha.nicolas.elcaaplicacion.Controllers.MenuCamera;
+import mahecha.nicolas.elcaaplicacion.Controllers.resize_image;
 import mahecha.nicolas.elcaaplicacion.Controllers.uploader;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.android.IntentIntegrator;
@@ -154,13 +156,12 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         queryValues.put("fk_order_id", id_order);
 
         ArrayList<String> list = new ArrayList<String>();
-        String path = "/data/user/0/mahecha.nicolas.ordenapp/files/" + id_order + "/" + codigo.getText().toString();
-//        Log.d("Files", "Path: " + path);
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/" + id_order + "/" + codigo.getText().toString() );
+        String path = String.valueOf(storageDir);
         File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null){
             String[] Idmagenes = new String[files.length];
-//            Log.d("Files", "Size: "+ files.length);
             for (int i = 0; i < files.length; i++)
             {
                 Idmagenes[i] = files[i].getName();
@@ -174,7 +175,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         Gson gson = new Gson();
 
         queryValues.put("photos", String.valueOf(gson.toJson(list)));
-//        System.out.println(gson.toJson(list));
+        System.out.println(gson.toJson(list));
 
         controller.inserdips(queryValues);
         this.callHomeActivity(view);

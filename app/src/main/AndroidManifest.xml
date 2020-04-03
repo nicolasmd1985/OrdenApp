@@ -43,6 +43,18 @@
         <activity android:name=".Mod_dispositivo" />
         <activity android:name=".thing_detail" />
         <activity android:name=".Remito" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="mahecha.nicolas.elcaaplicacion"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
+
     </application>
 
 </manifest>

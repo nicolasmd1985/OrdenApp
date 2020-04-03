@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +33,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +46,8 @@ import mahecha.nicolas.elcaaplicacion.Controllers.auto_referral;
 import mahecha.nicolas.elcaaplicacion.Controllers.count_referrals;
 import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
 import mahecha.nicolas.elcaaplicacion.Controllers.manual_referral;
+import mahecha.nicolas.elcaaplicacion.Controllers.resize_image;
+import mahecha.nicolas.elcaaplicacion.Controllers.uploader;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.orders;
@@ -345,7 +351,6 @@ public class Pedidos extends AppCompatActivity {
         prgDialog.show();
 
         ArrayList<HashMap<String, String>> aux_pen= orders.manual_order();
-        System.out.println(aux_pen);
         if(aux_pen.size()!=0)
         {
             for (int i = 0; i < aux_pen.size(); i++) {
@@ -362,14 +367,16 @@ public class Pedidos extends AppCompatActivity {
 
     private void enviaremito(){
         auto_referral auto_referral = new auto_referral(this);
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
 
         ArrayList<HashMap<String, String>> pending= referrals.get_refferals();
-        auto_referral.send_auto_referral(pending);
+        auto_referral.send_auto_referral(pending, String.valueOf(storageDir));
 
 
         ArrayList<HashMap<String, String>> pending_manual= referrals.get_manual_refferals();
-        manual_referral.send_manual_referral(pending_manual);
+        manual_referral.send_manual_referral(pending_manual, String.valueOf(storageDir));
+
 
 
         prgDialog.hide();

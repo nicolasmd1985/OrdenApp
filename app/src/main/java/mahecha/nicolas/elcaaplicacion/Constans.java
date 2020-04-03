@@ -2,8 +2,8 @@ package mahecha.nicolas.elcaaplicacion;
 
 public class Constans {
 
-//    public static final String SERVER = "https://ordenapp.co";
-    public static final String SERVER = "http://192.168.0.126:3000";
+    public static final String SERVER = "https://ordenapp.co";
+//    public static final String SERVER = "http://192.168.0.126:3000";
     public static final String API_END = SERVER + "/api/v1";
 
     public static final String AUTH = "/auth/login";
