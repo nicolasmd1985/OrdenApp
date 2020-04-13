@@ -1,7 +1,6 @@
 package mahecha.nicolas.elcaaplicacion.Controllers;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import mahecha.nicolas.elcaaplicacion.R;
 
 
 public class MenuCamera {
@@ -38,7 +36,6 @@ public class MenuCamera {
 
 
         String path = strtext;
-        Log.d("Files", "Path: " + path);
         File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null){

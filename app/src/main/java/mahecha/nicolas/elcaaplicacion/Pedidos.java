@@ -5,12 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,12 +16,16 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-//import com.google.gson.JsonArray;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -36,8 +37,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +45,6 @@ import mahecha.nicolas.elcaaplicacion.Controllers.auto_referral;
 import mahecha.nicolas.elcaaplicacion.Controllers.count_referrals;
 import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
 import mahecha.nicolas.elcaaplicacion.Controllers.manual_referral;
-import mahecha.nicolas.elcaaplicacion.Controllers.resize_image;
-import mahecha.nicolas.elcaaplicacion.Controllers.uploader;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.orders;
@@ -74,6 +71,7 @@ public class Pedidos extends AppCompatActivity {
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +81,8 @@ public class Pedidos extends AppCompatActivity {
         startService(GPS);
 
     }
+
+
     ////////////////////******************AGREGA PEDIDO******************//////////////////
 
     public void addPedidos(View view) {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1004670357977",
+    "firebase_url": "https://ordenapp-3bac8.firebaseio.com",
+    "project_id": "ordenapp-3bac8",
+    "storage_bucket": "ordenapp-3bac8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004670357977:android:29cc7f2aa8980da3ccc9c8",
+        "android_client_info": {
+          "package_name": "mahecha.nicolas.ordenapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004670357977-h2ggb2d2okq7brpuaia6l65idoabqaro.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mahecha.nicolas.ordenapp",
+            "certificate_hash": "c2922dce4c07aa372142d69da9e7ebe261adbc39"
+          }
+        },
+        {
+          "client_id": "1004670357977-jgekjpgavmk46ur1h6eahsor6febuj8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkj5CAnMqe7rfFNPuBkoUae3rH2uMQg-I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004670357977-jgekjpgavmk46ur1h6eahsor6febuj8c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

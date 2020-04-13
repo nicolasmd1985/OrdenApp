@@ -6,22 +6,34 @@ package mahecha.nicolas.elcaaplicacion;
  */
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -36,19 +48,22 @@ import java.util.HashMap;
 import cz.msebera.android.httpclient.Header;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
-public class Login extends AppCompatActivity  implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener{
 
 
     private EditText user, pass;
     private Button mSubmit;
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
+    private String token_message = "";
 
     users users = new users(this);
 
 
     private static final int PERMISSION_REQUEST_CODE = 1;
     private boolean LocationAvailable;
+    private static final String TAG = "Pedidos";
+
 
 
     @Override
@@ -72,6 +87,49 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
         } else {
             requestPermission();
         }
+        intialize_firebase();
+
+        create_token();
+
+    }
+
+
+    private void create_token() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        token_message = task.getResult().getToken();
+                    }
+                });
+    }
+
+    private void intialize_firebase() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_HIGH));
+        }
+        FirebaseMessaging.getInstance().subscribeToTopic(getString(R.string.default_notification_channel_name))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+//                        String msg = getString(R.string.msg_subscribed);
+//                        if (!task.isSuccessful()) {
+//                            msg = getString(R.string.msg_subscribe_failed);
+//                        }
+//                        Log.d(TAG, msg);
+                    }
+                });
 
     }
 
@@ -79,6 +137,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
     @Override
     public void onClick(View view) {
     //////***************FORZAR AL SERVICIO DE GPS ENVIAR UBICACION********///////////////
+
         try {
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -106,11 +165,13 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
 
         String username = user.getText().toString();
         String password = pass.getText().toString();
+        create_token();
 
 
         prgDialog.show();
         params.add("email", username);
         params.add("password", password);
+        params.add("token_params", token_message);
         client.post(Constans.API_END + Constans.AUTH, params, new AsyncHttpResponseHandler() {
 
             @Override

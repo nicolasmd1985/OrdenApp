@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CCCCCC"
+    android:background="#FFFFFF"
     android:orientation="vertical"
-    android:paddingTop="1dp" >
-
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:padding="10dp">
+    android:paddingTop="1dp">
 
 
         <EditText
@@ -64,19 +55,19 @@
 
         </EditText>
 
-        <EditText
-            android:id="@+id/nomdisp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="@string/nomb"
-            android:singleLine="true"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descripcion">
+    <EditText
+        android:id="@+id/nomdisp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/nomb"
+        android:singleLine="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descripcion">
 
-        </EditText>
+    </EditText>
 
         <EditText
             android:id="@+id/latitud"
@@ -125,68 +116,59 @@
             app:layout_constraintTop_toBottomOf="@+id/longitud" />
 
 
-        <ScrollView
-            android:id="@+id/scrollView3"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#E1C5C5"
-            app:layout_constraintTop_toBottomOf="@+id/nomdisp"
-            tools:layout_editor_absoluteX="31dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
-
-        <Button
-            android:id="@+id/camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:onClick="evidence_intent"
-            android:text="Evidencia Fotografica"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView3"
-            tools:layout_editor_absoluteX="103dp" />
-
-
-    </android.support.constraint.ConstraintLayout>
-
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:orientation="horizontal">
+        android:layout_height="150dp"
+        android:background="#D2E6F6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomdisp"
+        app:layout_constraintVertical_bias="0.036"
+        tools:layout_editor_absoluteX="-16dp">
 
-        <Button
-            android:id="@+id/btagr"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginLeft="36dp"
-            android:layout_marginTop="20dp"
-            android:onClick="adddip"
-            android:text="Agregar"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="571dp" />
+            android:orientation="vertical" />
+    </ScrollView>
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="136dp"
-            android:layout_marginLeft="136dp"
-            android:layout_marginTop="20dp"
-            android:onClick="canceldisp"
-            android:text="Cancelar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.065"
-            app:layout_constraintLeft_toRightOf="@+id/btagr"
-            app:layout_constraintStart_toEndOf="@+id/btagr"
-            tools:layout_editor_absoluteY="570dp" />
+    <Button
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:onClick="evidence_intent"
+        android:text="Evidencia Fotografica"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/btagr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="16dp"
+        android:onClick="adddip"
+        android:text="Agregar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/camera" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="64dp"
+        android:onClick="canceldisp"
+        android:text="Cancelar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.972"
+        app:layout_constraintStart_toEndOf="@+id/btagr"
+        app:layout_constraintTop_toBottomOf="@+id/camera" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
