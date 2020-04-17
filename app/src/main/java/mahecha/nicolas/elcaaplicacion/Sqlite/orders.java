@@ -29,7 +29,7 @@ public class orders extends DBController {
     {
         ArrayList<HashMap<String, String>> wordList;
         wordList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT id_order, description, address, customer_id, city_id, created_at, install_date, aux_order  FROM orders where aux_order = 1";
+        String selectQuery = "SELECT id_order, description, address, customer_id, city_id, created_at, install_date,limit_time , category_id,  aux_order FROM orders where aux_order = 1";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -43,6 +43,8 @@ public class orders extends DBController {
                 map.put("city_id", cursor.getString(4));
                 map.put("created_at", cursor.getString(5));
                 map.put("install_date", cursor.getString(6));
+                map.put("limit_time", cursor.getString(7));
+                map.put("category_id", cursor.getString(8));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -132,6 +134,8 @@ public class orders extends DBController {
         values.put("city_id", queryValues.get("city_id"));
         values.put("created_at", queryValues.get("created_at"));
         values.put("install_date", queryValues.get("install_date"));
+        values.put("limit_time", queryValues.get("limit_time"));
+        values.put("category_id", queryValues.get("category_id"));
 
         if (manual == 1){
             values.put("aux_order", 1);

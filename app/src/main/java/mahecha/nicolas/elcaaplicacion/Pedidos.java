@@ -198,7 +198,6 @@ public class Pedidos extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String str = new String(responseBody, "UTF-8");
-                        prgDialog.hide();
                         updateSQLite(str);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -243,6 +242,8 @@ public class Pedidos extends AppCompatActivity {
                     queryValues.put("city_id", obj.get("city_id").toString());
                     queryValues.put("created_at", obj.get("created_at").toString());
                     queryValues.put("install_date", obj.get("install_date").toString());
+                    queryValues.put("limit_time", obj.get("limit_time").toString());
+                    queryValues.put("category_id", obj.get("category_id").toString());
 
                     orders.insert_order(queryValues, 0);
 

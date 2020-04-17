@@ -30,31 +30,36 @@ import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 public class Nuevo_pedido extends AppCompatActivity {
 
     Spinner customer_options;
+    Spinner category_options;
+    Spinner data_time_options;
+
     EditText description_field,
             address_field,
             city_field,
             phone_field,
-            email_field;
+            email_field,
+            limit_time;
     DBController controller = new DBController(this);
     String customer_id_field;
+    String date_time, category;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_pedido);
 
         customer_options = (Spinner)findViewById(R.id.spinner);
+        category_options = (Spinner)findViewById(R.id.spinner2);
+        data_time_options = (Spinner)findViewById(R.id.spinner3);
 
         address_field = (EditText) findViewById(R.id.address);
         city_field = (EditText) findViewById(R.id.city);
         phone_field = (EditText) findViewById(R.id.phone);
         email_field = (EditText) findViewById(R.id.email);
         description_field = (EditText) findViewById(R.id.description);
+        limit_time = (EditText) findViewById(R.id.limit_time);
 
 
         onPostExecute();
-
-
-
 
     }
 
@@ -80,7 +85,8 @@ public class Nuevo_pedido extends AppCompatActivity {
         queryValues.put("city_id", city_field.getText().toString());
         queryValues.put("created_at", tiempo());
         queryValues.put("install_date", tiempo());
-
+        queryValues.put("limit_time", limit_time.getText().toString()+"-"+date_time);
+        queryValues.put("category_id", category);
 
         orders.insert_order(queryValues, 1);
         this.callHomeActivity(view);
@@ -109,9 +115,18 @@ public class Nuevo_pedido extends AppCompatActivity {
 
         ArrayList customers;
         List<Customer> customerList = new ArrayList<>();
+        List<String> categoryList = new ArrayList<>();
+        List<String> dataTimeList = new ArrayList<>();
         Map<String, Customer> map = new HashMap<>();
         int i = 0;
 
+        categoryList.add("install");
+        categoryList.add("maintenance");
+        categoryList.add("repair");
+
+
+        dataTimeList.add("horas");
+        dataTimeList.add("dias");
 
         customers = controller.customers();
         ArrayList<HashMap<String, String>> userList =  customers;
@@ -125,6 +140,41 @@ public class Nuevo_pedido extends AppCompatActivity {
                     hashMap.get("city")));
             customerList.add(map.get("customer"+i));
         }
+
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dataTimeList );
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        data_time_options.setAdapter(adapter3);
+        data_time_options.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                date_time = (String) adapterView.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoryList );
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category_options.setAdapter(adapter2);
+        category_options.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                category = (String) adapterView.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
         ArrayAdapter<Customer> adapter = new ArrayAdapter<Customer>(this, android.R.layout.simple_spinner_item, customerList );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -151,10 +201,7 @@ public class Nuevo_pedido extends AppCompatActivity {
         String email = costumer.getEmail();
         String phone_number = costumer.getPhone_number();
 
-//        String customerData = "customer_id: " + customer_id + "\nFirst Name:" + first_name + "\nemail:" + email ;
-//        Toast.makeText(this, customerData, Toast.LENGTH_LONG).show();
 
-//        address_field.setText(address);
         city_field.setText(city);
         phone_field.setText(phone_number);
         email_field.setText(email);
