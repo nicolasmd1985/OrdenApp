@@ -31,10 +31,9 @@
                 android:layout_weight="0.7">
 
                 <TextView
-                android:id="@+id/clieteid"
+                android:id="@+id/customer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                    android:textAppearance="@android:style/TextAppearance.Material.Body1"
                     android:textAlignment="viewStart"
                     android:textStyle="normal|bold|italic"
                     android:textColor="@android:color/holo_green_dark"

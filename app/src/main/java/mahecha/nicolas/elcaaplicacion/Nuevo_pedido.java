@@ -84,7 +84,7 @@ public class Nuevo_pedido extends AppCompatActivity {
         queryValues.put("customer_id", customer_id_field);
         queryValues.put("city_id", city_field.getText().toString());
         queryValues.put("created_at", tiempo());
-        queryValues.put("install_date", tiempo());
+        queryValues.put("install_time", tiempo());
         queryValues.put("limit_time", limit_time.getText().toString()+"-"+date_time);
         queryValues.put("category_id", category);
 

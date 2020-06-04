@@ -42,11 +42,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
+import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.users;
+
+import static java.time.LocalDate.*;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
 
@@ -88,10 +100,34 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             requestPermission();
         }
         intialize_firebase();
-
         create_token();
+        check_handle();
+
+
+
+
 
     }
+
+    private void check_handle() {
+        ArrayList token = users.tokenExp();
+        if (token.size() > 0){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm", Locale.ENGLISH);
+                String time_token = token.get(4).toString();
+                try {
+                    Date date = formatter.parse(time_token);
+                    Date date2 = new Date();
+                    if (date.compareTo(date2) > 0 ){
+                        startprogram();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 
     private void create_token() {
@@ -311,6 +347,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         queryValues.put("token", obj.getString("token"));
         queryValues.put("exp", obj.getString("exp"));
         queryValues.put("email", obj.getString("email"));
+        queryValues.put("status_id", obj.getString("status_id"));
         return users.insertUser(queryValues);
     }
 

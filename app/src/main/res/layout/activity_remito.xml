@@ -2,87 +2,131 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".Remito">
+
+    <LinearLayout
+        android:id="@+id/header_detail_things"
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:background="#4E8DA6"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginTop="0px">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00bcd4"
+                android:onClick="come_back"
+                android:text="@string/terminar"
+                app:srcCompat="@android:drawable/ic_menu_revert" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volver"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                tools:layout_editor_absoluteX="230dp"
+                tools:layout_editor_absoluteY="74dp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/scan_button"
+                android:layout_width="41dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:background="#00bcd4"
+                android:onClick="erase_sign"
+                android:textSize="30dp"
+                app:srcCompat="@android:drawable/editbox_background_normal" />
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Borrar firma"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/button_cancel"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00bcd4"
+                android:text="@string/terminar"
+                android:onClick="send_order"
+                app:srcCompat="@android:drawable/ic_menu_save" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finalizar y grabar"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                tools:layout_editor_absoluteX="230dp"
+                tools:layout_editor_absoluteY="74dp" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:overScrollMode="ifContentScrolls">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/linearLayout1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:id="@+id/remito"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginLeft="19dp"
-                        android:layout_marginStart="19dp"
-                        android:text="ORDEN DE TRABAJO"
-                        android:textAlignment="center"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/colorPrimary"
-                        android:textIsSelectable="true"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/linearLayout1"
-                    android:orientation="vertical">
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#D5E3EE"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-
-                    <ScrollView
-                        android:id="@+id/scrollView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:overScrollMode="ifContentScrolls">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignBottom="@+id/scrollView2">
-
-                        </RelativeLayout>
-                    </ScrollView>
-
-                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/observaciones"
@@ -90,7 +134,7 @@
                     android:layout_height="180dp"
                     android:background="@android:color/background_light"
                     android:ems="10"
-                    android:hint="Observaciones "
+                    android:hint="Observaciones Generales"
                     android:inputType="textMultiLine"
                     android:paddingBottom="1dp"
                     android:paddingEnd="1dp"
@@ -103,27 +147,34 @@
                     android:textColorHint="?attr/colorControlHighlight"
                     android:textSize="18sp" />
 
-            </LinearLayout>
-        </ScrollView>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/signing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textAlignment="center"
+                    android:text="Firme en el recuadro" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/linearLayout2">
+                <LinearLayout
+                    android:background="#000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <mahecha.nicolas.elcaaplicacion.DrawingView
+                        android:layout_margin="3dp"
+                        android:id="@+id/drawing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="150dp"
+                        android:layout_above="@+id/save"
+
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="#FFFFFFFF" />
+
+                </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:orientation="vertical"
-                android:weightSum="1">
 
 
                 <EditText
@@ -131,10 +182,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Aclaración "
-                    android:inputType="textPersonName"
-                    android:textColor="@color/colorPrimary"
-                    android:textColorHint="#ceff48" />
+                    android:hint="Nombre de quien recibe "
+                    android:inputType="textPersonName" />
 
 
                 <EditText
@@ -142,26 +191,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="E-mail "
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/colorPrimary"
-                    android:textColorHint="#ceff48" />
-
-                <mahecha.nicolas.elcaaplicacion.DrawingView
-                    android:id="@+id/drawing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="150dp"
-                    android:layout_above="@+id/save"
-
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:background="#FFFFFFFF" />
-
+                    android:hint="E-mail de quien recibe "
+                    android:inputType="textEmailAddress" />
 
             </LinearLayout>
 
 
-        </LinearLayout>
+
+
+        </ScrollView>
 
     </LinearLayout>
 

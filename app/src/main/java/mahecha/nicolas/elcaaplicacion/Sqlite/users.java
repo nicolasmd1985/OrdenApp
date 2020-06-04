@@ -47,14 +47,21 @@ public class users extends DBController{
         String query = "SELECT * FROM users ORDER BY user_id DESC LIMIT 1";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(query, null);
-        cursor.moveToLast();
-        data.add(cursor.getString(0));
-        data.add(cursor.getString(1));
-        data.add(cursor.getString(2));
-        data.add(cursor.getString(3));
-        data.add(cursor.getString(4));
-        database.close();
-        return data;
+        if(!(cursor.moveToFirst()) || cursor.getCount() ==0){
+            database.close();
+            return data;
+        }
+        else{
+            cursor.moveToLast();
+            data.add(cursor.getString(0));
+            data.add(cursor.getString(1));
+            data.add(cursor.getString(2));
+            data.add(cursor.getString(3));
+            data.add(cursor.getString(4));
+            database.close();
+            return data;
+        }
+
     }
 
 
@@ -96,6 +103,25 @@ public class users extends DBController{
         else{
             return false;
         }
+    }
+    //////////////////************GET TECNIC ID***************///////////
+
+    public String customer_name(String customer_id)
+    {
+        String query = "SELECT first_name, last_name FROM customers ORDER BY customer_id = "+customer_id+" DESC LIMIT 1";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(query, null);
+        if(!(cursor.moveToFirst()) || cursor.getCount() ==0){
+            database.close();
+            return "null";
+        }
+        else{
+            cursor.moveToLast();
+            String customer = cursor.getString(0) + " " + cursor.getString(1);
+            database.close();
+            return customer;
+        }
+
     }
 
 

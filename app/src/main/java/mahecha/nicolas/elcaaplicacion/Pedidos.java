@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ import mahecha.nicolas.elcaaplicacion.Controllers.auto_referral;
 import mahecha.nicolas.elcaaplicacion.Controllers.count_referrals;
 import mahecha.nicolas.elcaaplicacion.Controllers.customer_controller;
 import mahecha.nicolas.elcaaplicacion.Controllers.manual_referral;
+import mahecha.nicolas.elcaaplicacion.Controllers.update_user_status;
 import mahecha.nicolas.elcaaplicacion.GPS.ServicioGPS2;
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.Sqlite.orders;
@@ -64,7 +66,6 @@ public class Pedidos extends AppCompatActivity {
     EnvioDatos envioDatos = new EnvioDatos(this);
     customer_controller customers = new customer_controller(this);
     manual_referral manual_referral = new manual_referral(this);
-    count_referrals count_referrals = new count_referrals(this);
 
 
 
@@ -79,6 +80,7 @@ public class Pedidos extends AppCompatActivity {
         Intent GPS = new Intent(Pedidos.this, ServicioGPS2.class);
         cargabdl();
         startService(GPS);
+        syncSQLiteMySQLDB();
 
     }
 
@@ -95,8 +97,21 @@ public class Pedidos extends AppCompatActivity {
     {
         ArrayList user_id = users.tokenExp();
         ArrayList<HashMap<String, String>> userList =  orders.get_orders(user_id.get(0).toString());
+        if (userList.size() != 0) {
+            for (int i = 0; i < userList.size(); i++) {
+                String name = users.customer_name(userList.get(i).get("customer_id"));
+                userList.get(i).put("customer_id", name);
+            }
+        }
+        System.out.println(userList.size());
         if(userList.size()!=0) {
-            ListAdapter adapter = new SimpleAdapter(Pedidos.this, userList, R.layout.view_pedidos, new String[]{"customer_id", "description"}, new int[]{R.id.clieteid, R.id.detalleid});
+            ListAdapter adapter = new SimpleAdapter(
+                    Pedidos.this,
+                    userList,
+                    R.layout.view_pedidos,
+                    new String[]{"customer_id", "description"},
+                    new int[]{R.id.customer, R.id.detalleid});
+
             final ListView myList = (ListView) findViewById(android.R.id.list);
             myList.setAdapter(adapter);
             myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,6 +140,16 @@ public class Pedidos extends AppCompatActivity {
 
             });
 
+        }else{
+            ListAdapter adapter = new SimpleAdapter(
+                    Pedidos.this,
+                    userList,
+                    R.layout.view_pedidos,
+                    new String[]{"customer_id", "description"},
+                    new int[]{R.id.customer, R.id.detalleid});
+
+            final ListView myList = (ListView) findViewById(android.R.id.list);
+            myList.setAdapter(adapter);
         }
     }
 
@@ -133,7 +158,7 @@ public class Pedidos extends AppCompatActivity {
 
         AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
         helpBuilder.setTitle("Eliminar");
-        helpBuilder.setMessage("Realmente desea elimiar el pedido"+idped+" "+aux_order);
+        helpBuilder.setMessage("Realmente desea elimiar el pedido");
         helpBuilder.setPositiveButton("Si",
                 new DialogInterface.OnClickListener() {
 
@@ -154,28 +179,15 @@ public class Pedidos extends AppCompatActivity {
 
 
     ///////////////////////////********RECARGA ACTIVIDAD//////////////////
-    public void reloadActivity() {
-        Intent objIntent = new Intent(getApplicationContext(), Pedidos.class);
-        startActivity(objIntent);
-    }
+//    public void reloadActivity() {
+//        Intent objIntent = new Intent(getApplicationContext(), Pedidos.class);
+//        startActivity(objIntent);
+//    }
 
-    ////////////////////**************MENU ACTUALIZAR**********************
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     ////////////////////////////////*************BOTON DE SINCRONIZACION DE BD*******************////////////////////
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.refresh) {
-            syncSQLiteMySQLDB();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void buttonSync(View view) {
+        syncSQLiteMySQLDB();
     }
 
     //////////////************************get data orders************************
@@ -229,19 +241,20 @@ public class Pedidos extends AppCompatActivity {
     public void updateSQLite(String response){
         try {
             JSONArray arr = new JSONArray(response);
+            System.out.println(response);
             if(arr.length() != 0){
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = (JSONObject) arr.get(i);
                     queryValues = new HashMap<String, String>();
-                    queryValues.put("id_order", obj.get("id").toString());
+                    queryValues.put("id_order", obj.get("id_order").toString());
                     queryValues.put("tecnic_id", obj.get("tecnic_id").toString());
                     queryValues.put("description", obj.get("description").toString());
                     queryValues.put("address", obj.get("address").toString());
                     queryValues.put("customer_id", obj.get("customer_id").toString());
                     queryValues.put("city_id", obj.get("city_id").toString());
                     queryValues.put("created_at", obj.get("created_at").toString());
-                    queryValues.put("install_date", obj.get("install_date").toString());
+                    queryValues.put("install_time", obj.get("install_time").toString());
                     queryValues.put("limit_time", obj.get("limit_time").toString());
                     queryValues.put("category_id", obj.get("category_id").toString());
 
@@ -282,12 +295,14 @@ public class Pedidos extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
+                    prgDialog.hide();
                     send_referrals();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Toast.makeText(getApplicationContext(), "ups! ocurrio un error", Toast.LENGTH_LONG).show();
+                    prgDialog.hide();
                     send_referrals();
                 }
             });
@@ -324,7 +339,9 @@ public class Pedidos extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
                     prgDialog.hide();
                     controller.elim_aux(idped);
-                    reloadActivity();
+                    cargabdl();
+
+//                    reloadActivity();
                 }
 
                 @Override
@@ -338,7 +355,9 @@ public class Pedidos extends AppCompatActivity {
         else {
             controller.elim_aux(idped);
             Toast.makeText(getApplicationContext(), "Se elimino la orden manual: "+ idped , Toast.LENGTH_LONG).show();
-            reloadActivity();
+            prgDialog.hide();
+            cargabdl();
+//            reloadActivity();
         }
 
     }
@@ -381,7 +400,8 @@ public class Pedidos extends AppCompatActivity {
 
 
         prgDialog.hide();
-        reloadActivity();
+        cargabdl();
+//        reloadActivity();
     }
 
 
@@ -397,6 +417,13 @@ public class Pedidos extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    public void sign_out(View view){
+        update_user_status updateuser = new update_user_status(this);
+
+        updateuser.updateUserStatus();
+    }
+
 
 
     ///////////////////////*************UBICACION MANUAL*************////////////

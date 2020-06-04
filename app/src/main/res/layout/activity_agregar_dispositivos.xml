@@ -1,29 +1,84 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Agregar_dispositivos" >
 
-    <RelativeLayout
-
+    <LinearLayout
+        android:id="@+id/header_things"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="#cc3d00"
-        android:orientation="vertical" >
+        android:layout_height="110dp"
+        android:weightSum="3"
+        android:background="#4E8DA6"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="41dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="#8b7c11"
-            android:onClick="adddisp"
-            android:text="@string/plus"
-            android:textColor="#ffffff"
-            android:textSize="30sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/button1"
+                android:layout_width="41dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                app:srcCompat="@android:drawable/ic_menu_add"
+                android:background="#00bcd4"
+                android:onClick="adddisp"
+                android:textColor="#ffffff" />
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Agregar\ndispositivos"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="#4E8DA6"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:background="#00bcd4"
+                app:srcCompat="@android:drawable/ic_menu_save"
+                android:id="@+id/button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:onClick="terminar"
+                android:text="@string/terminar" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finalizar\n Dispositivos "
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                tools:layout_editor_absoluteX="230dp"
+                tools:layout_editor_absoluteY="74dp" />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 
@@ -31,17 +86,17 @@
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="400dp"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-
+        android:layout_below="@+id/header_things"
         android:orientation="vertical"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/textpedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dispositivos Intervenidos"
+            android:text="Dispositivos Agregados"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/background_dark"
             android:layout_alignParentTop="true"
@@ -50,44 +105,16 @@
 
 
         <ListView
-            android:layout_below="@+id/textpedido"
+            android:layout_marginTop="10dp"
             android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textpedido"
             android:layout_alignParentLeft="true"
-            android:descendantFocusability="blocksDescendants"
-            >
-        </ListView>
+            android:descendantFocusability="blocksDescendants"></ListView>
 
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/terminar"
-            android:id="@+id/button"
-            android:onClick="terminar"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/titled"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="58dp"
-            android:layout_marginEnd="58dp" />
-
-    </RelativeLayout>
 
 </RelativeLayout>

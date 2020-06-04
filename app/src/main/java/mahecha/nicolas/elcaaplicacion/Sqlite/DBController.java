@@ -19,7 +19,7 @@ public class DBController extends SQLiteOpenHelper {
 
 
     private static final String NOMBRE_BASE_DATOS = "ordenapp17042020.db";
-    private static final int VERSION_ACTUAL = 1;
+    private static final int VERSION_ACTUAL = 2;
     private final Context contexto;
 
 
@@ -38,7 +38,7 @@ public class DBController extends SQLiteOpenHelper {
         String query;
 
         ///////////////USERS//////////////////
-        query = "CREATE TABLE users ( user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, token TEXT, exp TEXT, email TEXT)";
+        query = "CREATE TABLE users ( user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, token TEXT, exp TEXT, email TEXT, status_id TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////ORDERS//////////////////
         query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0)";
@@ -182,24 +182,30 @@ public class DBController extends SQLiteOpenHelper {
 
 //    ///////////////////////QUERY PARA ACCESO////////////////////////////////////
     public ArrayList<HashMap<String, String>> listdetalle(String id_order) {
+//        description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0
         ArrayList<HashMap<String, String>> detalle;
         detalle = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  customer_id,address,city_id,description FROM orders where id_order = '"+id_order+"' ";
+        String selectQuery = "SELECT description, address, city_id, customer_id, install_time, category_id, limit_time FROM orders where id_order = '"+id_order+"' ";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("cliente", cursor.getString(0));
-                map.put("calle", cursor.getString(1));
-                map.put("ciudad", cursor.getString(2));
-                map.put("descripcion", cursor.getString(3));
+                map.put("description", cursor.getString(0));
+                map.put("address", cursor.getString(1));
+                map.put("city_id", cursor.getString(2));
+                map.put("customer_id", cursor.getString(3));
+                map.put("install_time", cursor.getString(4));
+                map.put("category_id", cursor.getString(5));
+                map.put("limit_time", cursor.getString(6));
+
 
                 detalle.add(map);
 
             }while (cursor.moveToNext());
         }
         database.close();
+        System.out.println(detalle);
         return detalle;
 
     }

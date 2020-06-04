@@ -17,50 +17,66 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
+import mahecha.nicolas.elcaaplicacion.Sqlite.users;
 
 public class Detalles_pedido extends AppCompatActivity implements View.OnClickListener{
 
     DBController controller = new DBController(this);
+    users users = new users(this);
 
-
-    private TextView Emp,prob,cal,num,ciu,prov;
+    private TextView company,address,city,description, install_time, limit_time,  category_id;
 
     private Button scanBtn;
 
     String id_order,id_tecnic;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_pedido);
-        Emp = (TextView) findViewById(R.id.empresa);
-        cal = (TextView) findViewById(R.id.address);
-        num = (TextView) findViewById(R.id.Numero);
-        ciu = (TextView) findViewById(R.id.ciudad);
-        prov = (TextView) findViewById(R.id.provincia);
-        prob = (TextView) findViewById(R.id.problema);
+        company = (TextView) findViewById(R.id.company);
+        address = (TextView) findViewById(R.id.address);
+        city = (TextView) findViewById(R.id.city);
+        install_time = (TextView) findViewById(R.id.install_time);
+        limit_time = (TextView) findViewById(R.id.limit_time);
+        category_id = (TextView) findViewById(R.id.category);
+
+        description = (TextView) findViewById(R.id.description);
         scanBtn = (Button)findViewById(R.id.button2);
         scanBtn.setOnClickListener(this);
         id_order = getIntent().getStringExtra("id_order");
         id_tecnic = getIntent().getStringExtra("id_tecnic");
-//        System.out.println(id_order+" "+id_tecnic);
         detalle(id_order);
         }
+
 
     private void detalle(String idpedido) {
 
         ArrayList<HashMap<String, String>> listdetalle = controller.listdetalle(idpedido);
+        System.out.println("listado detalle: "+ listdetalle);
         for (HashMap<String, String> hashMap : listdetalle) {
-            Emp.setText(hashMap.get("cliente"));
-            cal.setText(hashMap.get("calle"));
-            num.setText(hashMap.get("numero"));
-            ciu.setText(hashMap.get("ciudad"));
-            prov.setText(hashMap.get("provincia"));
-            prob.setText(hashMap.get("descripcion"));
+            description.setText(hashMap.get("description"));
+            address.setText(hashMap.get("address"));
+            city.setText(hashMap.get("city_id"));
+            company.setText(users.customer_name(hashMap.get("customer_id")));
+            install_time.setText(hashMap.get("install_time"));
+//            try {
+//                Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(hashMap.get("install_time"));
+//                System.out.println(date1);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            limit_time.setText(hashMap.get("limit_time"));
+            category_id.setText(hashMap.get("category_id"));
         }
     }
 

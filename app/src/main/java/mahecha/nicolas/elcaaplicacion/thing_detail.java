@@ -27,11 +27,11 @@ import mahecha.nicolas.elcaaplicacion.Sqlite.DBController;
 import mahecha.nicolas.elcaaplicacion.android.IntentIntegrator;
 import mahecha.nicolas.elcaaplicacion.android.IntentResult;
 
-public class thing_detail extends AppCompatActivity implements View.OnClickListener {
+public class thing_detail extends AppCompatActivity {
 
     DBController controller = new DBController(this);
     EditText codigo, nombre, descripcion, latitud, longitud, tiemp;
-    private Button scanBtn, camera;
+    private Button camera;
     String id_order, id_tecnic;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -43,7 +43,6 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         id_tecnic = getIntent().getStringExtra("id_tecnic");
         id_order = getIntent().getStringExtra("id_order");
 
-        scanBtn = (Button) findViewById(R.id.scan_button);
         camera = (Button) findViewById(R.id.camera);
         codigo = (EditText) findViewById(R.id.codigo);
         nombre = (EditText) findViewById(R.id.nomdisp);
@@ -51,7 +50,7 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
         latitud = (EditText) findViewById(R.id.latitud);
         longitud = (EditText) findViewById(R.id.longitud);
         tiemp = (EditText) findViewById(R.id.tiempo);
-        scanBtn.setOnClickListener(this);
+        tiemp.setText(tiempo());
         tiemp.setText(tiempo());
 
         codigo.addTextChangedListener(new TextWatcher() {
@@ -76,12 +75,9 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
 
 
     //////////////////************************CLICK SCANNEAR**************///////////
-    @Override
-    public void onClick(View v) {
-        if(v.getId()==R.id.scan_button){
-            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-            scanIntegrator.initiateScan();
-        }
+    public void camera_scan(View v) {
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateScan();
     }
 
     ///////////////////////*******************OBTENER TIEMPO**************/////////////////
@@ -108,12 +104,12 @@ public class thing_detail extends AppCompatActivity implements View.OnClickListe
     /////////////************************OBTIENE INFO DEL SCANER*****************////////////////
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
+        super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
             codigo.setText(scanContent);
-        }
-        else{
+        } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();

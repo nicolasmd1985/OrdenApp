@@ -1,6 +1,7 @@
 package mahecha.nicolas.elcaaplicacion;
 
 import android.app.AlertDialog;
+import android.app.VoiceInteractor;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,26 +122,21 @@ public class Remito extends AppCompatActivity {
     }
 
 
-    ////////////////////**************MENU ENVIAR**********************
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.enviar, menu);
-        return true;
+    ////////////////////**************ENVIAR ORDEN**********************
+    public void send_order(View view) {
+        savere();
+    }
+
+    public void erase_sign(View view){
+        drawView.destroyDrawingCache();
+        drawView.startNew();
+    }
+
+    public void come_back(View view){
+        onBackPressed();
     }
 
 
-    ////////////////////////////////*************BOTON DE SINCRONIZACION DE BD*******************////////////////////
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.enviar) {
-            //Toast.makeText(getApplicationContext(), "ATENCION!!! No tiene ningun Item", Toast.LENGTH_LONG).show();
-            savere();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
 }

@@ -1,83 +1,181 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Pedidos" >
 
-    <RelativeLayout
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/relativeLayout2"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="#cc3d00"
+        android:layout_height="110dp"
+        android:background="@color/colorTopDark"
         android:orientation="vertical"
-        android:id="@+id/relativeLayout2">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+
+        <ImageView
             android:id="@+id/button1"
             android:layout_width="41dp"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="#8b7c11"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@android:drawable/ic_input_get"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="92dp"
+            android:background="@color/colorTopLigth"
             android:onClick="addPedidos"
-            android:text="@string/plus"
-            android:textColor="#ffffff"
-            android:textSize="30sp" />
+
+
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@+id/refresh"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="60dp"
+            android:layout_toStartOf="@+id/button1"
+            android:layout_toLeftOf="@+id/button1"
+            android:text="Agregar \nOrden"
+            android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
-            android:textAlignment="center"
-            android:layout_marginRight="22dp"
-            android:layout_marginEnd="22dp"
-            android:layout_centerVertical="true"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textView11"
+            app:layout_constraintTop_toBottomOf="@+id/button1" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_toStartOf="@+id/button1"
             android:layout_toLeftOf="@+id/button1"
-            android:layout_toStartOf="@+id/button1" />
+            android:text="Sincronizar \nOrdenes"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/refresh" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="12dp"
+            android:layout_toStartOf="@+id/button1"
+            android:layout_toLeftOf="@+id/button1"
+            android:text="Ordenes \npor enviar"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            app:layout_constraintStart_toEndOf="@+id/textView11"
+            app:layout_constraintTop_toBottomOf="@+id/textpedido2" />
 
+        <TextView
+            android:id="@+id/textpedido2"
+            android:layout_width="42dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="92dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorTopLigth"
+            android:paddingStart="15dp"
+            android:paddingTop="6dp"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@+id/refresh"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/relativeLayout1"
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorTopLigth"
+            android:onClick="buttonSync"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_popup_sync" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_below="@id/relativeLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@+id/relativeLayout2"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical">
-
-
+        android:layout_height="match_parent"
+        >
         <TextView
             android:id="@+id/textpedido"
             android:layout_width="wrap_content"
             android:layout_height="27dp"
-
-            android:text="Pedidos Pendientes"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/background_dark" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Ordenes Activas"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ListView
+            android:layout_below="@id/textpedido"
             android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="564dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
 
 
-    </LinearLayout>
+        </ListView>
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="200dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="40dp"
+
+    </RelativeLayout>
+
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_weight="3"
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        android:translationZ="20dp"
+        app:srcCompat="@android:drawable/ic_menu_mylocation"
         android:onClick="ubicacion"
-        android:text="Ubicación" />
+        tools:layout_editor_absoluteX="339dp"
+        tools:layout_editor_absoluteY="344dp" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        android:translationZ="20dp"
+        app:srcCompat="@android:drawable/ic_lock_power_off"
+        android:onClick="sign_out"
+        tools:layout_editor_absoluteX="339dp"
+        tools:layout_editor_absoluteY="344dp" />
 
 </RelativeLayout>
