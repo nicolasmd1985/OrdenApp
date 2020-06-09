@@ -28,6 +28,7 @@ public class users extends DBController{
         values.put("token", queryValues.get("token"));
         values.put("exp", queryValues.get("exp"));
         values.put("email", queryValues.get("email"));
+        values.put("status_id", queryValues.get("status_id"));
 
         long check = database.insert("users", null, values);
         database.close();
@@ -58,6 +59,8 @@ public class users extends DBController{
             data.add(cursor.getString(2));
             data.add(cursor.getString(3));
             data.add(cursor.getString(4));
+            data.add(cursor.getString(5));
+            data.add(cursor.getString(6));
             database.close();
             return data;
         }
@@ -92,6 +95,7 @@ public class users extends DBController{
         ContentValues values = new ContentValues();
         values.put("token", queryValues.get("token"));
         values.put("exp", queryValues.get("exp"));
+        values.put("status_id", queryValues.get("status_id"));
 
         String id =  "'"+queryValues.get("user_id")+"'";
 
@@ -122,6 +126,25 @@ public class users extends DBController{
             return customer;
         }
 
+    }
+
+    ///////////////////***********UPDATE USER**************//////////////////////
+
+    public boolean updateStatusUser(HashMap<String, String> queryValues){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status_id", queryValues.get("status_id"));
+
+        String id =  "'"+queryValues.get("user_id")+"'";
+
+        long check= database.update("users", values ,"user_id"+"="+id, null);
+        database.close();
+        if(check > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 

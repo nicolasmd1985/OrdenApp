@@ -67,7 +67,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
                 for (HashMap<String, String> hashMap : dipslist) {
                     if(i==cont)
                     {
-                        String code = hashMap.get("codigoscan");
+                        String code = hashMap.get("code_scan");
                         showSimplePopUp(code);
                     }
                     cont=cont+1;

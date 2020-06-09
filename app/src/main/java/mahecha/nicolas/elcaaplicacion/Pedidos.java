@@ -422,6 +422,9 @@ public class Pedidos extends AppCompatActivity {
         update_user_status updateuser = new update_user_status(this);
 
         updateuser.updateUserStatus();
+        Intent x = new Intent(Pedidos.this, Login.class);
+        Toast.makeText(Pedidos.this, "Log out", Toast.LENGTH_LONG).show();
+        startActivity(x);
     }
 
 

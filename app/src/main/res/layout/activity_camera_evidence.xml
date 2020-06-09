@@ -32,13 +32,13 @@
                 android:layout_height="40dp"
                 android:onClick="back_button"
                 android:background="#00bcd4"
-                app:srcCompat="@android:drawable/ic_menu_revert"/>
+                app:srcCompat="@android:drawable/ic_menu_save"/>
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Volver"
+                android:text="Grabar Imagenes"
                 android:textColor="#FFFFFF"
                 android:textSize="15dp"
                 tools:layout_editor_absoluteX="230dp"

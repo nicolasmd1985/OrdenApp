@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "ordenapp17042020.db";
+    private static final String NOMBRE_BASE_DATOS = "ordenapp05062020.db";
     private static final int VERSION_ACTUAL = 2;
     private final Context contexto;
 
@@ -274,7 +274,7 @@ public class DBController extends SQLiteOpenHelper {
 
     public void dipsup (String iddisp) {
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete("things", "codigoscan='"+iddisp+"'", null);
+        database.delete("things", "code_scan='"+iddisp+"'", null);
     }
 
 

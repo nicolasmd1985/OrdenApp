@@ -115,10 +115,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm", Locale.ENGLISH);
                 String time_token = token.get(4).toString();
+                String status_id = token.get(6).toString();
+                System.out.println(status_id);
                 try {
                     Date date = formatter.parse(time_token);
                     Date date2 = new Date();
-                    if (date.compareTo(date2) > 0 ){
+                    if (date.compareTo(date2) > 0 && status_id.contentEquals("202")){
                         startprogram();
                     }
                 } catch (ParseException e) {
@@ -214,6 +216,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     String str = new String(responseBody, "UTF-8");
+                    System.out.println(str);
                     prgDialog.hide();
                     try {
                      JSONObject obj = new JSONObject(str);
@@ -247,38 +250,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
         });
     }
-
-
-
-//    private void bdregistro() {
-//
-//        String username = user.getText().toString();
-//
-//
-//        ArrayList<HashMap<String, String>> userList =  controller.getUsers();
-//        if(userList.size()!=0) {
-//            ArrayList<HashMap<String, String>> loginlist = controller.login();
-//            int i=0;
-//            for (HashMap<String, String> hashMap : loginlist) {
-//
-//                if (username.equals(hashMap.get("usuario"))&&password.equals(hashMap.get("pass"))) {
-//
-//                    //envioDatos.enviar();
-//                    Intent x = new Intent(Login.this, Pedidos.class);
-//                    Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_LONG).show();
-//                    x.putExtra("idusuario",hashMap.get("idusuario")  );
-//                    startActivity(x);
-//
-//                }else{i++;}
-//                if(userList.size()==i){Toast.makeText(getApplicationContext(), "Usuario ó Contraseña Incorrecta", Toast.LENGTH_LONG).show();}
-//
-//            }
-//        }else{Toast.makeText(getApplicationContext(), "No existe ningun usuario registrado", Toast.LENGTH_LONG).show();}
-//     }
-//
-
-
-
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -356,6 +327,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         queryValues.put("user_id", String.valueOf(obj.getInt("user_id")));
         queryValues.put("token", obj.getString("token"));
         queryValues.put("exp", obj.getString("exp"));
+        queryValues.put("status_id", obj.getString("status_id"));
         return users.updateUser(queryValues);
     }
 
