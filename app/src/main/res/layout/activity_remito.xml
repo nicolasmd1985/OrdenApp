@@ -118,88 +118,82 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/observaciones"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@android:color/background_light"
+                android:ems="10"
+                android:hint="Observaciones Generales"
+                android:inputType="textMultiLine"
+                android:paddingBottom="1dp"
+                android:paddingEnd="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingTop="1dp"
+                android:selectAllOnFocus="false"
+                android:singleLine="false"
+                android:textColor="@android:color/background_dark"
+                android:textColorHint="?attr/colorControlHighlight"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/signing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:ems="10"
+                android:textAlignment="center"
+                android:text="Firme en el recuadro" />
 
+            <LinearLayout
+                android:background="#000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/observaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:background="@android:color/background_light"
-                    android:ems="10"
-                    android:hint="Observaciones Generales"
-                    android:inputType="textMultiLine"
-                    android:paddingBottom="1dp"
-                    android:paddingEnd="1dp"
-                    android:paddingLeft="1dp"
-                    android:paddingRight="1dp"
-                    android:paddingTop="1dp"
-                    android:selectAllOnFocus="false"
-                    android:singleLine="false"
-                    android:textColor="@android:color/background_dark"
-                    android:textColorHint="?attr/colorControlHighlight"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/signing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textAlignment="center"
-                    android:text="Firme en el recuadro" />
-
-                <LinearLayout
-                    android:background="#000"
+                <mahecha.nicolas.elcaaplicacion.DrawingView
+                    android:layout_margin="3dp"
+                    android:id="@+id/drawing"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="150dp"
+                    android:layout_above="@+id/save"
 
-                    <mahecha.nicolas.elcaaplicacion.DrawingView
-                        android:layout_margin="3dp"
-                        android:id="@+id/drawing"
-                        android:layout_width="wrap_content"
-                        android:layout_height="150dp"
-                        android:layout_above="@+id/save"
-
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:background="#FFFFFFFF" />
-
-                </LinearLayout>
-
-
-
-
-                <EditText
-                    android:id="@+id/aclaracion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Nombre de quien recibe "
-                    android:inputType="textPersonName" />
-
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="E-mail de quien recibe "
-                    android:inputType="textEmailAddress" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:background="#FFFFFFFF" />
 
             </LinearLayout>
 
 
 
 
-        </ScrollView>
+            <EditText
+                android:id="@+id/aclaracion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Nombre de quien recibe "
+                android:inputType="textPersonName" />
+
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="E-mail de quien recibe "
+                android:inputType="textEmailAddress" />
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
