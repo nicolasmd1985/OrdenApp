@@ -43,7 +43,7 @@
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:lines="1"
-                android:maxLength="30"
+                android:maxLength="60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView">

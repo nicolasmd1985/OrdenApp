@@ -81,15 +81,15 @@ public class auto_referral {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     controller.elim_aux(id_order);
                     count_referrals count_referrals = new count_referrals(context);
-                    Toast.makeText(context, "Remitos enviados satisfactoriamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Ordenes enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
                     String suma = String.valueOf(count_referrals.count());
-                    Toast.makeText(context, "Tiene "+ suma+ " ordenes finalizas por enviar",
+                    Toast.makeText(context, "Tiene "+ suma+ " ordenes finalizadas por enviar",
                             Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(context, "ups! ocurrio un error en remitos enviados", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "ups! ocurrio un error en las ordenes enviadas", Toast.LENGTH_LONG).show();
                     try {
                         String str = new String(responseBody, "UTF-8");
                     } catch (UnsupportedEncodingException e) {

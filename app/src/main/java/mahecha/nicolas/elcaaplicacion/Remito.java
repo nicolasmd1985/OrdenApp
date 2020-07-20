@@ -47,8 +47,8 @@ public class Remito extends AppCompatActivity {
     public void savere()
     {
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
-        saveDialog.setTitle("Guardar Remito");
-        saveDialog.setMessage("Desea guardar el remito?");
+        saveDialog.setTitle("Guardar Orden Finalizada");
+        saveDialog.setMessage("Desea guardar la orden finalizada?");
         saveDialog.setPositiveButton("Si", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
             drawView.setDrawingCacheEnabled(true);
