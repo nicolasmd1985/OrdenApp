@@ -73,7 +73,6 @@ public class Nuevo_pedido extends AppCompatActivity {
         Random random = new Random();
 
         int x = random.nextInt(900) + 1000000;
-        System.out.println(x);
         String tecnic_id = users.tecnic_id();
         HashMap<String, String> queryValues = new HashMap<String, String>();
 

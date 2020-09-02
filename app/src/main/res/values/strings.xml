@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">Ordenapp</string>
+    <string name="app_name">Ordenapp_beta</string>
     <string name="action_settings">Settings</string>
     <string name="title">Agregar Orden</string>
     <string name="plus">"+"</string>
     <string name="adduser">"Agregar Orden"</string>
     <string name="user">"Datos de la Orden"</string>
-    <string name="description">"Introduzca descripcion de la Orden"</string>
+    <string name="description">"Introduzca descripción de la Orden"</string>
     <string name="customer">"Introduzca el cliente"</string>
-    <string name="address">"Direccion"</string>
+    <string name="address">"Dirección"</string>
     <string name="numero">"Numero domicilio"</string>
     <string name="city">"Ciudad"</string>
-    <string name="phone">"Telefono"</string>
-    <string name="email">"email"</string>
+    <string name="phone">"Teléfono"</string>
+    <string name="email">"Email"</string>
     <string name="save">"Grabar"</string>
     <string name="cancel">"Cancelar"</string>
     <string name="adduseractivitylabel">"Add User Activity"</string>
@@ -21,9 +21,12 @@
     <string name="terminar">Terminar</string>
     <string name="disp">Dispositivos Instalados</string>
     <string name="Dispositivos">Agregar Dispositivo</string>
-    <string name="codigo">Introduzca Codigo</string>
-    <string name="nomb">Descripcion</string>
-    <string name="descrip_disp">Item</string>
+    <string name="codigo">Introduzca Código</string>
+    <string name="nomb">Descripción</string>
+    <string name="descrip_disp">Ítem</string>
+    <string name="comments">Describir la intervención</string>
+    <string name="Bitacora">Bitácora</string>
+    <string name="Evidencia">Evidencia\nfotográfica</string>
     <string name="Moddip">Modificar Dispositivos</string>
 
     <!-- TODO: Remove or change this placeholder text -->

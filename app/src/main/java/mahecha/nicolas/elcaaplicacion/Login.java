@@ -116,7 +116,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm", Locale.ENGLISH);
                 String time_token = token.get(4).toString();
                 String status_id = token.get(6).toString();
-                System.out.println(status_id);
                 try {
                     Date date = formatter.parse(time_token);
                     Date date2 = new Date();
@@ -216,7 +215,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     String str = new String(responseBody, "UTF-8");
-                    System.out.println(str);
                     prgDialog.hide();
                     try {
                      JSONObject obj = new JSONObject(str);
@@ -287,7 +285,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     }
     private void checkToken(JSONObject obj) throws JSONException {
         ArrayList tokenExp = users.tokenExp();
-//        System.out.print(tokenExp);
     }
     private boolean insertUser(JSONObject obj) throws JSONException {
 

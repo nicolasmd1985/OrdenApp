@@ -16,29 +16,30 @@
         android:icon="@drawable/ordenapp_logo_alpha"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="m">
+        <activity android:name=".HistoryDetail"/>
+        <activity android:name=".HistoryActivity" />
         <activity android:name=".camera_evidence" />
         <activity android:name=".Login">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" android:exported="true"/>
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:exported="true" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-
         <service
             android:name=".GPS.ServicioGPS2"
             android:enabled="true"
             android:exported="false" />
-
-
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
-
         <service
             android:name=".java.MyFirebaseMessagingService"
             android:exported="false">
@@ -50,16 +51,12 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_ic_notification" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccentLight" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-
-
-
 
         <activity android:name=".Pedidos" />
         <activity android:name=".Controllers.customer_controller" />

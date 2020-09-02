@@ -61,12 +61,10 @@ public class EnvioDatos {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Toast.makeText(context, "Ubicacion Enviada",
                                 Toast.LENGTH_LONG).show();
-                        System.out.println(Arrays.toString(responseBody));
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        System.out.println(statusCode);
                     }
 
                 });}catch (Exception e){}

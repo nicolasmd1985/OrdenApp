@@ -62,7 +62,6 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
     private void detalle(String idpedido) {
 
         ArrayList<HashMap<String, String>> listdetalle = controller.listdetalle(idpedido);
-        System.out.println("listado detalle: "+ listdetalle);
         for (HashMap<String, String> hashMap : listdetalle) {
             description.setText(hashMap.get("description"));
             address.setText(hashMap.get("address"));

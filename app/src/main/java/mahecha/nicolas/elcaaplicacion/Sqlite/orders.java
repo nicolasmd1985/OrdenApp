@@ -121,8 +121,6 @@ public class orders extends DBController {
      */
     public boolean insert_order(HashMap<String, String> queryValues, int manual) {
 
-        System.out.println("querytoinsert:"+queryValues);
-
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         String query = "SELECT id_order FROM orders where id_order ="+queryValues.get("id_order");

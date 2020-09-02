@@ -37,9 +37,6 @@ public class Agregar_dispositivos extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
-               // Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
-
-//**************************MUESTRA LA LISTA DE DISPOSITIVOS ********************
                 ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(id_order);
                 int cont = 0;
                 for (HashMap<String, String> hashMap : dipslist) {
@@ -111,7 +108,6 @@ public class Agregar_dispositivos extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        System.out.println("si");
                         controller.dipsup(code);
                         reloadactivity();
                     }
@@ -120,7 +116,6 @@ public class Agregar_dispositivos extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                System.out.println("no");
             }
         });
 
@@ -158,7 +153,6 @@ public class Agregar_dispositivos extends AppCompatActivity {
             i.putExtra("id_order", id_order );
             i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);
-            //return true;
         }
         return super.onKeyDown(keyCode, event);
     }

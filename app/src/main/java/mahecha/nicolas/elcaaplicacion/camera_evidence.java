@@ -81,7 +81,6 @@ public class camera_evidence extends AppCompatActivity {
                 photoFile = createImageFile();
 
             } catch (IOException ex) {
-                System.out.println("paila");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {

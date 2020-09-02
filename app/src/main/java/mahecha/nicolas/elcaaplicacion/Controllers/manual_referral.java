@@ -132,7 +132,6 @@ public class manual_referral {
                     try {
                         String str = new String(responseBody, "UTF-8");
                         controller.elim_aux(id_order);
-                        System.out.println(str);
                         count_referrals count_referrals = new count_referrals(context);
                         Toast.makeText(context, "Ordenes finalizadas enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
                         String suma = String.valueOf(count_referrals.count());

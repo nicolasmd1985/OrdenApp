@@ -103,7 +103,6 @@ public class Pedidos extends AppCompatActivity {
                 userList.get(i).put("customer_id", name);
             }
         }
-        System.out.println(userList.size());
         if(userList.size()!=0) {
             ListAdapter adapter = new SimpleAdapter(
                     Pedidos.this,
@@ -241,7 +240,6 @@ public class Pedidos extends AppCompatActivity {
     public void updateSQLite(String response){
         try {
             JSONArray arr = new JSONArray(response);
-            System.out.println(response);
             if(arr.length() != 0){
 
                 for (int i = 0; i < arr.length(); i++) {
@@ -366,7 +364,7 @@ public class Pedidos extends AppCompatActivity {
     public void send_referrals()
     {
         prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Enviando y Recibiendo Pedidos Pendientes, espere un momento............");
+        prgDialog.setMessage("Enviando y recibiendo pedidos pendientes, espere un momento............");
         prgDialog.setCancelable(false);
         prgDialog.show();
 

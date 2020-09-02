@@ -88,7 +88,6 @@ public class Remito extends AppCompatActivity {
     {
         Date date = new Date();
         CharSequence s  = DateFormat.format("d/M/yyyy H:m", date.getTime());
-       // System.out.println (s);
         String time = s.toString();
         return time ;
     }

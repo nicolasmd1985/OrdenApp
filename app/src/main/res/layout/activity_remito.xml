@@ -142,7 +142,9 @@
                 android:singleLine="false"
                 android:textColor="@android:color/background_dark"
                 android:textColorHint="?attr/colorControlHighlight"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="top"
+                />
 
             <TextView
                 android:layout_marginTop="10dp"
