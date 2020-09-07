@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".Remito">
+    tools:context="dipzo.ordenapp.tecnic.Remito">
 
     <LinearLayout
         android:id="@+id/header_detail_things"
@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <mahecha.nicolas.elcaaplicacion.DrawingView
+                <dipzo.ordenapp.tecnic.DrawingView
                     android:layout_margin="3dp"
                     android:id="@+id/drawing"
                     android:layout_width="wrap_content"

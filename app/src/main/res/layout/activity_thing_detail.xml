@@ -198,13 +198,12 @@
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
-                android:inputType="textMultiLine"
                 android:ems="10"
-                android:hint="@string/comments">
-            </EditText>
+                android:hint="@string/comments"
+                android:inputType="textMultiLine|textNoSuggestions"/>
 
             <EditText
                 android:id="@+id/latitud"

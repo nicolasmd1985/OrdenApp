@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Agregar_dispositivos" >
+    tools:context="dipzo.ordenapp.tecnic.Agregar_dispositivos" >
 
     <LinearLayout
         android:id="@+id/header_things"
         android:layout_width="fill_parent"
         android:layout_height="110dp"
-        android:weightSum="3"
+        android:weightSum="2"
         android:background="#4E8DA6"
         android:orientation="horizontal">
 
@@ -48,7 +48,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
             android:background="#4E8DA6"
             android:orientation="vertical">

@@ -53,4 +53,12 @@
     <!-- [END fcm_default_icon_string] -->
     <string name="msg_subscribe_failed">Failed to subscribe to Ordenapp_news topic</string>
     <string name="fcm_message">Mensaje de Ordenapp</string>
+    <string name="direcci_n">Dirección:</string>
+    <string name="hora_de_ninstalacion">Hora de \ninstalación</string>
+    <string name="tiempo_nestimado">Tiempo \nestimado</string>
+    <string name="categoria_n">Categoría\n</string>
+    <string name="descripci_n">Descripción:</string>
+    <string name="aceptar">ACEPTAR</string>
+    <string name="detalles_de_la_orden">DETALLES DE LA ORDEN</string>
+    <string name="descripcion">Descripción</string>
 </resources>
