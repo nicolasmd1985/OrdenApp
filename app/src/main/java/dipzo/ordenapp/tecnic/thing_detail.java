@@ -277,7 +277,7 @@ public class thing_detail extends AppCompatActivity {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    System.out.println(statusCode);
+                    prgDialog.hide();
                     if (statusCode == 422) {
                         Toast.makeText(getApplicationContext(), "No se encontró dispositivo", Toast.LENGTH_LONG).show();
                     } else if (statusCode == 500) {

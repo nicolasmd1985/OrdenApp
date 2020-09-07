@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ordenapp_beta</string>
+    <string name="app_name">Ordenapp</string>
     <string name="action_settings">Settings</string>
     <string name="title">Agregar Orden</string>
     <string name="plus">"+"</string>

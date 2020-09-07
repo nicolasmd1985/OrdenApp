@@ -65,12 +65,6 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
             city.setText(hashMap.get("city_id"));
             company.setText(users.customer_name(hashMap.get("customer_id")));
             install_time.setText(hashMap.get("install_time"));
-//            try {
-//                Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(hashMap.get("install_time"));
-//                System.out.println(date1);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
             limit_time.setText(hashMap.get("limit_time"));
             category_id.setText(hashMap.get("category_id"));
         }

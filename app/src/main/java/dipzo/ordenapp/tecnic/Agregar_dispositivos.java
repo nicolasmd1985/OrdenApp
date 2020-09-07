@@ -40,7 +40,6 @@ public class Agregar_dispositivos extends AppCompatActivity {
                 ArrayList<HashMap<String, String>> dipslist =  controller.getdisp(id_order);
                 int cont = 0;
                 for (HashMap<String, String> hashMap : dipslist) {
-                  //  System.out.println(cont);
                     if(i==cont)
                     {
                         String code = hashMap.get("code_scan");
