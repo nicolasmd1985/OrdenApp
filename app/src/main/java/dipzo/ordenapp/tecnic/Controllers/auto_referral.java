@@ -69,35 +69,37 @@ public class auto_referral {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         client.setBearerAuth(token.get(3).toString());
+        client.setTimeout(200000);
         params.put("order",id_order);
         params.put("things", thigs);
         params.put("referral", referral);
 
-        try {
-            client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    controller.elim_aux(id_order);
-                    count_referrals count_referrals = new count_referrals(context);
-                    Toast.makeText(context, "Ordenes enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
-                    String suma = String.valueOf(count_referrals.count());
-                    Toast.makeText(context, "Tiene "+ suma+ " ordenes finalizadas por enviar",
+        client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                controller.elim_aux(id_order);
+                count_referrals count_referrals = new count_referrals(context);
+                Toast.makeText(context, "Ordenes enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
+                String suma = String.valueOf(count_referrals.count());
+                Toast.makeText(context, "Tiene "+ suma+ " ordenes finalizadas por enviar",
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (statusCode == 404) {
+                    Toast.makeText(context, "Requested resource not found", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(context, "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Dispositivo sin conexión a Internet",
                             Toast.LENGTH_LONG).show();
                 }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(context, "ups! ocurrio un error en las ordenes enviadas", Toast.LENGTH_LONG).show();
-                    try {
-                        String str = new String(responseBody, "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                }
+            }
 
 
-            });
-        }catch (Exception e){}
+        });
+
 
     }
 }

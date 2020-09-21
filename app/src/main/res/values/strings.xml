@@ -61,4 +61,6 @@
     <string name="aceptar">ACEPTAR</string>
     <string name="detalles_de_la_orden">DETALLES DE LA ORDEN</string>
     <string name="descripcion">Descripción</string>
+    <string name="precio">Precio</string>
+    <string name="garantia">Garantia</string>
 </resources>

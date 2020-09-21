@@ -17,8 +17,8 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "ordenapp25082020.db";
-    private static final int VERSION_ACTUAL = 3;
+    private static final String NOMBRE_BASE_DATOS = "ordenapp18092020.db";
+    private static final int VERSION_ACTUAL = 4;
     private final Context contexto;
 
 
@@ -43,7 +43,7 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0)";
         sqLiteDatabase.execSQL(query);
         ///////////////THINGS//////////////////
-        query = "CREATE TABLE things ( id_thing INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE , code_scan TEXT, name TEXT, description TEXT, comments TEXT, latitude TEXT, longitude TEXT, time_install TEXT, photos TEXT)";
+        query = "CREATE TABLE things ( id_thing INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE , code_scan TEXT, name TEXT, description TEXT, comments TEXT, latitude TEXT, longitude TEXT, time_install TEXT, photos TEXT, price TEXT, warranty TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////REFERRALS//////////////////
         query = "CREATE TABLE referrals ( id_referral INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE, comment TEXT, signature TEXT, full_name TEXT, final_time TEXT, email TEXT)";
@@ -221,7 +221,7 @@ public class DBController extends SQLiteOpenHelper {
         wordList = new ArrayList<HashMap<String, String>>();
 
         ///////QUERY DE DISPOSITIVOS
-        String selectQuery = "SELECT  code_scan,name,description,comments,latitude,longitude,time_install,fk_order_id,photos FROM things where fk_order_id = '"+idped+"'";
+        String selectQuery = "SELECT  code_scan,name,description,comments,latitude,longitude,time_install,fk_order_id,photos, price, warranty FROM things where fk_order_id = '"+idped+"'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -236,6 +236,8 @@ public class DBController extends SQLiteOpenHelper {
                 map.put("time_install", cursor.getString(6));
                 map.put("fk_order_id", cursor.getString(7));
                 map.put("photos", cursor.getString(8));
+                map.put("price", cursor.getString(9));
+                map.put("warranty", cursor.getString(10));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -261,9 +263,10 @@ public class DBController extends SQLiteOpenHelper {
         values.put("time_install", queryValues.get("time_install"));
         values.put("fk_order_id", queryValues.get("fk_order_id"));
         values.put("photos", queryValues.get("photos"));
+        values.put("price", queryValues.get("price"));
+        values.put("warranty", queryValues.get("warranty"));
 
-
-
+        
         //values.put("udpateStatus", "no");
         database.insert("things", null, values);
         database.close();

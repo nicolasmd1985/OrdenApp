@@ -205,6 +205,41 @@
                 android:hint="@string/comments"
                 android:inputType="textMultiLine|textNoSuggestions"/>
 
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/precio"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/warranty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:hint="@string/garantia"/>
+
+
+        </LinearLayout>
+
+
+
             <EditText
                 android:id="@+id/latitud"
                 android:layout_width="0dp"
@@ -215,7 +250,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
                 android:id="@+id/mensaje_id"
@@ -274,23 +309,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

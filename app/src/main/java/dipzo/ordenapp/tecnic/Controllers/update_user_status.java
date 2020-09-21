@@ -38,6 +38,7 @@ public class update_user_status {
         queryValues = new HashMap<>();
         queryValues.put("user_id", user_id);
         queryValues.put("status_id", "201");
+        users.updateStatusUser(queryValues);
 
         params.put("status_id", 201);
 

@@ -114,37 +114,43 @@ public class manual_referral {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         client.setBearerAuth(token.get(3).toString());
+        client.setTimeout(200000);
         params.put("order",aux_order);
         params.put("things", thigs);
         params.put("referral", referral);
 
-        try {
-            client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try {
-                        String str = new String(responseBody, "UTF-8");
-                        controller.elim_aux(id_order);
-                        count_referrals count_referrals = new count_referrals(context);
-                        Toast.makeText(context, "Ordenes finalizadas enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
-                        String suma = String.valueOf(count_referrals.count());
-                        Toast.makeText(context, "Tiene "+ suma+ " ordenes finalizas por enviar",
-                                Toast.LENGTH_LONG).show();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-
-
+        client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String str = new String(responseBody, "UTF-8");
+                    controller.elim_aux(id_order);
+                    count_referrals count_referrals = new count_referrals(context);
+                    Toast.makeText(context, "Ordenes finalizadas enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
+                    String suma = String.valueOf(count_referrals.count());
+                    Toast.makeText(context, "Tiene "+ suma+ " ordenes finalizas por enviar",
+                            Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(context, "ups! ocurrio un error en ordenes finalizadas enviados", Toast.LENGTH_LONG).show();
 
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (statusCode == 404) {
+                    Toast.makeText(context, "Requested resource not found", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(context, "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Dispositivo sin conexión a Internet",
+                            Toast.LENGTH_LONG).show();
                 }
+            }
 
-            });
-        }catch (Exception e){}
+        });
+
 
     }
 }

@@ -93,12 +93,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         }
         intialize_firebase();
         create_token();
-//        check_handle();
-
-
-
-
-
+        check_handle();
     }
 
     private void check_handle() {
@@ -174,7 +169,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 buildAlertMessageNoGps();
             }else
             {
-
                 registro();
             }
 
@@ -195,7 +189,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         String username = user.getText().toString();
         String password = pass.getText().toString();
         create_token();
-
 
         prgDialog.show();
         params.add("email", username);

@@ -40,7 +40,7 @@ import dipzo.ordenapp.tecnic.android.IntentResult;
 public class thing_detail extends AppCompatActivity {
 
     DBController controller = new DBController(this);
-    EditText codigo, nombre, descripcion, comment, latitud, longitud, tiemp;
+    EditText codigo, nombre, descripcion, comment, latitud, longitud, tiemp, price, warranty;
     private Button camera, bitaco;
     String id_order, id_tecnic, histories;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -64,7 +64,8 @@ public class thing_detail extends AppCompatActivity {
         longitud = (EditText) findViewById(R.id.longitud);
         comment = (EditText) findViewById(R.id.comment);
         tiemp = (EditText) findViewById(R.id.tiempo);
-        tiemp.setText(tiempo());
+        price = (EditText) findViewById(R.id.price);
+        warranty = (EditText) findViewById(R.id.warranty);
         tiemp.setText(tiempo());
 
         codigo.addTextChangedListener(new TextWatcher() {
@@ -148,6 +149,8 @@ public class thing_detail extends AppCompatActivity {
         queryValues.put("longitude", listgps.get(0).toString());
         queryValues.put("time_install", tiempo());
         queryValues.put("fk_order_id", id_order);
+        queryValues.put("price", price.getText().toString());
+        queryValues.put("warranty", warranty.getText().toString());
 
         ArrayList<String> list = new ArrayList<String>();
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/" + id_order + "/" + codigo.getText().toString() );
