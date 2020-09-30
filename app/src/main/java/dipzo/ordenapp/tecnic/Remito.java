@@ -84,7 +84,7 @@ public class Remito extends AppCompatActivity {
     public String tiempo()
     {
         Date date = new Date();
-        CharSequence s  = DateFormat.format("d/M/yyyy H:m", date.getTime());
+        CharSequence s  = DateFormat.format("d/M/yyyy H:mm:ss", date.getTime());
         String time = s.toString();
         return time ;
     }
