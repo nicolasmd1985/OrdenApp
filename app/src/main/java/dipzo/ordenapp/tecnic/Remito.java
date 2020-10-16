@@ -10,18 +10,26 @@ import android.text.format.DateFormat;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
+import dipzo.ordenapp.tecnic.Model.Customer;
 import dipzo.ordenapp.tecnic.Sqlite.DBController;
 
 public class Remito extends AppCompatActivity {
 
+
+    Spinner status_spinner;
     String id_order,id_tecnic;
     private DrawingView drawView;
     EditText observaciones,aclaracion,email;
@@ -38,6 +46,10 @@ public class Remito extends AppCompatActivity {
         observaciones = (EditText)findViewById(R.id.observaciones);
         aclaracion = (EditText)findViewById(R.id.aclaracion);
         email=(EditText)findViewById(R.id.email);
+
+        status_spinner = (Spinner)findViewById(R.id.spinnerStatus);
+
+        select_status();
     }
 
 
@@ -130,6 +142,34 @@ public class Remito extends AppCompatActivity {
 
     public void come_back(View view){
         onBackPressed();
+    }
+
+
+
+    public void select_status(){
+        List<String> StatusList = new ArrayList<>();
+        StatusList.add("Pendiente");
+        StatusList.add("Centro de servicio");
+        StatusList.add("Cuenta por Cobrar");
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, StatusList );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        status_spinner.setAdapter(adapter);
+        status_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Customer customer = (Customer) adapterView.getSelectedItem();
+//                diplayCustomerData(customer);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
 

@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DIPZO-ORDENAPP-OrdenApp.iml" filepath="$PROJECT_DIR$/DIPZO-ORDENAPP-OrdenApp.iml" group="OrdenApp" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DIPZO-ORDENAPP-OrdenApp-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DIPZO-ORDENAPP-OrdenApp-app.iml" group="OrdenApp/app" />
-      <module fileurl="file://$PROJECT_DIR$/ORDENAPP-OrdenApp.iml" filepath="$PROJECT_DIR$/ORDENAPP-OrdenApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/ORDENAPP-OrdenApp-app.iml" filepath="$PROJECT_DIR$/app/ORDENAPP-OrdenApp-app.iml" group="OrdenApp/app" />
-      <module fileurl="file://$PROJECT_DIR$/OrdenApp.iml" filepath="$PROJECT_DIR$/OrdenApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/OrdenApp-app.iml" filepath="$PROJECT_DIR$/app/OrdenApp-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nicolasmahecha-DIPZO-ORDENAPP-OrdenApp.iml" filepath="$PROJECT_DIR$/.idea/modules/nicolasmahecha-DIPZO-ORDENAPP-OrdenApp.iml" group="OrdenApp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OrdenApp.iml" filepath="$PROJECT_DIR$/.idea/modules/OrdenApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/OrdenApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/OrdenApp.app.iml" />
     </modules>
   </component>
 </project>
