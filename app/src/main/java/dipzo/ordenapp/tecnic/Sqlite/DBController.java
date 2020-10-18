@@ -17,8 +17,8 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "ordenapp18092020.db";
-    private static final int VERSION_ACTUAL = 4;
+    private static final String NOMBRE_BASE_DATOS = "ordenapp17102020.db";
+    private static final int VERSION_ACTUAL = 5;
     private final Context contexto;
 
 
@@ -40,13 +40,13 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE users ( user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, token TEXT, exp TEXT, email TEXT, status_id TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////ORDERS//////////////////
-        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0, order_id INTEGER, sub_order_id INTEGER)";
+        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0)";
         sqLiteDatabase.execSQL(query);
         ///////////////THINGS//////////////////
         query = "CREATE TABLE things ( id_thing INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE , code_scan TEXT, name TEXT, description TEXT, comments TEXT, latitude TEXT, longitude TEXT, time_install TEXT, photos TEXT, price TEXT, warranty TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////REFERRALS//////////////////
-        query = "CREATE TABLE referrals ( id_referral INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE, comment TEXT, signature TEXT, full_name TEXT, final_time TEXT, email TEXT)";
+        query = "CREATE TABLE referrals ( id_referral INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE, comment TEXT, signature TEXT, full_name TEXT, final_time TEXT, email TEXT, status_id INTEGER, sub_status_id INTEGER)";
         sqLiteDatabase.execSQL(query);
         /////////////////UBICACION GPS//////////////////////////
         query = "CREATE TABLE GPSlogs (id_gps INTEGER PRIMARY KEY, longitude TEXT, latitude TEXT )";
@@ -340,6 +340,7 @@ public class DBController extends SQLiteOpenHelper {
             values.put("signature", queryValues.get("signature"));
             values.put("final_time", queryValues.get("final_time"));
             values.put("email", queryValues.get("email"));
+            values.put("status_id", queryValues.get("status_id"));
 
             database.insert("referrals", null,values );
             database.close();
@@ -376,7 +377,7 @@ public class DBController extends SQLiteOpenHelper {
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
 
-         String selectQuery = "SELECT  comment,signature,full_name,final_time,email FROM referrals where fk_order_id ='"+idped+"'";
+         String selectQuery = "SELECT  comment,signature,full_name,final_time,email, status_id FROM referrals where fk_order_id ='"+idped+"'";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -388,6 +389,7 @@ public class DBController extends SQLiteOpenHelper {
                 map.put("full_name", cursor.getString(2));
                 map.put("final_time", cursor.getString(3));
                 map.put("email", cursor.getString(4));
+                map.put("status_id", cursor.getString(5));
 
                 wordList.add(map);
             } while (cursor.moveToNext());

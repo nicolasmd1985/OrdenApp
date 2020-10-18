@@ -12,6 +12,7 @@ public class Constans {
     public static final String AUTH = "/auth/login";
     public static final String SEND_GPS = "/send_gps";
     public static final String ORDERS = "/orders";
+    public static final String ARRIVE = "/orders-arrive/";
     public static final String SYNC = "/orders-sync";
     public static final String DSYNC = "/orders-desync/";
     public static final String CUSTOMERS = "/customers/";
