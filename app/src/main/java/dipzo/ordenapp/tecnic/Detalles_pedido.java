@@ -179,11 +179,11 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
             params.add("latitude", lat);
             params.add("longitude", lon);
             try{
-                client.post(Constans.API_END + Constans.SEND_GPS , params, new AsyncHttpResponseHandler() {
+                client.put(Constans.API_END + Constans.ARRIVE + id_order, params, new AsyncHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Toast.makeText(getApplicationContext(), "Ubicacion Enviada",
+                        Toast.makeText(getApplicationContext(), "Se informo de llegada",
                                 Toast.LENGTH_LONG).show();
                     }
 

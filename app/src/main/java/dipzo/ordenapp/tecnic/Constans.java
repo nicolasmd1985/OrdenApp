@@ -2,8 +2,8 @@ package dipzo.ordenapp.tecnic;
 
 public class Constans {
 
-//    public static final String SERVER = "https://ordenapp.co";
-    public static final String SERVER = "http://192.168.0.144:3000";
+    public static final String SERVER = "https://ordenapp.co";
+//    public static final String SERVER = "http://192.168.0.144:3000";
 //    public static final String SERVER = "http://beta.ordenapp.co:3000/";
 
 
@@ -12,6 +12,7 @@ public class Constans {
     public static final String AUTH = "/auth/login";
     public static final String SEND_GPS = "/send_gps";
     public static final String ORDERS = "/orders";
+    public static final String ARRIVE = "/orders-arrive/";
     public static final String SYNC = "/orders-sync";
     public static final String DSYNC = "/orders-desync/";
     public static final String CUSTOMERS = "/customers/";

@@ -30,7 +30,7 @@ public class Remito extends AppCompatActivity {
 
 
     Spinner status_spinner;
-    String id_order,id_tecnic;
+    String id_order,id_tecnic, status_selected;
     private DrawingView drawView;
     EditText observaciones,aclaracion,email;
     DBController controller = new DBController(this);
@@ -74,6 +74,7 @@ public class Remito extends AppCompatActivity {
             queryValues.put("signature",encodedString);
             queryValues.put("final_time", tiempo());
             queryValues.put("email", email.getText().toString());
+            queryValues.put("status_id", status_selected);
             controller.insert_referral(queryValues);
             controller.finish_order(Integer.valueOf(id_order));
             drawView.destroyDrawingCache();
@@ -160,8 +161,7 @@ public class Remito extends AppCompatActivity {
         status_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                Customer customer = (Customer) adapterView.getSelectedItem();
-//                diplayCustomerData(customer);
+                status_selected = (String) adapterView.getSelectedItem();
             }
 
             @Override
