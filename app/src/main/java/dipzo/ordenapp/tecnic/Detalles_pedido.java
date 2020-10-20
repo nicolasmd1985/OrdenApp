@@ -6,8 +6,10 @@ package dipzo.ordenapp.tecnic;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +19,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cz.msebera.android.httpclient.Header;
 import dipzo.ordenapp.tecnic.Sqlite.DBController;
 import dipzo.ordenapp.tecnic.Sqlite.users;
 
@@ -82,10 +90,7 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
                 buildAlertMessageNoGps();
             }else
             {
-                Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
-                i.putExtra("id_order", id_order );
-                i.putExtra("id_tecnic", id_tecnic );
-                startActivity(i);
+                status_510();
             }
 
         }catch(Exception e){
@@ -129,6 +134,68 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+
+    ///////////********SEND STATUS 510 ****///////////////
+
+    public void status_510()
+    {
+        android.app.AlertDialog.Builder saveDialog = new android.app.AlertDialog.Builder(this);
+        saveDialog.setTitle("Empezar Orden");
+        saveDialog.setMessage("Se dara inicio a la orden una vez sea aceptada");
+        saveDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                send_gps_status();
+                Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
+                i.putExtra("id_order", id_order );
+                i.putExtra("id_tecnic", id_tecnic );
+                startActivity(i);
+            }
+        });
+        saveDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.cancel();
+            }
+        });
+        saveDialog.show();
+    }
+
+
+    public void send_gps_status()
+    {
+        String lon=null,lat=null;
+        ArrayList<HashMap<String,String>> listgps = controller.getgps();
+        lon = String.valueOf(listgps.get(0));
+        lat = String.valueOf(listgps.get(1));
+
+
+        ArrayList token = users.tokenExp();
+
+        if (token != null){
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.setBearerAuth(token.get(3).toString());
+            RequestParams params = new RequestParams();
+            params.add("latitude", lat);
+            params.add("longitude", lon);
+            try{
+                client.post(Constans.API_END + Constans.SEND_GPS , params, new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Toast.makeText(getApplicationContext(), "Ubicacion Enviada",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    }
+
+                });}catch (Exception e){}
+        }
+
+
+
     }
 
 }

@@ -40,7 +40,7 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE users ( user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, token TEXT, exp TEXT, email TEXT, status_id TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////ORDERS//////////////////
-        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0)";
+        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id Text, finish INTEGER DEFAULT 0, aux_order INTEGER DEFAULT 0, order_id INTEGER, sub_order_id INTEGER)";
         sqLiteDatabase.execSQL(query);
         ///////////////THINGS//////////////////
         query = "CREATE TABLE things ( id_thing INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE , code_scan TEXT, name TEXT, description TEXT, comments TEXT, latitude TEXT, longitude TEXT, time_install TEXT, photos TEXT, price TEXT, warranty TEXT)";
