@@ -14,7 +14,7 @@ public class resize_image {
             // BitmapFactory options to downsize the image
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
-            o.inSampleSize = 6;
+            o.inSampleSize = 3;
             // factor of downsizing the image
 
             FileInputStream inputStream = new FileInputStream(file);
@@ -43,7 +43,7 @@ public class resize_image {
             file.createNewFile();
             FileOutputStream outputStream = new FileOutputStream(file);
 
-            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 80 , outputStream);
 
             return file;
         } catch (Exception e) {

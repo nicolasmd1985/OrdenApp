@@ -41,9 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Cancelar"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp"
-                tools:layout_editor_absoluteX="230dp"
-                tools:layout_editor_absoluteY="74dp" />
+                android:textSize="15dp" />
 
 
         </LinearLayout>
@@ -210,6 +208,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:weightSum="2">
 
                 <EditText

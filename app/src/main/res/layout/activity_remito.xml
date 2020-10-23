@@ -147,6 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:ems="10"
+                android:padding="10dp"
                 android:hint="@string/observaciones_generales"
                 android:inputType="textMultiLine"
                 android:layout_margin="10dp"

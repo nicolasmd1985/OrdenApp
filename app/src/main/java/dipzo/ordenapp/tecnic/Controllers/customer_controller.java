@@ -95,7 +95,7 @@ public class customer_controller {
                     queryValues.put("first_name", obj.get("first_name").toString());
                     queryValues.put("last_name", obj.get("last_name").toString());
                     queryValues.put("email", obj.get("email").toString());
-                    queryValues.put("phone_number", obj.get("phone_number").toString());
+                    queryValues.put("phone_number", obj.get("phone_number_1").toString());
                     queryValues.put("city", obj.get("city").toString());
                     controller.insertCustomers(queryValues);
                 }

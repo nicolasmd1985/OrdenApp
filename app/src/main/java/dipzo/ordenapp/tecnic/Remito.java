@@ -161,7 +161,18 @@ public class Remito extends AppCompatActivity {
         status_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                status_selected = (String) adapterView.getSelectedItem();
+                String status = (String) adapterView.getSelectedItem();
+                switch(status) {
+                    case "Pendiente":
+                        status_selected = "506";
+                        break;
+                    case "Centro de servicio":
+                        status_selected = "508";
+                        break;
+                    default:
+                        status_selected  = "507";
+                        break;
+                }
             }
 
             @Override

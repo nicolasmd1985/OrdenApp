@@ -4,129 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
     tools:context="dipzo.ordenapp.tecnic.Pedidos" >
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
-        android:id="@+id/relativeLayout2"
+    <LinearLayout
+        android:id="@+id/header_detail_things"
         android:layout_width="fill_parent"
         android:layout_height="110dp"
-        android:background="@color/colorTopDark"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="#4E8DA6"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginTop="0px">
 
 
-        <ImageView
-            android:id="@+id/button1"
-            android:layout_width="41dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            app:srcCompat="@android:drawable/ic_input_get"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="92dp"
-            android:background="@color/colorTopLigth"
-            android:onClick="addPedidos"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
 
 
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/refresh"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/button1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00bcd4"
+                android:onClick="addPedidos"
+                app:srcCompat="@android:drawable/ic_input_get" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="60dp"
-            android:layout_toStartOf="@+id/button1"
-            android:layout_toLeftOf="@+id/button1"
-            android:text="Agregar \nOrden"
-            android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/textView11"
-            app:layout_constraintTop_toBottomOf="@+id/button1" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Agregar \nOrden"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_toStartOf="@+id/button1"
-            android:layout_toLeftOf="@+id/button1"
-            android:text="Sincronizar \nOrdenes"
-            android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/refresh" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="12dp"
-            android:layout_toStartOf="@+id/button1"
-            android:layout_toLeftOf="@+id/button1"
-            android:text="Ordenes \npor enviar"
-            android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"
-            app:layout_constraintStart_toEndOf="@+id/textView11"
-            app:layout_constraintTop_toBottomOf="@+id/textpedido2" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textpedido2"
-            android:layout_width="42dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorTopLigth"
-            android:paddingStart="15dp"
-            android:paddingTop="6dp"
-            android:text="0"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
-            app:layout_constraintStart_toEndOf="@+id/refresh"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/refresh"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorTopLigth"
-            android:onClick="buttonSync"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_popup_sync" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00bcd4"
+                android:onClick="buttonSync"
+                app:srcCompat="@android:drawable/ic_popup_sync" />
+
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sincronizar \nOrdenes"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/refresh" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+
+
+
+            <TextView
+                android:id="@+id/textpedido2"
+                android:layout_width="42dp"
+                android:layout_height="41dp"
+                android:paddingStart="15dp"
+                android:paddingTop="6dp"
+                android:background="#00bcd4"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toEndOf="@+id/refresh"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ordenes \npor enviar"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/header_detail_things"
         android:id="@+id/relativeLayout3"
-        android:layout_below="@id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         >
         <TextView
+            android:layout_marginTop="20dp"
             android:id="@+id/textpedido"
             android:layout_width="wrap_content"
             android:layout_height="27dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
             android:text="Ordenes Activas"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -141,7 +152,7 @@
         </ListView>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 
