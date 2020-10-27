@@ -35,6 +35,7 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 import dipzo.ordenapp.tecnic.Controllers.auto_referral;
 import dipzo.ordenapp.tecnic.Controllers.customer_controller;
+import dipzo.ordenapp.tecnic.Controllers.substatuses;
 import dipzo.ordenapp.tecnic.Controllers.manual_referral;
 import dipzo.ordenapp.tecnic.Controllers.update_user_status;
 import dipzo.ordenapp.tecnic.GPS.ServicioGPS2;
@@ -55,6 +56,7 @@ public class Pedidos extends AppCompatActivity {
 
     EnvioDatos envioDatos = new EnvioDatos(this);
     customer_controller customers = new customer_controller(this);
+    substatuses substatuses = new substatuses(this);
     manual_referral manual_referral = new manual_referral(this);
 
 
@@ -183,6 +185,7 @@ public class Pedidos extends AppCompatActivity {
     public void syncSQLiteMySQLDB() {
 
         customers.customer_request();
+        substatuses.substatus_request(Constans.PENDING);
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Sincronizando Pedidos, espere un momento............");
         prgDialog.setCancelable(false);

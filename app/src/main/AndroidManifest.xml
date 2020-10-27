@@ -64,7 +64,7 @@
         <activity android:name="dipzo.ordenapp.tecnic.Agregar_dispositivos" />
         <activity android:name="dipzo.ordenapp.tecnic.Mod_dispositivo" />
         <activity android:name="dipzo.ordenapp.tecnic.thing_detail" />
-        <activity android:name="dipzo.ordenapp.tecnic.Remito" />
+        <activity android:name="dipzo.ordenapp.tecnic.Order" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

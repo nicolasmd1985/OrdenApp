@@ -13,8 +13,12 @@ public class resize_image {
         try {
             // BitmapFactory options to downsize the image
             BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            o.inSampleSize = 3;
+            o.inJustDecodeBounds = false;
+            o.inSampleSize = 12;
+            o.inPreferQualityOverSpeed = true;
+            o.inDither = false;
+            o.inScaled = false;
+            o.inPreferredConfig = Bitmap.Config.ARGB_8888;
             // factor of downsizing the image
 
             FileInputStream inputStream = new FileInputStream(file);

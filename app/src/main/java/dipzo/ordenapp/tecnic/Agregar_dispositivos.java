@@ -135,7 +135,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
     public void terminar(View view) {
 
         Intent objIntent = new Intent(getApplicationContext(),
-                Remito.class);
+                Order.class);
         objIntent.putExtra("id_order", id_order );
         objIntent.putExtra("id_tecnic",id_tecnic );
         startActivity(objIntent);

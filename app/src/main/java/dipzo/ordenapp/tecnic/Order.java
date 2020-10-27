@@ -22,11 +22,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dipzo.ordenapp.tecnic.Model.Customer;
+import dipzo.ordenapp.tecnic.Model.SubStatus;
 import dipzo.ordenapp.tecnic.Sqlite.DBController;
+import dipzo.ordenapp.tecnic.Sqlite.substatuses_db;
 
-public class Remito extends AppCompatActivity {
+public class Order extends AppCompatActivity {
 
 
     Spinner status_spinner;
@@ -34,6 +37,7 @@ public class Remito extends AppCompatActivity {
     private DrawingView drawView;
     EditText observaciones,aclaracion,email;
     DBController controller = new DBController(this);
+    substatuses_db statusDb = new substatuses_db(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class Remito extends AppCompatActivity {
             controller.insert_referral(queryValues);
             controller.finish_order(Integer.valueOf(id_order));
             drawView.destroyDrawingCache();
-            Intent i = new Intent(Remito.this, Pedidos.class);
+            Intent i = new Intent(Order.this, Pedidos.class);
             i.putExtra("idpedido", id_order );
             i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);
@@ -121,7 +125,7 @@ public class Remito extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
-            Intent i = new Intent(Remito.this, Agregar_dispositivos.class);
+            Intent i = new Intent(Order.this, Agregar_dispositivos.class);
             i.putExtra("id_order", id_order );
             i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);
@@ -173,6 +177,39 @@ public class Remito extends AppCompatActivity {
                         status_selected  = "507";
                         break;
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        ArrayList substatus;
+        List<SubStatus> subList = new ArrayList<>();
+
+        Map<String, SubStatus> map = new HashMap<>();
+        int i = 0;
+        substatus = statusDb.get_substatus("506");
+        ArrayList<HashMap<String, String>> subStatusList =  substatus;
+        for (HashMap<String, String> hashMap : subStatusList) {
+            map.put("substatus"+i, new SubStatus(
+                    Integer.parseInt(hashMap.get("id_substatus")),
+                    hashMap.get("description")));
+            subList.add(map.get("substatus"+i));
+        }
+
+
+        ArrayAdapter<SubStatus> adapterSub = new ArrayAdapter<SubStatus>(this, android.R.layout.simple_spinner_item, subList );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        customer_options.setAdapter(adapter);
+        customer_options.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Customer customer = (Customer) adapterView.getSelectedItem();
+                diplayCustomerData(customer);
             }
 
             @Override

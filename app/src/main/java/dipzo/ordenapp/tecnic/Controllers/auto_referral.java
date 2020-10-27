@@ -77,7 +77,7 @@ public class auto_referral {
         client.post(Constans.API_END + "/referrals", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                controller.elim_aux(id_order);
+                controller.elim_aux(id_order);
                 count_referrals count_referrals = new count_referrals(context);
                 Toast.makeText(context, "Ordenes enviadas satisfactoriamente", Toast.LENGTH_LONG).show();
                 String suma = String.valueOf(count_referrals.count());

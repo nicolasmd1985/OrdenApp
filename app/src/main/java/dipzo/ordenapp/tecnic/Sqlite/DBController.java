@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "ordenapp17102020.db";
+    private static final String NOMBRE_BASE_DATOS = "ordenapp27102020.db";
     private static final int VERSION_ACTUAL = 5;
     private final Context contexto;
 
@@ -54,7 +54,9 @@ public class DBController extends SQLiteOpenHelper {
         ///////////////CUSTOMERS//////////////////
         query = "CREATE TABLE customers ( customer_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, phone_number TEXT, city TEXT)";
         sqLiteDatabase.execSQL(query);
-
+        /////////////////SUB STATUS//////////////////////////
+        query = "CREATE TABLE substatus (id_substatus INTEGER PRIMARY KEY, substatus_type TEXT, description TEXT, status_id INTEGER)";
+        sqLiteDatabase.execSQL(query);
 
 
     }
