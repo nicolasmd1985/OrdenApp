@@ -343,6 +343,8 @@ public class DBController extends SQLiteOpenHelper {
             values.put("final_time", queryValues.get("final_time"));
             values.put("email", queryValues.get("email"));
             values.put("status_id", queryValues.get("status_id"));
+            values.put("sub_status_id", queryValues.get("sub_status_id"));
+
 
             database.insert("referrals", null,values );
             database.close();
@@ -379,7 +381,7 @@ public class DBController extends SQLiteOpenHelper {
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
 
-         String selectQuery = "SELECT  comment,signature,full_name,final_time,email, status_id FROM referrals where fk_order_id ='"+idped+"'";
+         String selectQuery = "SELECT  comment,signature,full_name,final_time,email, status_id, sub_status_id FROM referrals where fk_order_id ='"+idped+"'";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -392,6 +394,7 @@ public class DBController extends SQLiteOpenHelper {
                 map.put("final_time", cursor.getString(3));
                 map.put("email", cursor.getString(4));
                 map.put("status_id", cursor.getString(5));
+                map.put("sub_status_id", cursor.getString(6));
 
                 wordList.add(map);
             } while (cursor.moveToNext());

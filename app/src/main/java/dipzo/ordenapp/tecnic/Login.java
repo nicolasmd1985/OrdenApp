@@ -285,7 +285,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     }
     private void startprogram(){
-        Intent x = new Intent(Login.this, Pedidos.class);
+        Intent x = new Intent(Login.this, Orders.class);
         Toast.makeText(Login.this, "Inicio Correcto", Toast.LENGTH_LONG).show();
         prgDialog.dismiss();
         startActivity(x);

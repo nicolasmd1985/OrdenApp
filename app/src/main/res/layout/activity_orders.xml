@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context="dipzo.ordenapp.tecnic.Pedidos" >
+    tools:context="dipzo.ordenapp.tecnic.Orders" >
 
 
     <LinearLayout

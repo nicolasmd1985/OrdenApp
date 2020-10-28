@@ -27,7 +27,7 @@ import dipzo.ordenapp.tecnic.Sqlite.DBController;
 import dipzo.ordenapp.tecnic.Sqlite.orders;
 import dipzo.ordenapp.tecnic.Sqlite.users;
 
-public class Nuevo_pedido extends AppCompatActivity {
+public class NewOrder extends AppCompatActivity {
 
     Spinner customer_options;
     Spinner category_options;
@@ -98,7 +98,7 @@ public class Nuevo_pedido extends AppCompatActivity {
      */
     public void callHomeActivity(View view) {
         Intent objIntent = new Intent(getApplicationContext(),
-                Pedidos.class);
+                Orders.class);
         startActivity(objIntent);
     }
 

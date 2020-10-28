@@ -6,10 +6,8 @@ package dipzo.ordenapp.tecnic;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +21,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,7 +28,7 @@ import cz.msebera.android.httpclient.Header;
 import dipzo.ordenapp.tecnic.Sqlite.DBController;
 import dipzo.ordenapp.tecnic.Sqlite.users;
 
-public class Detalles_pedido extends AppCompatActivity implements View.OnClickListener{
+public class OrderDetails extends AppCompatActivity implements View.OnClickListener{
 
     DBController controller = new DBController(this);
     users users = new users(this);
@@ -108,7 +105,7 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
-            Intent i = new Intent(Detalles_pedido.this, Pedidos.class);
+            Intent i = new Intent(OrderDetails.this, Orders.class);
             i.putExtra("id_order", id_order );
             i.putExtra("id_tecnic", id_tecnic );
             startActivity(i);
@@ -147,7 +144,7 @@ public class Detalles_pedido extends AppCompatActivity implements View.OnClickLi
         saveDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
                 send_gps_status();
-                Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
+                Intent i = new Intent(OrderDetails.this, Agregar_dispositivos.class);
                 i.putExtra("id_order", id_order );
                 i.putExtra("id_tecnic", id_tecnic );
                 startActivity(i);

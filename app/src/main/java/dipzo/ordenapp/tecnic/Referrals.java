@@ -29,11 +29,11 @@ import dipzo.ordenapp.tecnic.Model.SubStatus;
 import dipzo.ordenapp.tecnic.Sqlite.DBController;
 import dipzo.ordenapp.tecnic.Sqlite.substatuses_db;
 
-public class Order extends AppCompatActivity {
+public class Referrals extends AppCompatActivity {
 
 
-    Spinner status_spinner;
-    String id_order,id_tecnic, status_selected;
+    Spinner status_spinner, sub_status_spinner;
+    String id_order,id_tecnic, status_selected, sub_status_selected;
     private DrawingView drawView;
     EditText observaciones,aclaracion,email;
     DBController controller = new DBController(this);
@@ -42,7 +42,7 @@ public class Order extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remito);
+        setContentView(R.layout.activity_referals);
         id_order = getIntent().getStringExtra("id_order");
         id_tecnic = getIntent().getStringExtra("id_tecnic");
 
@@ -52,6 +52,7 @@ public class Order extends AppCompatActivity {
         email=(EditText)findViewById(R.id.email);
 
         status_spinner = (Spinner)findViewById(R.id.spinnerStatus);
+        sub_status_spinner = (Spinner)findViewById(R.id.spinnerSubStatus);
 
         select_status();
     }
@@ -79,10 +80,11 @@ public class Order extends AppCompatActivity {
             queryValues.put("final_time", tiempo());
             queryValues.put("email", email.getText().toString());
             queryValues.put("status_id", status_selected);
+            queryValues.put("sub_status_id", sub_status_selected);
             controller.insert_referral(queryValues);
             controller.finish_order(Integer.valueOf(id_order));
             drawView.destroyDrawingCache();
-            Intent i = new Intent(Order.this, Pedidos.class);
+            Intent i = new Intent(Referrals.this, Orders.class);
             i.putExtra("idpedido", id_order );
             i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);
@@ -125,7 +127,7 @@ public class Order extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
-            Intent i = new Intent(Order.this, Agregar_dispositivos.class);
+            Intent i = new Intent(Referrals.this, Agregar_dispositivos.class);
             i.putExtra("id_order", id_order );
             i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);
@@ -169,12 +171,15 @@ public class Order extends AppCompatActivity {
                 switch(status) {
                     case "Pendiente":
                         status_selected = "506";
+                        loadSubStates("506");
                         break;
                     case "Centro de servicio":
                         status_selected = "508";
+                        loadSubStates("508");
                         break;
                     default:
                         status_selected  = "507";
+                        loadSubStates("507");
                         break;
                 }
             }
@@ -184,14 +189,16 @@ public class Order extends AppCompatActivity {
 
             }
         });
+    }
 
 
+    public void loadSubStates(String subStatusId){
         ArrayList substatus;
         List<SubStatus> subList = new ArrayList<>();
 
         Map<String, SubStatus> map = new HashMap<>();
         int i = 0;
-        substatus = statusDb.get_substatus("506");
+        substatus = statusDb.get_substatus(subStatusId);
         ArrayList<HashMap<String, String>> subStatusList =  substatus;
         for (HashMap<String, String> hashMap : subStatusList) {
             map.put("substatus"+i, new SubStatus(
@@ -202,14 +209,14 @@ public class Order extends AppCompatActivity {
 
 
         ArrayAdapter<SubStatus> adapterSub = new ArrayAdapter<SubStatus>(this, android.R.layout.simple_spinner_item, subList );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterSub.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        customer_options.setAdapter(adapter);
-        customer_options.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sub_status_spinner.setAdapter(adapterSub);
+        sub_status_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Customer customer = (Customer) adapterView.getSelectedItem();
-                diplayCustomerData(customer);
+                SubStatus subStatus = (SubStatus) adapterView.getSelectedItem();
+                sub_status_selected = String.valueOf(subStatus.getId_substatus());
             }
 
             @Override
@@ -217,10 +224,6 @@ public class Order extends AppCompatActivity {
 
             }
         });
-
     }
-
-
-
 
 }

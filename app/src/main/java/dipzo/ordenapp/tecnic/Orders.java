@@ -45,7 +45,7 @@ import dipzo.ordenapp.tecnic.Sqlite.referrals;
 import dipzo.ordenapp.tecnic.Sqlite.users;
 
 
-public class Pedidos extends AppCompatActivity {
+public class Orders extends AppCompatActivity {
 
     DBController controller = new DBController(this);
     users users = new users(this);
@@ -68,8 +68,8 @@ public class Pedidos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pedidos);
-        Intent GPS = new Intent(Pedidos.this, ServicioGPS2.class);
+        setContentView(R.layout.activity_orders);
+        Intent GPS = new Intent(Orders.this, ServicioGPS2.class);
         cargabdl();
         startService(GPS);
         syncSQLiteMySQLDB();
@@ -80,7 +80,7 @@ public class Pedidos extends AppCompatActivity {
     ////////////////////******************AGREGA PEDIDO******************//////////////////
 
     public void addPedidos(View view) {
-        Intent objIntent = new Intent(getApplicationContext(), Nuevo_pedido.class);
+        Intent objIntent = new Intent(getApplicationContext(), NewOrder.class);
         startActivity(objIntent);
     }
 
@@ -97,7 +97,7 @@ public class Pedidos extends AppCompatActivity {
         }
         if(userList.size()!=0) {
             ListAdapter adapter = new SimpleAdapter(
-                    Pedidos.this,
+                    Orders.this,
                     userList,
                     R.layout.view_pedidos,
                     new String[]{"customer_id", "description"},
@@ -112,7 +112,7 @@ public class Pedidos extends AppCompatActivity {
                     Map<String, Object> map = (Map<String, Object>) myList.getItemAtPosition(i);
                     String id_order = (String) map.get("id_order");
                     String id_tecnic = (String) map.get("fk_user_id");
-                    Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
+                    Intent x = new Intent(Orders.this, OrderDetails.class);
                     x.putExtra("id_order", id_order);
                     x.putExtra("id_tecnic", id_tecnic);
                     startActivity(x);
@@ -133,7 +133,7 @@ public class Pedidos extends AppCompatActivity {
 
         }else{
             ListAdapter adapter = new SimpleAdapter(
-                    Pedidos.this,
+                    Orders.this,
                     userList,
                     R.layout.view_pedidos,
                     new String[]{"customer_id", "description"},
@@ -402,7 +402,7 @@ public class Pedidos extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
-            Intent i = new Intent(Pedidos.this, Login.class);
+            Intent i = new Intent(Orders.this, Login.class);
             startActivity(i);
             //return true;
         }
@@ -413,8 +413,8 @@ public class Pedidos extends AppCompatActivity {
         update_user_status updateuser = new update_user_status(this);
 
         updateuser.updateUserStatus();
-        Intent x = new Intent(Pedidos.this, Login.class);
-        Toast.makeText(Pedidos.this, "Log out", Toast.LENGTH_LONG).show();
+        Intent x = new Intent(Orders.this, Login.class);
+        Toast.makeText(Orders.this, "Log out", Toast.LENGTH_LONG).show();
         startActivity(x);
     }
 

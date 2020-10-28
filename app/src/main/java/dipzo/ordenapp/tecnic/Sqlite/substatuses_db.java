@@ -26,6 +26,7 @@ public class substatuses_db extends DBController{
         String id = queryValues.get("id_substatus");
         String query = "SELECT id_substatus FROM substatus where id_substatus ="+id;
         Cursor cursor = database.rawQuery(query, null);
+        values.put("id_substatus", queryValues.get("id_substatus"));
         values.put("substatus_type", queryValues.get("substatus_type"));
         values.put("status_id", queryValues.get("status_id"));
         values.put("description", queryValues.get("description"));

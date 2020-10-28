@@ -18,7 +18,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import dipzo.ordenapp.tecnic.Pedidos;
+import dipzo.ordenapp.tecnic.Orders;
 import dipzo.ordenapp.tecnic.R;
 
 /**
@@ -144,7 +144,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, Pedidos.class);
+        Intent intent = new Intent(this, Orders.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
 //                PendingIntent.FLAG_ONE_SHOT);

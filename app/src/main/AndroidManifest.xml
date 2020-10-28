@@ -58,13 +58,13 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <activity android:name="dipzo.ordenapp.tecnic.Pedidos" />
-        <activity android:name="dipzo.ordenapp.tecnic.Detalles_pedido" />
-        <activity android:name="dipzo.ordenapp.tecnic.Nuevo_pedido" />
+        <activity android:name="dipzo.ordenapp.tecnic.Orders" />
+        <activity android:name="dipzo.ordenapp.tecnic.OrderDetails" />
+        <activity android:name="dipzo.ordenapp.tecnic.NewOrder" />
         <activity android:name="dipzo.ordenapp.tecnic.Agregar_dispositivos" />
         <activity android:name="dipzo.ordenapp.tecnic.Mod_dispositivo" />
         <activity android:name="dipzo.ordenapp.tecnic.thing_detail" />
-        <activity android:name="dipzo.ordenapp.tecnic.Order" />
+        <activity android:name="dipzo.ordenapp.tecnic.Referrals" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

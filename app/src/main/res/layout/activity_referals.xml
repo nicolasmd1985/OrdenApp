@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context="dipzo.ordenapp.tecnic.Order">
+    tools:context="dipzo.ordenapp.tecnic.Referrals">
 
     <LinearLayout
         android:id="@+id/header_detail_things"
@@ -134,6 +134,13 @@
 
             <Spinner
                 android:id="@+id/spinnerStatus"
+                style="@style/spinner_style"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp" />
+
+            <Spinner
+                android:id="@+id/spinnerSubStatus"
                 style="@style/spinner_style"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

@@ -135,7 +135,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
     public void terminar(View view) {
 
         Intent objIntent = new Intent(getApplicationContext(),
-                Order.class);
+                Referrals.class);
         objIntent.putExtra("id_order", id_order );
         objIntent.putExtra("id_tecnic",id_tecnic );
         startActivity(objIntent);
@@ -148,7 +148,7 @@ public class Agregar_dispositivos extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == event.KEYCODE_BACK) {
-            Intent i = new Intent(Agregar_dispositivos.this, Detalles_pedido.class);
+            Intent i = new Intent(Agregar_dispositivos.this, OrderDetails.class);
             i.putExtra("id_order", id_order );
             i.putExtra("id_tecnic",id_tecnic );
             startActivity(i);

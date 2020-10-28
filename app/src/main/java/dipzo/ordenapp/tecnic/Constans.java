@@ -17,9 +17,7 @@ public class Constans {
     public static final String DSYNC = "/orders-desync/";
     public static final String CUSTOMERS = "/customers/";
     public static final String HISTORIES = "/things/histories/";
-    public static final String PENDING = "/substatus/pending";
-    public static final String RECEIVABLE= "/substatus/receivable";
-    public static final String SERVICE= "/substatus/service";
+    public static final String PENDING = "/substatus/";
 
 
     public static final int BANNER_TRANSITION_DURATION = 5000;
