@@ -136,6 +136,7 @@ public class orders extends DBController {
         values.put("install_time", queryValues.get("install_time"));
         values.put("limit_time", queryValues.get("limit_time"));
         values.put("category_id", queryValues.get("category_id"));
+        values.put("comment", queryValues.get("comment"));
 
         if (manual == 1){
             values.put("aux_order", 1);
