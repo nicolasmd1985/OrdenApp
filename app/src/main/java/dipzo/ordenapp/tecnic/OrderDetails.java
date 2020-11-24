@@ -33,7 +33,7 @@ public class OrderDetails extends AppCompatActivity implements View.OnClickListe
     DBController controller = new DBController(this);
     users users = new users(this);
 
-    private TextView company,address,city,description, install_time, limit_time,  category_id;
+    private TextView company,address,city,description, install_time, limit_time,  category_id, comment;
 
     private Button scanBtn;
 
@@ -53,6 +53,8 @@ public class OrderDetails extends AppCompatActivity implements View.OnClickListe
         category_id = (TextView) findViewById(R.id.category);
 
         description = (TextView) findViewById(R.id.description);
+        comment = (TextView) findViewById((R.id.comment));
+
         scanBtn = (Button)findViewById(R.id.button2);
         scanBtn.setOnClickListener(this);
         id_order = getIntent().getStringExtra("id_order");
@@ -72,6 +74,7 @@ public class OrderDetails extends AppCompatActivity implements View.OnClickListe
             install_time.setText(hashMap.get("install_time"));
             limit_time.setText(hashMap.get("limit_time"));
             category_id.setText(hashMap.get("category_id"));
+            comment.setText(hashMap.get("comment"));
         }
     }
 
@@ -79,7 +82,7 @@ public class OrderDetails extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
 
         //Toast.makeText(this,"hola",Toast.LENGTH_LONG).show();
-        //**************FUERZA LA INICIALIZACION DEL LOCALIZADOR GPS**********/////////
+        //**************FORZA LA INICIALIZACION DEL LOCALIZADOR GPS**********/////////
         try {
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 

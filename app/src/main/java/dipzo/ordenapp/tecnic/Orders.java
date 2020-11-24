@@ -202,6 +202,7 @@ public class Orders extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String str = new String(responseBody, "UTF-8");
+                        System.out.println(str);
                         updateSQLite(str);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -248,12 +249,9 @@ public class Orders extends AppCompatActivity {
                     queryValues.put("install_time", obj.get("install_time").toString());
                     queryValues.put("limit_time", obj.get("limit_time").toString());
                     queryValues.put("category_id", obj.get("category_id").toString());
-
+                    queryValues.put("comment", obj.get("comment").toString());
                     orders.insert_order(queryValues, 0);
-
-
                 }
-//
                 updateMySQLSyncSts();
             }else {
                 Toast.makeText(getApplicationContext(), "No Tiene Pedidos Para Sincronizar",
@@ -299,6 +297,7 @@ public class Orders extends AppCompatActivity {
             });
         } else {
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
+            prgDialog.hide();
             send_referrals();
         }
 

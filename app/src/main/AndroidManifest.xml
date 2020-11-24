@@ -20,10 +20,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name="dipzo.ordenapp.tecnic.HistoryDetail"/>
-        <activity android:name="dipzo.ordenapp.tecnic.HistoryActivity" />
-        <activity android:name="dipzo.ordenapp.tecnic.camera_evidence" />
-        <activity android:name="dipzo.ordenapp.tecnic.Login">
+        <activity android:name="dipzo.ordenapp.tecnic.HistoryDetail"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.HistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.camera_evidence"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.Login"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"
@@ -58,13 +62,20 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <activity android:name="dipzo.ordenapp.tecnic.Orders" />
-        <activity android:name="dipzo.ordenapp.tecnic.OrderDetails" />
-        <activity android:name="dipzo.ordenapp.tecnic.NewOrder" />
-        <activity android:name="dipzo.ordenapp.tecnic.Agregar_dispositivos" />
-        <activity android:name="dipzo.ordenapp.tecnic.Mod_dispositivo" />
-        <activity android:name="dipzo.ordenapp.tecnic.thing_detail" />
-        <activity android:name="dipzo.ordenapp.tecnic.Referrals" />
+        <activity android:name="dipzo.ordenapp.tecnic.Orders"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.OrderDetails"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.NewOrder"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.Agregar_dispositivos"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.Mod_dispositivo"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.thing_detail"
+            android:screenOrientation="portrait"/>
+        <activity android:name="dipzo.ordenapp.tecnic.Referrals"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

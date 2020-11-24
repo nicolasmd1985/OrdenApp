@@ -65,4 +65,5 @@
     <string name="garantia">Garantia</string>
     <string name="observaciones_generales">Observaciones Generales</string>
     <string name="firme_en_el_recuadro">Firme en el recuadro</string>
+    <string name="comentarios">Comentarios</string>
 </resources>
