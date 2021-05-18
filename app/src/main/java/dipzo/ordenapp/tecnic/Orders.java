@@ -299,6 +299,7 @@ public class Orders extends AppCompatActivity {
             });
         } else {
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
+            prgDialog.hide();
             send_referrals();
         }
 
@@ -419,7 +420,6 @@ public class Orders extends AppCompatActivity {
     }
 
 
-
     ///////////////////////*************UBICACION MANUAL*************////////////
     public void ubicacion (View view)
     {
@@ -434,8 +434,6 @@ public class Orders extends AppCompatActivity {
         }catch(Exception e){Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();}
 
     }
-
-
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);

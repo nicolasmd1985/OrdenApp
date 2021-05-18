@@ -3,7 +3,7 @@ package dipzo.ordenapp.tecnic;
 public class Constans {
 
 //    public static final String SERVER = "https://ordenapp.co";
-    public static final String SERVER = "http://192.168.0.144:3000";
+    public static final String SERVER = "http://192.168.0.13:3000";
 //    public static final String SERVER = "http://beta.ordenapp.co:3000/";
 
 
@@ -17,6 +17,7 @@ public class Constans {
     public static final String DSYNC = "/orders-desync/";
     public static final String CUSTOMERS = "/customers/";
     public static final String HISTORIES = "/things/histories/";
+    public static final String SEARCH_DEVICE = "/things/search_devise/";
     public static final String PENDING = "/substatus/";
 
 

@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -261,16 +262,24 @@ public class thing_detail extends AppCompatActivity {
         prgDialog.setCancelable(false);
         prgDialog.show();
 
+
+
         ArrayList token = users.tokenExp();
 
         if (token != null){
             AsyncHttpClient client = new AsyncHttpClient();
             client.setBearerAuth(token.get(3).toString());
-            client.get(Constans.API_END + Constans.HISTORIES + codigo.getText().toString() , new AsyncHttpResponseHandler() {
+            RequestParams params = new RequestParams();
+
+            params.put("order",id_order);
+            params.put("thing", codigo.getText().toString());
+
+            client.post(Constans.API_END + Constans.SEARCH_DEVICE , params,  new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String str = new String(responseBody, "UTF-8");
+                        System.out.println(str);
                         history(str);
                         prgDialog.hide();
                     } catch (UnsupportedEncodingException e) {

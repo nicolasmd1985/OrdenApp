@@ -17,8 +17,8 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
 
 
-    private static final String NOMBRE_BASE_DATOS = "ordenapp20112020.db";
-    private static final int VERSION_ACTUAL = 6;
+    private static final String NOMBRE_BASE_DATOS = "ordenapp06052021.db";
+    private static final int VERSION_ACTUAL = 7;
     private final Context contexto;
 
 
@@ -40,7 +40,7 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE users ( user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, token TEXT, exp TEXT, email TEXT, status_id TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////ORDERS//////////////////
-        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id TEXT, finish INTEGER, comment TEXT DEFAULT 0, aux_order INTEGER DEFAULT 0)";
+        query = "CREATE TABLE orders ( id_order INTEGER PRIMARY KEY, fk_user_id INTEGER REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE, description TEXT, address TEXT, city_id TEXT, priority TEXT, created_at TEXT, supervisor_id TEXT, customer_id TEXT, install_date TEXT , install_time TEXT, limit_time TEXT, category_id TEXT, finish INTEGER DEFAULT 0, comment TEXT DEFAULT 0, aux_order INTEGER DEFAULT 0)";
         sqLiteDatabase.execSQL(query);
         ///////////////THINGS//////////////////
         query = "CREATE TABLE things ( id_thing INTEGER PRIMARY KEY, fk_order_id TEXT REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE , code_scan TEXT, name TEXT, description TEXT, comments TEXT, latitude TEXT, longitude TEXT, time_install TEXT, photos TEXT, price TEXT, warranty TEXT)";
