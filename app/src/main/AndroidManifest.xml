@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="dipzo.ordenapp.tecnic">
+    package="dipzo.ordenapp.orders">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,10 +20,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name="dipzo.ordenapp.tecnic.HistoryDetail"/>
-        <activity android:name="dipzo.ordenapp.tecnic.HistoryActivity" />
-        <activity android:name="dipzo.ordenapp.tecnic.camera_evidence" />
-        <activity android:name="dipzo.ordenapp.tecnic.Login">
+        <activity android:name="dipzo.ordenapp.orders.Views.HistoryDetail"/>
+        <activity android:name="dipzo.ordenapp.orders.Views.HistoryActivity" />
+        <activity android:name="dipzo.ordenapp.orders.Views.camera_evidence" />
+        <activity android:name="dipzo.ordenapp.orders.Views.Login">
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"
@@ -34,14 +34,14 @@
         </activity>
 
         <service
-            android:name="dipzo.ordenapp.tecnic.GPS.ServicioGPS2"
+            android:name="dipzo.ordenapp.orders.GPS.ServicioGPS2"
             android:enabled="true"
             android:exported="false" />
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
         <service
-            android:name="dipzo.ordenapp.tecnic.java.MyFirebaseMessagingService"
+            android:name="dipzo.ordenapp.orders.java.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -58,17 +58,17 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <activity android:name="dipzo.ordenapp.tecnic.Orders" />
-        <activity android:name="dipzo.ordenapp.tecnic.OrderDetails" />
-        <activity android:name="dipzo.ordenapp.tecnic.NewOrder" />
-        <activity android:name="dipzo.ordenapp.tecnic.Agregar_dispositivos" />
-        <activity android:name="dipzo.ordenapp.tecnic.Mod_dispositivo" />
-        <activity android:name="dipzo.ordenapp.tecnic.thing_detail" />
-        <activity android:name="dipzo.ordenapp.tecnic.Referrals" />
+        <activity android:name="dipzo.ordenapp.orders.Views.Orders" />
+        <activity android:name="dipzo.ordenapp.orders.Views.OrderDetails" />
+        <activity android:name="dipzo.ordenapp.orders.Views.NewOrder" />
+        <activity android:name="dipzo.ordenapp.orders.Views.Agregar_dispositivos" />
+        <activity android:name="dipzo.ordenapp.orders.Views.Mod_dispositivo" />
+        <activity android:name="dipzo.ordenapp.orders.Views.thing_detail" />
+        <activity android:name="dipzo.ordenapp.orders.Views.Referrals" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="dipzo.ordenapp.tecnic"
+            android:authorities="dipzo.ordenapp.orders"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

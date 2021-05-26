@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="dipzo.ordenapp.tecnic.HistoryDetail">
+    tools:context="dipzo.ordenapp.orders.Views.HistoryDetail">
 
     <LinearLayout
         android:layout_marginTop="10dp"
