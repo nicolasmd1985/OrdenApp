@@ -7,8 +7,8 @@ android {
         applicationId "mahecha.nicolas.ordenapp"
         minSdkVersion 17
         targetSdkVersion 30
-        versionCode 9
-        versionName "2.1.1.7"
+        versionCode 12
+        versionName "2.1.1.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

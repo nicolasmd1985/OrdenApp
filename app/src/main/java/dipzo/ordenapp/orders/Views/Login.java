@@ -108,11 +108,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 try {
                     Date date = formatter.parse(time_token);
                     Date date2 = new Date();
-                    int Time1 = (date.getDay() * 24) + date.getHours() ;
-                    int Time2 = (date2.getDay() * 24) + date2.getHours() ;
-                    int comp = Time1 - Time2;
-                    System.out.println(comp);
-                    if (comp > 8  && status_id.contentEquals("202")){
+                    if (date.after(date2)  && status_id.contentEquals("202")){
                         startprogram();
                     }
                 } catch (ParseException e) {

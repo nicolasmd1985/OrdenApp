@@ -2,8 +2,8 @@ package dipzo.ordenapp.orders;
 
 public class Constans {
 
-//    public static final String SERVER = "https://ordenapp.co";
-    public static final String SERVER = "http://192.168.0.144:3000";
+    public static final String SERVER = "https://ordenapp.co";
+//    public static final String SERVER = "http://192.168.0.144:3000";
 //    public static final String SERVER = "http://beta.ordenapp.co:3000/";
 
 

@@ -204,7 +204,7 @@ public class Orders extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String str = new String(responseBody, "UTF-8");
-                        System.out.println(str);
+//                        System.out.println(str);
                         updateSQLite(str);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
