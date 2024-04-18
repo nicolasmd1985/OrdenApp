@@ -3,6 +3,8 @@ package dipzo.ordenapp.orders.Controllers;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -15,7 +17,15 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 
 import java.io.File;
 
+
 public class uploader {
+
+    String
+            ACCESS_KEY = "AKIAU6GD3GA2M6HUWMTC",
+            SECRET_KEY = "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";
+
+
+
 
     Context context;
 
@@ -30,16 +40,21 @@ public class uploader {
             // Inicializar el proveedor de credenciales de Amazon Cognito
             CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                     context,
-                    "us-east-1:8f0038be-624e-483d-93d3-c15a88f84d23", // ID del grupo de identidades
-                    Regions.US_EAST_1 // Región
+
+                    "us-west-2:3f1008b8-f534-41d0-928f-f9264e27ae76", // ID del grupo de identidades
+                    Regions.US_WEST_2 // Región
             );
 
-            AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
+            AWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+
+
+
+            AmazonS3 s3 = new AmazonS3Client(credentials);
 
 
             TransferUtility transferUtility = new TransferUtility(s3, context);
             final TransferObserver observer = transferUtility.upload(
-                    "ordenappbucket",  //this is the bucket name on S3
+                    "deploy-from-github",  //this is the bucket name on S3
                     file.getName(),
                     file,
                     CannedAccessControlList.PublicRead //to make the file public

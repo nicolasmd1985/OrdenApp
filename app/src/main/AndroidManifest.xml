@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -23,7 +25,8 @@
         <activity android:name="dipzo.ordenapp.orders.Views.HistoryDetail"/>
         <activity android:name="dipzo.ordenapp.orders.Views.HistoryActivity" />
         <activity android:name="dipzo.ordenapp.orders.Views.camera_evidence" />
-        <activity android:name="dipzo.ordenapp.orders.Views.Login">
+        <activity android:name="dipzo.ordenapp.orders.Views.Login"
+            android:exported="true">
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"
