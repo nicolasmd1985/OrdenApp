@@ -1,5 +1,7 @@
 package dipzo.ordenapp.orders.Controllers;
 
+import static dipzo.ordenapp.orders.Secrets.SECRET_KEY;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -15,16 +17,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 
+
 import java.io.File;
+
+import dipzo.ordenapp.orders.Secrets;
 
 
 public class uploader {
-
-    String
-            ACCESS_KEY = "AKIAU6GD3GA2M6HUWMTC",
-            SECRET_KEY = "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";
-
-
 
 
     Context context;
@@ -45,7 +44,7 @@ public class uploader {
                     Regions.US_WEST_2 // Región
             );
 
-            AWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+            AWSCredentials credentials = new BasicAWSCredentials(Secrets.ACCESS_KEY, SECRET_KEY);
 
 
 
