@@ -53,7 +53,7 @@ public class uploader {
 
             TransferUtility transferUtility = new TransferUtility(s3, context);
             final TransferObserver observer = transferUtility.upload(
-                    "deploy-from-github",  //this is the bucket name on S3
+                    "ordenapp-bucket",  //this is the bucket name on S3
                     file.getName(),
                     file,
                     CannedAccessControlList.PublicRead //to make the file public
