@@ -1,0 +1,192 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context="dipzo.ordenapp.orders.Views.Orders" >
+
+
+    <LinearLayout
+        android:id="@+id/header_detail_things"
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:background="#4E8DA6"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginTop="0px">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/button1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00bcd4"
+                android:onClick="addPedidos"
+                app:srcCompat="@android:drawable/ic_input_get" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Agregar \nOrden"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00bcd4"
+                android:onClick="buttonSync"
+                app:srcCompat="@android:drawable/ic_popup_sync" />
+
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sincronizar \nOrdenes"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/refresh" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4E8DA6"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+
+
+
+            <TextView
+                android:id="@+id/textpedido2"
+                android:layout_width="42dp"
+                android:layout_height="41dp"
+                android:paddingStart="15dp"
+                android:paddingTop="6dp"
+                android:background="#00bcd4"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toEndOf="@+id/refresh"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ordenes \npor enviar"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/header_detail_things"
+        android:id="@+id/relativeLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/textpedido"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_gravity="center"
+            android:text="Ordenes Activas"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ListView
+            android:layout_below="@id/textpedido"
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
+
+
+        </ListView>
+
+
+    </LinearLayout>
+
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        android:translationZ="20dp"
+        app:srcCompat="@android:drawable/ic_menu_mylocation"
+        android:onClick="ubicacion"
+        tools:layout_editor_absoluteX="339dp"
+        tools:layout_editor_absoluteY="344dp" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        android:translationZ="20dp"
+        app:srcCompat="@android:drawable/ic_lock_power_off"
+        android:onClick="sign_out"
+        tools:layout_editor_absoluteX="339dp"
+        tools:layout_editor_absoluteY="344dp" />
+
+</RelativeLayout>
